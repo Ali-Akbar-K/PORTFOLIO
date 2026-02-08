@@ -132,8 +132,8 @@ SES Vidya Mandir PU College
 - **Phone:** +91 6363728679
 - **Email:** aliakbark0507619@gmail.com
 - **Portfolio:** https://ali-akbar-k.github.io/PORTFOLIO/
-- **GitHub:** (add your GitHub link)
-- **LinkedIn:** (add your LinkedIn link)
+- **GitHub:** https://github.com/Ali-Akbar-K/
+- **LinkedIn:** https://www.linkedin.com/in/ali-akbar-k-591725274/
 
 ---
 
