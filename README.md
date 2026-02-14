@@ -1,148 +1,22 @@
-# Ali Akbar K — Portfolio
+# 💫 About Me:
+Hello! I’m Ali Akbar K, a passionate and dedicated Software Product Developer with experience building robust and scalable applications. I graduated with a Bachelor’s degree in Electronics and Communication Engineering and have developed a strong foundation in software development, especially in Java, Node.js, and Full-Stack technologies.<br><br>I’ve had the opportunity to work with reputed organizations including Infosys, BETSOL, Indian Tech-Keys, Nano Robotics Embed Technologies, Merkle, and iQuanti, where I contributed to real-world projects and enhanced my technical skills. I’m currently focused on advancing my career in Full-Stack Development and building impactful web and mobile applications.<br><br>Beyond coding, I’m interested in learning new technologies, building useful projects, and sharing knowledge with the community. I strongly believe in clean code, continuous learning, and delivering value through software.<br><br>Let’s build something amazing together!
 
-## 👋 About Me
-Passionate Product Developer with a strong foundation in Electronics & Communication Engineering, specializing in innovative solutions and technology integration. Skilled in Java, SQL, Web Development, Embedded Systems, and Data Analytics. I enjoy building real-world solutions and collaborating on impactful tech projects.
 
----
+## 🌐 Socials:
+[![Discord](https://img.shields.io/badge/Discord-%237289DA.svg?logo=discord&logoColor=white)](https://discord.gg/https://discord.com/channels/1429335496143802491/) [![Facebook](https://img.shields.io/badge/Facebook-%231877F2.svg?logo=Facebook&logoColor=white)](https://facebook.com/https://www.facebook.com/mohmmadaliakbar.husain/) [![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?logo=Instagram&logoColor=white)](https://instagram.com/https://www.instagram.com/ali_akbar.k_/) [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/https://www.linkedin.com/in/ali-akbar-k-591725274/) [![X](https://img.shields.io/badge/X-black.svg?logo=X&logoColor=white)](https://x.com/https://x.com/AliAkbark001) [![email](https://img.shields.io/badge/Email-D14836?logo=gmail&logoColor=white)](mailto:aliakbark0507619@gmail.com) 
 
-## 💼 Profile
-
-- **Name:** Ali Akbar K  
-- **Role:** Product Developer  
-- **Experience:** 3 Months  
-- **Location:** Bengaluru, India  
-
----
-
-## 🛠 Skills
-
-- SQL — 95%
-- Java — 70%
-- Web Development — 90%
-- Statistical Analysis — 85%
-- Embedded Electronics — 80%
-
-**Technical Stack**
-- Java
-- C / C++
-- Python
-- HTML, CSS, JavaScript
-- Node.js
-- React.js
-- SQL
-- Embedded C
-- IoT Systems
+# 💻 Tech Stack:
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white) ![Erlang](https://img.shields.io/badge/Erlang-white.svg?style=for-the-badge&logo=erlang&logoColor=a90533) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white) ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white) ![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?style=for-the-badge&logo=markdown&logoColor=white) ![Windows Terminal](https://img.shields.io/badge/Windows%20Terminal-%234D4D4D.svg?style=for-the-badge&logo=windows-terminal&logoColor=white) ![PowerShell](https://img.shields.io/badge/PowerShell-%235391FE.svg?style=for-the-badge&logo=powershell&logoColor=white) ![Bash Script](https://img.shields.io/badge/bash_script-%23121011.svg?style=for-the-badge&logo=gnu-bash&logoColor=white) ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white) ![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase) ![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=Cloudflare&logoColor=white) ![Azure](https://img.shields.io/badge/azure-%230072C6.svg?style=for-the-badge&logo=microsoftazure&logoColor=white) ![Netlify](https://img.shields.io/badge/netlify-%23000000.svg?style=for-the-badge&logo=netlify&logoColor=#00C7B7) ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) ![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white) ![Node-RED](https://img.shields.io/badge/Node--RED-%238F0000.svg?style=for-the-badge&logo=node-red&logoColor=white) ![RabbitMQ](https://img.shields.io/badge/rabbitmq-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white) ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi) ![EJS](https://img.shields.io/badge/ejs-%23B4CA65.svg?style=for-the-badge&logo=ejs&logoColor=black) ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens) ![Apache](https://img.shields.io/badge/apache-%23D42029.svg?style=for-the-badge&logo=apache&logoColor=white) ![Apache Tomcat](https://img.shields.io/badge/apache%20tomcat-%23F8DC75.svg?style=for-the-badge&logo=apache-tomcat&logoColor=black) ![Apache Maven](https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white) ![Jenkins](https://img.shields.io/badge/jenkins-%232C5263.svg?style=for-the-badge&logo=jenkins&logoColor=white) ![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white) ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) ![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white) ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white) ![Canva](https://img.shields.io/badge/Canva-%2300C4CC.svg?style=for-the-badge&logo=Canva&logoColor=white) ![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white) ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white) ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) ![Testing-Library](https://img.shields.io/badge/-TestingLibrary-%23E33332?style=for-the-badge&logo=testing-library&logoColor=white) ![Arduino](https://img.shields.io/badge/-Arduino-00979D?style=for-the-badge&logo=Arduino&logoColor=white) ![Home Assistant](https://img.shields.io/badge/home%20assistant-%2341BDF5.svg?style=for-the-badge&logo=home-assistant&logoColor=white) ![Portfolio](https://img.shields.io/badge/Portfolio-%23000000.svg?style=for-the-badge&logo=firefox&logoColor=#FF7139) ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white) ![nVIDIA](https://img.shields.io/badge/nVIDIA-%2376B900.svg?style=for-the-badge&logo=nVIDIA&logoColor=white) ![AMD](https://img.shields.io/badge/AMD-%23000000.svg?style=for-the-badge&logo=amd&logoColor=white) ![Unity](https://img.shields.io/badge/unity-%23000000.svg?style=for-the-badge&logo=unity&logoColor=white) ![OpenTelemetry](https://img.shields.io/badge/OpenTelemetry-FFFFFF?&style=for-the-badge&logo=opentelemetry&logoColor=black) ![Uber](https://img.shields.io/badge/Uber-%23000000.svg?style=for-the-badge&logo=Uber&logoColor=white) ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
+# 📊 GitHub Stats:
+![](https://github-readme-stats.vercel.app/api?username=Ali-Akbar-K&theme=dark&hide_border=false&include_all_commits=true&count_private=true)<br/>
+![](https://nirzak-streak-stats.vercel.app/?user=Ali-Akbar-K&theme=dark&hide_border=false)<br/>
+![](https://github-readme-stats.vercel.app/api/top-langs/?username=Ali-Akbar-K&theme=dark&hide_border=false&include_all_commits=true&count_private=true&layout=compact)
 
 ---
+[![](https://visitcount.itsvg.in/api?id=Ali-Akbar-K&icon=0&color=0)](https://visitcount.itsvg.in)
 
-## 🧰 Tools
+  ## 💰 You can help me by Donating
+  [![BuyMeACoffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/https://buymeacoffee.com/aliakbark0s) [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/paypal.me/aliakbarkolkar) 
 
-- VS Code
-- Eclipse
-- Power BI
-- Arduino IDE
-- Jupyter Notebook
-- Git
-- JIRA
-- Docker
-- Canva
-- Blender
-- Excel
-
----
-
-## 🌍 Languages
-
-- English
-- Hindi
-- Kannada
-- Telugu
-- Urdu
-
----
-
-## 💼 Experience
-
-### Product Developer — Infosys EdgeVerve, Bengaluru  
-**2025 – Present**
-- Worked on product design and programming
-- Improved performance and system efficiency
-- Conducted internal training and mentorship sessions
-- Applied critical thinking in production problem-solving
-
----
-
-### Technical Support Engineer — BETSOL Software, Bengaluru  
-**Dec 2024 – Feb 2025**
-- Troubleshooting and issue resolution
-- Incident ticket documentation
-- Salesforce tool usage
-- Mentored team members on support workflows
-
----
-
-### Student Intern — Nano Robotics Embed Technologies  
-**Aug 2023 – Sep 2023**
-- Warehouse Monitoring System using IoT
-- Built and tested IoT models
-- Achieved high system performance results
-
----
-
-### Student Intern — Indian Tech-Keys  
-**Mar 2023 – Apr 2023**
-- Embedded system and IoT programming
-- Worked with Arduino IDE and Embedded C
-
----
-
-## 🎓 Education
-
-### Bachelor of Engineering (ECE) — VTU  
-Vijaya Vittala Institute of Technology, Bengaluru  
-**CGPA:** 8.21
-
-### PUC (PCMB)  
-SES Vidya Mandir PU College  
-**Score:** 81.33%
-
----
-
-## 🚀 Projects
-
-- 3D Portfolio Website
-- Personal & Professional Portfolio Site
-- Automatic Traffic Light Controller for Emergency Vehicles
-- IoT Blind Navigation System with GPS
-- Warehouse Monitoring System using IoT
-- Smart Remote Controller App (MIT Inverter)
-
----
-
-## 🏆 Highlights
-
-- Projects Completed: 5+
-- Students Mentored: 5
-- Domains: Product Development, IoT, Web, Embedded
-
----
-
-## 📫 Contact
-
-- **Phone:** +91 6363728679
-- **Email:** aliakbark0507619@gmail.com
-- **Portfolio:** https://ali-akbar-k.github.io/PORTFOLIO/
-- **GitHub:** https://github.com/Ali-Akbar-K/
-- **LinkedIn:** https://www.linkedin.com/in/ali-akbar-k-591725274/
-
----
-
-## ⚡ Interests
-
-- Traveling
-- Travel Photography
-- Cooking
-
----
-
-© 2026 Ali Akbar K — All Rights Reserved
+  
+<!-- Proudly created with GPRM ( https://gprm.itsvg.in ) -->
