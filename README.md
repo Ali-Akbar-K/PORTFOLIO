@@ -11,7 +11,7 @@ Hello! I’m Ali Akbar K, a passionate and dedicated Software Product Developer 
 ![](https://img.shields.io/badge/2025%20Contributions-1646-brightgreen) ![](https://img.shields.io/badge/2026%20Contributions-1714-brightgreen)<br/>
 ![](https://github-readme-stats.vercel.app/api?username=Ali-Akbar-K&theme=dark&hide_border=false&include_all_commits=true&count_private=true)<br/>
 ![](https://nirzak-streak-stats.vercel.app/?user=Ali-Akbar-K&theme=dark&hide_border=false)<br/>
-![](https://ghchart.rshah.org/Ali-Akbar-K)
+![](https://ghchart.rshah.org/Ali-Akbar-K&theme=react-dark)
 ![](https://github-readme-activity-graph.vercel.app/graph?username=Ali-Akbar-K&theme=react-dark)
 ---
 [![](https://visitcount.itsvg.in/api?id=Ali-Akbar-K&icon=0&color=0)](https://visitcount.itsvg.in)
