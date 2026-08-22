@@ -56,47 +56,237 @@
   background-color: #ffbd39;
 }
 
+.hero-intro {
+  max-width: 600px;
+  padding-top: 1.5rem;
+}
 
-/* Animation styles */
+.hero-intro .subheading {
+  display: inline-block;
+  margin-bottom: 1rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid rgba(255, 189, 57, 0.5);
+  border-radius: 999px;
+  background: rgba(255, 189, 57, 0.08);
+  color: #ffbd39;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.hero-intro h1 {
+  font-size: clamp(3rem, 5vw, 5.4rem);
+  line-height: 1.02;
+  margin-bottom: 0.9rem;
+  font-weight: 700;
+}
+
+.hero-intro h1 span {
+  color: #ffbd39;
+}
+
+.hero-intro h2 {
+  font-size: clamp(1.45rem, 2vw, 2.2rem);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.hero-meta {
+  margin-bottom: 1.25rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.typing-wrap {
+  min-height: 3.2rem;
+  margin-bottom: 0.9rem;
+  padding: 0.8rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  border-left: 3px solid #ffbd39;
+  background: rgba(10, 16, 25, 0.28);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
 #typing-animation {
+  display: inline-block;
   position: relative;
-  font-size: 30px;
-  font-weight: bold;
-  color: rgb(255, 255, 255);
-  overflow: hidden;
+  font-size: clamp(1.1rem, 2vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  color: #ffbd39;
+  text-transform: uppercase;
   white-space: nowrap;
-  animation: typing 3s steps(20, end) infinite;
 }
 
-#typing-animation:before {
+#typing-animation:after {
   content: "";
-  /* position: absolute; */
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 100%;
-  background-color: #ccc;
-  animation: typing-cursor 0.5s ease-in-out infinite;
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: #ffbd39;
+  margin-left: 8px;
+  vertical-align: middle;
+  animation: typing-cursor 0.8s step-end infinite;
 }
 
-@keyframes typing {
-  from {
-    width: 0;
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+}
+
+.hero-buttons .btn {
+  border-radius: 999px;
+  padding: 0.95rem 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  box-shadow: 0 14px 20px rgba(255, 189, 57, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hero-buttons .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 26px rgba(255, 189, 57, 0.18);
+}
+
+.owl-carousel.home-slider .slider-item .slider-text {
+  display: flex;
+  align-items: center;
+  height: 750px;
+  max-width: 1380px;
+  margin: 0 auto;
+}
+
+.owl-carousel.home-slider .slider-item .slider-text .one-third {
+  width: 44%;
+  flex: 0 0 44%;
+  max-width: 44%;
+  position: relative;
+  background-position: center bottom !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  z-index: 0;
+  min-height: 640px;
+}
+
+.owl-carousel.home-slider .slider-item .slider-text .one-third.img {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 640px;
+}
+
+.owl-carousel.home-slider .slider-item .slider-text .one-forth {
+  width: 56%;
+  flex: 0 0 56%;
+  position: relative;
+  z-index: 1;
+  max-width: 56%;
+}
+
+.owl-carousel.home-slider .slider-item .slider-text .one-forth .text {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  transform: none;
+  max-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+@media (max-width: 991.98px) {
+  .owl-carousel.home-slider .slider-item .slider-text {
+    display: block;
+    height: auto;
+    text-align: center;
   }
-  to {
+
+  .owl-carousel.home-slider .slider-item .slider-text .one-third {
     width: 100%;
+    flex-basis: 100%;
+    max-width: 100%;
+    min-height: 340px;
+    max-height: 440px;
+    background-position: center center !important;
+    background-size: cover !important;
+    opacity: 0.95;
+  }
+
+  .owl-carousel.home-slider .slider-item .slider-text .one-forth {
+    width: 100%;
+    flex-basis: 100%;
+    max-width: 100%;
+    position: relative;
+    padding-top: 0.5rem;
   }
 }
 
 @keyframes typing-cursor {
-  from {
-    width: 5px;
+  0%, 50% {
+    opacity: 1;
   }
-  to {
-    width: 0;
+  50.01%, 100% {
+    opacity: 0;
   }
 }
 
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.tech-tags span,
+.skill-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(255, 189, 57, 0.4);
+  background: rgba(255, 189, 57, 0.08);
+  color: #f5f5f5;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.skill-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.25rem 1.1rem;
+}
+
+.skill-card h3 {
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffbd39;
+  margin-bottom: 0.85rem;
+}
+
+.skill-card .tech-tags {
+  margin-top: 0;
+}
 
 /* project image zoom effect */
 
@@ -106,9 +296,19 @@
 }
 
 .zoom-effect:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
+@media (max-width: 991.98px) {
+  .hero-intro {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .skill-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
 </style>
 
@@ -129,6 +329,7 @@
 	          <li class="nav-item"><a href="#home-section" class="nav-link"><span>Home</span></a></li>
 	          <li class="nav-item"><a href="#about-section" class="nav-link"><span>About</span></a></li>
 	          <li class="nav-item"><a href="#resume-section" class="nav-link"><span>Resume</span></a></li>
+	          <li class="nav-item"><a href="#skills-section" class="nav-link"><span>Skills</span></a></li>
 	          <li class="nav-item"><a href="#project-section" class="nav-link"><span>Projects</span></a></li>
 	          <li class="nav-item"><a href="#contact-section" class="nav-link"><span>Contact</span></a></li>
 	        </ul>
@@ -145,53 +346,46 @@
 	          	 <div class="overlay"></div>
 	          	</div>
 		          <div class="one-forth d-flex  align-items-center ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
-		          	<div class="text">
+		          	<div class="text hero-intro">
 		          		<span class="subheading">Hello!</span>
-			            <h1 class="mb-4 mt-3">I'm <span>Ali Akbar K</span></h1>
+		            <h1 class="mb-3">I'm <span>Ali Akbar K</span></h1>
 
-						<!-- Element to contain animated typing -->
-						<span id="typing-animation"></span>
+						<div class="typing-wrap"><span id="typing-animation"></span></div>
 
 						<script>
-
-						// Initialize the typing animation
 						const typingAnimationElement = document.getElementById('typing-animation');
-
-						// Create an array of typing text
 						const typingTexts = [
-						'Product Developer  ',
-						'Software Engineer  ',
-						'Embedded Engineer  ',
+						  'Associate Product Developer',
+						  'Backend Engineer',
+						  'Cloud Engineer',
+						  'Problem Solver'
 						];
-
-						// Create a function to display the typing animation for a given text
+						let typingIndex = 0;
 						function playTypingAnimation(text) {
-						// Loop through each character and add it to the element
-						for (let i = 0; i < text.length; i++) {
-							setTimeout(() => {
-							typingAnimationElement.textContent += text[i];
-							}, i * 200); // Increase the delay to slow down the typing animation
+						  typingAnimationElement.textContent = '';
+						  let i = 0;
+						  const timer = setInterval(() => {
+						    if (i >= text.length) {
+						      clearInterval(timer);
+						      setTimeout(() => {
+						        typingIndex = (typingIndex + 1) % typingTexts.length;
+						        playTypingAnimation(typingTexts[typingIndex]);
+						      }, 1200);
+						      return;
+						    }
+						    typingAnimationElement.textContent += text[i];
+						    i++;
+						  }, 100);
 						}
-
-						// Once the animation is complete, reset the text and start over
-						setTimeout(() => {
-							typingAnimationElement.textContent = '';
-							playTypingAnimation(typingTexts[(typingTexts.indexOf(text) + 1) % typingTexts.length]);
-						}, text.length * 200);
-						}
-
-						// Start the typing animation loop
 						playTypingAnimation(typingTexts[0]);
-
 						</script>
 
-						<br>
-						<br>
-			            <h2>A Product Developer</h2>
-						<!-- <h2 class="d-flex" style="margin-bottom: 0">With over 5 years of experience</h2> -->
-						<!-- <br> -->
-			            <p><a href="https://www.linkedin.com/in/ali-akbar-k-591725274/" class="btn btn-primary py-3 px-4">linkedin</a> 
-							<a href="https://github.com/Ali-Akbar-K" class="btn btn-white btn-outline-white py-3 px-4">My works</a></p>
+		            <h2>Backend &amp; Cloud Engineer</h2>
+		            <p class="hero-meta">Bengaluru, India • Product Development</p>
+		            <div class="hero-buttons">
+		              <a href="https://www.linkedin.com/in/ali-akbar-k-591725274/" class="btn btn-primary">LinkedIn</a>
+		              <a href="#project-section" class="btn btn-white btn-outline-white">My Work</a>
+		            </div>
 		            </div>
 		          </div>
 	        	</div>
@@ -200,13 +394,10 @@
 		</div>
     </section>
 
-
-
     <section class="ftco-about img ftco-section ftco-no-pb" id="about-section">
     	<div class="container">
 			<div class="row">
 				<div class="row d-flex align-items-stretch">
-				<!-- <div class="row d-flex"> -->
 					<div class="col-md-6 col-lg-5 d-flex">
 						<div class="img-about img d-flex align-items-stretch">
 							<div class="overlay">
@@ -216,47 +407,25 @@
 										<img src="images/about-me.png" class="img-fluid rounded b-shadow-a" alt="">
 									  </div>
 									</div>
-									<!-- Details next to profile image -->
 									<div class="col-sm-6 col-md-7">
 									  <div class="about-info">
 										<p><span class="title-s">Name: </span> <span>Ali Akbar K</span></p>
-										<p><span class="title-s">Job Role: </span> <span>Product Developer</span></p>
-										<p><span class="title-s">Experience: </span> <span>3 Months</span></p>
-										<p><span class="title-s">Address: </span> <span>Bengaluru, India</span></p>
+										<p><span class="title-s">Role: </span> <span>Associate Product Developer</span></p>
+										<p><span class="title-s">Experience: </span> <span>~1.5 years</span></p>
+										<p><span class="title-s">Location: </span> <span>Bengaluru, India</span></p>
 									  </div>
 									</div>
 								  </div>
 
 								<div class="skill-mf">
-									<p class="title-s">Skills</p>
-									<span>SQL</span> <span class="pull-right">95%</span>
-									<div class="progress">
-										<div class="progress-bar" role="progressbar" style="width: 95%;" aria-valuenow="95" aria-valuemin="0"
-											aria-valuemax="100"></div>
-									</div>
-									
-									<span>JAVA</span> <span class="pull-right">70%</span>
-									<div class="progress">
-										<div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0"
-											aria-valuemax="100"></div>
-									</div>
-									
-									<span>Web Development</span> <span class="pull-right">90%</span>
-									<div class="progress">
-										<div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0"
-											aria-valuemax="100"></div>
-									</div>
-									
-									<span>Statistical Analysis</span> <span class="pull-right">85%</span>
-									<div class="progress">
-										<div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0"
-											aria-valuemax="100"></div>
-									</div>
-									
-									<span>Embedded Electronics</span> <span class="pull-right">80%</span>
-									<div class="progress">
-										<div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0"
-											aria-valuemax="100"></div>
+									<p class="title-s">Core Stack</p>
+									<div class="tech-tags">
+										<span>Node.js</span>
+										<span>Java</span>
+										<span>Spring Boot</span>
+										<span>GCP</span>
+										<span>Kubernetes</span>
+										<span>Kafka</span>
 									</div>
 								</div>
 							</div>
@@ -266,32 +435,25 @@
 					<div class="col-md-6 col-lg-7 pl-lg-5 pb-5">
 						<div class="row justify-content-start pb-3">
 							<div class="col-md-12 heading-section ftco-animate">
-								
 								<h1 class="big">About</h1>
 								<h2 class="mb-4">About Me</h2>
-								
-								<p>Passionate Product Developer with a strong foundation in Electronics & Communication Engineering, specializing in innovative solutions and technology integration. Proficient in C/C++, Python, Java, SQL, and full-stack web development, with a deep understanding of system design and architecture. Eager to contribute technical expertise to cutting-edge projects and collaborate with professionals in the tech industry.
-
-With over 1 years of comprehensive experience in data science and analytics, I am proficient in data analysis, statistical analysis, hypothesis testing, customer behavior analysis, and machine learning. I have a proven track record of leading impactful projects, driving innovation, and providing mentorship to teams.</p>
+								<p>I am a backend and cloud-focused software engineer with ~1.5 years of production experience in enterprise integration, platform reliability, and API development. At EdgeVerve Systems (Infosys / Finacle division), I work on backend engineering, cloud operations, and service optimization across distributed systems.</p>
+								<p>My work spans Node.js, Java Spring Boot, GCP, Kubernetes, Kafka, Istio, and CI/CD workflows. I enjoy solving production issues, improving system performance, and building resilient platforms that support real business workflows.</p>
 								<ul class="about-info mt-4 px-md-0 px-2">
-									<li class="d-flex"><span>Profile:</span> <span>Data Science &amp; Analytics</span></li>
-									<!-- <li class="d-flex"><span>Domain:</span> <span>Retail, Ecommerce, BFSI &amp; Digital Marketing</span></li> -->
-									<li class="d-flex"><span>Education:</span> <span>Bachelor of Engineering</span></li>
-									<li class="d-flex"><span>Language:</span> <span>English, Hindi, Kannada, Telugu, Urdu</span></li>
-									<li class="d-flex"><span>Tools:</span> <span>Eclipse, VS Code, Microsoft Power BI, Blender,Canva, Arduino IDE  &amp; Jupiter </span></li>
-									<li class="d-flex"><span>Other Skills:</span> <span>java, HTML, CSS, JS, Node.js, React.js, SQL, Cloud, Arduino IDE, Excel, Git, JIRA, Dooker, Embedded C, Google Analytics &amp; SEO</span></li>
-									<li class="d-flex"><span>Interest:</span> <span>Traveling, Travel Photography, cooking</span></li>
-									
+									<li class="d-flex"><span>Profile:</span> <span>Backend / Cloud Engineering</span></li>
+									<li class="d-flex"><span>Experience:</span> <span>Associate Product Developer, EdgeVerve Systems</span></li>
+									<li class="d-flex"><span>Education:</span> <span>B.E. in Electronics &amp; Communication</span></li>
+									<li class="d-flex"><span>Focus:</span> <span>REST APIs, cloud services, system recovery, performance tuning</span></li>
+									<li class="d-flex"><span>Strengths:</span> <span>Problem solving, ownership, production support, automation</span></li>
 								</ul>
 							</div>
 						</div>
 
-
 						<div class="counter-wrap ftco-animate d-flex mt-md-3">
 							<div class="text">
 								<p class="mb-4">
-									<span class="number" data-number="10">0</span> <span>+</span>
-									<span>&nbsp; Projects completed</span>
+									<span class="number" data-number="9">0</span> <span>+</span>
+									<span>&nbsp; Impact-driven projects</span>
 								</p>
 								<p><a href="https://www.linkedin.com/in/ali-akbar-k-591725274/" class="btn btn-primary py-3 px-3">LinkedIn</a></p>
 							</div>
@@ -309,7 +471,7 @@ With over 1 years of comprehensive experience in data science and analytics, I a
           <div class="col-md-10 heading-section text-center ftco-animate">
           	<h1 class="big big-2">Resume</h1>
             <h2 class="mb-4">Resume</h2>
-            <p>Seasoned Product Developer with 1+ years of experience driving business strategies through data-driven insights. Proven expertise in data science, statistical analysis, machine learning algorithms and project management.</p>
+            <p>Backend and cloud engineer with 1.5 years of production experience delivering reliable APIs, cloud automation, and service performance improvements for enterprise systems.</p>
           </div>
         </div>
 
@@ -322,14 +484,14 @@ With over 1 years of comprehensive experience in data science and analytics, I a
 		<div class="row">
 				<div class="col-md-6">
 					<div class="resume-wrap ftco-animate">
-						<span class="date">2025-Present</span>
-						<h2>Product Developer</h2>
-						<span class="position">Infosys-EdgeVerve, Bengaluru</span>
-						<p class="mt-4">Infosys Financial Services is a division of Infosys, a global leader in digital services and consulting, that focuses on the financial services industry. 
+						<span class="date">2023 - Present</span>
+						<h2>Associate Product Developer</h2>
+						<span class="position">EdgeVerve Systems (Infosys / Finacle division), Bengaluru</span>
+						<p class="mt-4">Working in backend/cloud engineering for enterprise banking and digital transformation projects.
 							<ul>
-								<li>Performed Design and Programming; Resulted in ~100% growth.</li>
-            <li>Delivered multiple training and mentorship sessions on analytical skills.</li>
-            <li>Demonstrated a desire to learn and critical thinking in problem-solving.</li>
+								<li>Built and supported backend services using Node.js, Java Spring Boot, REST APIs, and cloud integrations.</li>
+            <li>Worked across GCP, Kubernetes, Istio, Kafka, Docker, Ansible, and CI/CD delivery pipelines.</li>
+            <li>Maintained production reliability, drove performance tuning, and delivered strong appraisal cycles with 100% goal achievement.</li>
 							</ul>
 						</p>
 					</div>
@@ -338,57 +500,20 @@ With over 1 years of comprehensive experience in data science and analytics, I a
 
 				<div class="col-md-6">
 					<div class="resume-wrap ftco-animate">
-						<span class="date">2024(Dec–Feb)</span>
+						<span class="date">2024</span>
 						<h2>Technical Support Engineer</h2>
-						<span class="position">!BETSOL Software India Pvt, Bengaluru</span>
-						<p class="mt-4">BETSOL is a cloud-first digital transformation and data management company offering products and IT services to enterprises in over 40 countries. 
+						<span class="position">BETSOL Software India Pvt. Ltd., Bengaluru</span>
+						<p class="mt-4">Supported enterprise software operations and troubleshooting across product workflows and customer issues.
 							<ul>
-								 <li>Performed troubleshooting and documenting; Resulted in ~100% growth.</li>
-            <li>Delivered mentorship on tools like Incident Ticketing, Salesforce and other tools to document data.</li>
-            <li>Demonstrated learning attitude, critical thinking and troubleshooting technics.</li>
+								<li>Resolved technical issues and documented solutions to improve operational efficiency.</li>
+            <li>Worked with incident handling, tooling, and cross-functional support processes.</li>
+            <li>Strengthened root-cause analysis, communication, and problem-solving under production conditions.</li>
 							</ul>
 						</p>
 					</div>
 
 				</div>
-
-<div class="col-md-6">
-					<div class="resume-wrap ftco-animate">
-						<span class="date">2023 (Aug–Sep)</span>
-						<h2>Student Intern</h2>
-						<span class="position">Nano Robotics Embed Technologies, Bengaluru</span>
-						<p class="mt-4">Nano Robotics Embed Technologies.an engineering project consultancy and training firm offering courses and projects in areas like Arduino, Artificial Intelligence, Embedded Systems, and Internet of Things. 
-							<ul>
-								 <li>Project: Warehouse Monitoring System using IoT.</li>
-            <li>Developed time series models (92% performance).</li>
-            <li>Focused on learning and hands-on applications.</li>
-							</ul>
-						</p>
-					</div>
-
-				</div>
-
-<div class="col-md-6">
-					<div class="resume-wrap ftco-animate">
-						<span class="date">2023 (Mar–Apr)</span>
-						<h2>Student Intern</h2>
-						<span class="position">Indian Tech-Keys, Bengaluru</span>
-						<p class="mt-4">Indian Tech-Keys is a hardware and software solutions for the embedded real-time systems market. Some of our services include integrated hardware and software.
-							<ul>
-							          <li>Worked on Embedded System Design and IoT Programming.</li>
-            <li>Used tools like Arduino IDE, Embedded C, and Python.</li>
-            <li>Demonstrated eagerness to learn and problem-solving.</li>
-							</ul>
-						</p>
-					</div>
-
-				</div>
-
-			
 			</div>
-
-
-
 
 		<br>
 		<br>
@@ -402,33 +527,22 @@ With over 1 years of comprehensive experience in data science and analytics, I a
 			<div class="row">
     			<div class="col-md-6">
     				<div class="resume-wrap ftco-animate">
-    					<span class="date">2023-2024</span>
+    					<span class="date">2019 - 2023</span>
     					<h2>Bachelor of Engineering</h2>
-    					<span class="position">Vijaya Vittala Institute of Technology,(VTU) University, Bengaluru</span>
-						<!-- <span class="position"> </span> -->
-    					<p class="mt-4">Grade: 8.21 CGPA</p>
+    					<span class="position">Vijaya Vittala Institute of Technology, VTU, Bengaluru</span>
+    					<p class="mt-4">CGPA: 8.21</p>
     				</div>
     			</div>
 
     			<div class="col-md-6">
     				<div class="resume-wrap ftco-animate">
-    					<span class="date">2018-2020</span>
-    					<h2>PUC-(PCMB)</h2>
-    					<span class="position">SES vidya Manidr PU College,</span>
-						<span class="position">Department of Pre University, Sandur</span>
+    					<span class="date">2018 - 2020</span>
+    					<h2>PUC (PCMB)</h2>
+    					<span class="position">SES Vidya Mandir PU College, Sandur</span>
     					<p class="mt-4">Grade: 81.33%</p>
     				</div>
-				</div>
+			</div>
     		</div>
-			<!-- <div class="col-md-6">
-				<div class="resume-wrap ftco-animate">
-					<span class="date">2007-2018</span>
-					<h2>PUC-(PCMB)</h2>
-					<span class="position">Shri Shaileshwara Vidya Kendra,</span>
-					<span class="position">Karnataka Secondary Education Examination Board, Sandur</span>
-					<p class="mt-4">Grade: 90.08%</p>
-				</div>
-			</div> -->
 		</div>
 
     		<div class="row justify-content-center mt-5">
@@ -439,102 +553,161 @@ With over 1 years of comprehensive experience in data science and analytics, I a
     	</div>
     </section>
 
-   
+    <section class="ftco-section" id="skills-section">
+      <div class="container">
+        <div class="row justify-content-center mb-5 pb-5">
+          <div class="col-md-7 heading-section text-center ftco-animate">
+            <h1 class="big big-2">Skills</h1>
+            <h2 class="mb-4">Technical Skills</h2>
+          </div>
+        </div>
+
+        <div class="skill-grid">
+          <div class="skill-card ftco-animate">
+            <h3>Backend</h3>
+            <div class="tech-tags">
+              <span>Node.js</span>
+              <span>Java</span>
+              <span>Spring Boot</span>
+              <span>REST APIs</span>
+            </div>
+          </div>
+
+          <div class="skill-card ftco-animate">
+            <h3>Cloud &amp; DevOps</h3>
+            <div class="tech-tags">
+              <span>GCP</span>
+              <span>Kubernetes</span>
+              <span>Istio</span>
+              <span>Ansible</span>
+              <span>CI/CD</span>
+              <span>Docker</span>
+            </div>
+          </div>
+
+          <div class="skill-card ftco-animate">
+            <h3>Data &amp; Messaging</h3>
+            <div class="tech-tags">
+              <span>Kafka</span>
+              <span>RabbitMQ</span>
+              <span>JSON</span>
+              <span>Regex</span>
+            </div>
+          </div>
+
+          <div class="skill-card ftco-animate">
+            <h3>Other</h3>
+            <div class="tech-tags">
+              <span>Anthropic API</span>
+              <span>AI/LLM</span>
+              <span>Blockchain</span>
+              <span>BSV/BRC-100</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <section class="ftco-section" id="project-section">
       <div class="container">
         <div class="row justify-content-center mb-5 pb-5">
           <div class="col-md-7 heading-section text-center ftco-animate">
             <h1 class="big big-2">Projects</h1>
-            <h2 class="mb-4">Projects</h2>
-            <p>Below are the sample projects on Embedded-System, Java, Web-developement, Python and IOT </p>
+            <h2 class="mb-4">Featured Projects</h2>
+            <p>Selected work across enterprise backend systems, cloud reliability, automation, and practical product builds.</p>
           </div>
         </div>
+
         <div class="row d-flex">
-			<!-- <div class="col-md-4 d-flex ftco-animate">
-          	<div class="blog-entry justify-content-end">
-              <a href="https://sulthaneazamkolkar.github.io/SulthanEAzamK/" class="block-20 zoom-effect" target="_blank" style="background-image: url('images/image.png');">
-              </a>
+          <div class="col-md-6 col-lg-4 d-flex ftco-animate">
+            <div class="blog-entry justify-content-end">
+              <a class="block-20 zoom-effect" href="https://github.com/Ali-Akbar-K" target="_blank" style="background: linear-gradient(135deg, #ffbd39, #e8eef6);"></a>
               <div class="text mt-3 float-right d-block">
-
-                <h3 class="heading"><a href="https://sulthaneazamkolkar.github.io/SulthanEAzamK/" target="_blank" >SULTHAN E AZAM K 3D PORTFOLIO WEBSITE </a></h3>
-                <p>BUILT 3D A PORTFOLIO FOR MY BROTHER</p>
-					
-              </div>
-            </div>
-          </div> -->
-		  
-			<div class="col-md-4 d-flex ftco-animate">
-          	<div class="blog-entry justify-content-end">
-              <a href="https://sulthaneazamkolkar.github.io/SulthanEAzamK/" class="block-20 zoom-effect" target="_blank" style="background-image: url('images/image.png');">
-              </a>
-              <div class="text mt-3 float-right d-block">
-
-                <h3 class="heading"><a href="https://sulthaneazamkolkar.github.io/SulthanEAzamK/" target="_blank" >SULTHAN E AZAM K 3D PORTFOLIO WEBSITE </a></h3>
-                <p>BUILT 3D A PORTFOLIO FOR MY BROTHER</p>
-					
-              </div>
-            </div>
-          </div>
-		  <div class="col-md-4 d-flex ftco-animate">
-          	<div class="blog-entry">
-              <a href="https://github.com/Ali-Akbar-K/PERSONAL-AND-PROFESSIONAL-PORTFOLIO" class="block-20 zoom-effect" style="background-image: url('images/AliPortfolio.png');">
-              </a>
-              <div class="text mt-3 float-right d-block">
-                <h3 class="heading"><a href="https://github.com/Ali-Akbar-K/PERSONAL-AND-PROFESSIONAL-PORTFOLIO">PERSONAL AND PROFESSIONAL PORTFOLIO</a></h3>
-                <p>PERSONAL AND PROFESSIONAL PORTFOLIO.</p>
+                <h3 class="heading"><a href="https://github.com/Ali-Akbar-K" target="_blank">PNB AsyncAPI / SyncAPI POC</a></h3>
+                <p>Designed and implemented a sync/async API proof of concept for banking client integration, enabling clear API flow evaluation and delivery alignment.</p>
               </div>
             </div>
           </div>
 
-          <div class="col-md-4 d-flex ftco-animate">
-          	<div class="blog-entry justify-content-end">
-              <a href="https://github.com/Ali-Akbar-K/AUTOMATIC-TRAFFIC-LIGHT-CONTROLLER-FOR-EMERGENCY-VEHICLE" class="block-20 zoom-effect" target="_blank" style="background-image: url('images/proj_1.jpg');">
-              </a>
+          <div class="col-md-6 col-lg-4 d-flex ftco-animate">
+            <div class="blog-entry justify-content-end">
+              <a class="block-20 zoom-effect" href="https://github.com/Ali-Akbar-K" target="_blank" style="background: linear-gradient(135deg, #2e7dff, #dfe9ff);"></a>
               <div class="text mt-3 float-right d-block">
-
-                <h3 class="heading"><a href="https://github.com/Ali-Akbar-K/AUTOMATIC-TRAFFIC-LIGHT-CONTROLLER-FOR-EMERGENCY-VEHICLE" target="_blank" >AUTOMATIC TRAFFIC LIGHT CONTROLLER FOR EMERGENCY VEHICLE </a></h3>
-                <p>AUTOMATIC TRAFFIC LIGHT CONTROLLER FOR EMERGENCY VEHICLE .</p>
-					
+                <h3 class="heading"><a href="https://github.com/Ali-Akbar-K" target="_blank">Kubernetes Namespace Recovery</a></h3>
+                <p>Diagnosed and resolved namespace-level failures in production, restoring service availability and minimizing business impact.</p>
               </div>
             </div>
           </div>
 
-          <div class="col-md-4 d-flex ftco-animate">
-          	<div class="blog-entry justify-content-end">
-              <a href="https://aliakbark001.github.io/Visually-Impaired-Assistance/" class="block-20 zoom-effect" target="_blank" style="background-image: url('images/proj_2.jpg');">
-              </a>
+          <div class="col-md-6 col-lg-4 d-flex ftco-animate">
+            <div class="blog-entry justify-content-end">
+              <a class="block-20 zoom-effect" href="https://github.com/Ali-Akbar-K" target="_blank" style="background: linear-gradient(135deg, #252d3a, #9cc2ff);"></a>
               <div class="text mt-3 float-right d-block">
-
-<!--                 <h3 class="heading"><a href="https://github.com/AliAkbarK001/Visually-Impaired-Assistance" target="_blank">EMPOWERING BLIND NAVIGATION USING IOT AND GPS TRACKING SYSTEM </a></h3> -->
-				  <h3>EMPOWERING BLIND NAVIGATION USING IOT AND GPS TRACKING SYSTEM</h3>
-                <p>EMPOWERING BLIND NAVIGATION USING IOT AND GPS TRACKING SYSTEM .</p>	
+                <h3 class="heading"><a href="https://github.com/Ali-Akbar-K" target="_blank">Istio Performance Tuning</a></h3>
+                <p>Improved throughput by 21%+ across 11 configuration sets by tuning service mesh behavior and traffic flow.</p>
               </div>
             </div>
           </div>
-          
-		  <div class="col-md-4 d-flex ftco-animate">
-				<div class="blog-entry justify-content-end">
-				<a href="https://github.com/Ali-Akbar-K/WAREHOUSE-MONITORING-SYSTEM-USING-IOT" class="block-20 zoom-effect" style="background-image: url('images/proj_4.jpg');">
-				</a>
-				<div class="text mt-3 float-right d-block">
-  
-				  <h3 class="heading"><a href="https://github.com/Ali-Akbar-K/WAREHOUSE-MONITORING-SYSTEM-USING-IOT">WAREHOUSE MONITORING SYSTEM USING IOT</a></h3>
-				  <p>WAREHOUSE MONITORING SYSTEM USING IOT.</p>
-				</div>
-			  </div>
-			</div>
-				<div class="col-md-4 d-flex ftco-animate">
-				<div class="blog-entry justify-content-end">
-				<a href="https://github.com/Ali-Akbar-K/Developed-A-SMART-REMORT-CONTROLLER-APP-FROM-MIT-INVERTER" class="block-20 zoom-effect" style="background-image: url('images/proj_5.jpg');">
-				</a>
-				<div class="text mt-3 float-right d-block">
-  
-				  <h3 class="heading"><a href="https://github.com/Ali-Akbar-K/Developed-A-SMART-REMORT-CONTROLLER-APP-FROM-MIT-INVERTER" target="_blank">DEVELOPED A SMART REMOTE CONTROLLER APP FROM MIT-INVERTER</a></h3>
-				  <p>DEVELOPED A SMART REMOTE CONTROLLER APP FROM MIT-INVERTER .</p>
-				</div>
-			  </div>
-			</div>
+
+          <div class="col-md-6 col-lg-4 d-flex ftco-animate">
+            <div class="blog-entry justify-content-end">
+              <a class="block-20 zoom-effect" href="https://github.com/Ali-Akbar-K" target="_blank" style="background: linear-gradient(135deg, #8d63ff, #ffd2d2);"></a>
+              <div class="text mt-3 float-right d-block">
+                <h3 class="heading"><a href="https://github.com/Ali-Akbar-K" target="_blank">GCP Outage Recovery</a></h3>
+                <p>Led recovery efforts during a production outage on Google Cloud Platform, helping restore services and stabilize operations.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 d-flex ftco-animate">
+            <div class="blog-entry justify-content-end">
+              <a class="block-20 zoom-effect" href="https://github.com/Ali-Akbar-K" target="_blank" style="background: linear-gradient(135deg, #2dbb9d, #dffaf2);"></a>
+              <div class="text mt-3 float-right d-block">
+                <h3 class="heading"><a href="https://github.com/Ali-Akbar-K" target="_blank">AI Automation Chatbots</a></h3>
+                <p>Developed two internal workflow automation chatbots using the Anthropic Claude API to reduce manual effort and streamline work.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 d-flex ftco-animate">
+            <div class="blog-entry justify-content-end">
+              <a class="block-20 zoom-effect" href="https://github.com/Ali-Akbar-K" target="_blank" style="background: linear-gradient(135deg, #f05a28, #ffdca3);"></a>
+              <div class="text mt-3 float-right d-block">
+                <h3 class="heading"><a href="https://github.com/Ali-Akbar-K" target="_blank">Kafka Performance &amp; Tooling</a></h3>
+                <p>Resolved consumer throughput bottlenecks, built UI tooling, and ran performance validation using kafka-consumer-perf-test.sh in Kubernetes.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 d-flex ftco-animate">
+            <div class="blog-entry justify-content-end">
+              <a class="block-20 zoom-effect" href="https://github.com/Ali-Akbar-K" target="_blank" style="background: linear-gradient(135deg, #4a90e2, #f0f7ff);"></a>
+              <div class="text mt-3 float-right d-block">
+                <h3 class="heading"><a href="https://github.com/Ali-Akbar-K" target="_blank">PDF-to-JSON Extraction Pipeline</a></h3>
+                <p>Built a Node.js rule-based document parsing pipeline that converted invoices and PDFs into structured JSON using regex and labeled rules.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 d-flex ftco-animate">
+            <div class="blog-entry justify-content-end">
+              <a class="block-20 zoom-effect" href="https://github.com/Ali-Akbar-K/dsa" target="_blank" style="background: linear-gradient(135deg, #0d1b2a, #f4d35e);"></a>
+              <div class="text mt-3 float-right d-block">
+                <h3 class="heading"><a href="https://github.com/Ali-Akbar-K/dsa" target="_blank">DSA Practice Repository</a></h3>
+                <p>Structured a 16-week roadmap across Java, Python, and JavaScript to improve problem-solving discipline and coding consistency.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 d-flex ftco-animate">
+            <div class="blog-entry justify-content-end">
+              <a class="block-20 zoom-effect" href="https://github.com/Ali-Akbar-K" target="_blank" style="background: linear-gradient(135deg, #3a506b, #c9f0ff);"></a>
+              <div class="text mt-3 float-right d-block">
+                <h3 class="heading"><a href="https://github.com/Ali-Akbar-K" target="_blank">Agentic Pay Marketplace</a></h3>
+                <p>Built a hackathon project for a distributed task marketplace with autonomous buyer/seller agents on BSV blockchain using @bsv/sdk and BRC-100 identity standards.</p>
+              </div>
+            </div>
+          </div>
         </div>
 	  </div>
     </section>
