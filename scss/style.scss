@@ -1986,3 +1986,35 @@ textarea.form-control {
     stroke-dashoffset: -136px;
   }
 }
+
+// ============================================================
+// Responsive fixes - safe on all devices (phones to ultrawide)
+// ============================================================
+
+// Never let content push past the screen edge.
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+// Cap the giant background headings on wide / 4K / ultrawide monitors.
+@media (min-width: 2200px) {
+  .heading-section h1.big {
+    font-size: 160px;
+  }
+}
+
+// Use the space better on very large displays.
+@media (min-width: 2300px) {
+  .container {
+    max-width: 1560px;
+  }
+  .ftco-navbar-light .container {
+    width: 1560px;
+    max-width: 1560px;
+  }
+  .owl-carousel.home-slider .slider-item .slider-text .one-forth {
+    width: 1560px;
+  }
+}
