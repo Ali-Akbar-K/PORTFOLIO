@@ -150,6 +150,7 @@ html[data-theme="light"] .ftco-counter .block-18{background:#fff;border:1px soli
 html[data-theme="light"] .ftco-counter .block-18 .text span{color:#6c757d;}
 html[data-theme="light"] .ftco-counter .block-18 .text strong.number{color:#bb8500;}
 html[data-theme="light"] .ftco-hireme{background-image:url(images/bg_2.png) !important;background-size:cover;background-position:center;background-repeat:no-repeat;}
+html[data-theme="light"] .home-slider .one-third.img{background-image:url(images/bg_22.png) !important;background-size:cover;background-position:center;background-repeat:no-repeat;}
 html[data-theme="light"] .ftco-hireme h2 span{color:#ffbd39;}
 html[data-theme="light"] .contact-section .contact-info p{color:#6c757d;}
 html[data-theme="light"] .contact-section .contact-info p a{color:#111;}
@@ -183,14 +184,34 @@ html[data-theme="light"] .ftco-hireme .overlay{background:rgba(0,0,0,.6);}
 .ptf-theme-btn:hover{background:rgba(255,189,57,.15);color:#ffd76b;}
 .ptf-theme-btn svg{width:18px;height:18px;}
 @media(max-width:991.98px){
-  .ptf-theme-btn{position:absolute;right:76px;top:13px;margin-left:0;}
+  .ptf-theme-btn{position:absolute;right:110px;top:12px;margin-left:0;}
 }
 html[data-theme="light"] .ptf-theme-btn{border-color:#ddd;color:#b8860b;}
 html[data-theme="light"] .ptf-theme-btn:hover{background:rgba(184,134,11,.12);color:#a37400;}
 
+/* Mobile optimizations */
+html,body{overflow-x:hidden;}
+.tech-stack img{max-width:100%;}
+@media(max-width:575.98px){
+  .ptf-theme-btn{right:105px;top:10px;}
+  .tech-stack img{height:22px;}
+  .tech-wrap{padding:0 8px;}
+  .heading-section h2{font-size:22px;}
+  .heading-section h1.big{font-size:64px;}
+  .ftco-section{padding:4em 0;}
+  .navbar-brand{font-size:17px;}
+  .btn{padding-left:24px !important;padding-right:24px !important;}
+  .ftco-counter .block-18{margin-bottom:15px;}
+}
+@media(min-width:576px) and (max-width:767.98px){
+  .tech-stack img{height:24px;}
+}
+@media(max-width:991.98px){
+  .resume-wrap,.about-wrap,.blog-entry{max-width:100%;}
+  .about-info .d-flex{flex-wrap:wrap;}
+}
 
 </style>
-
 
   </head>
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
@@ -225,7 +246,7 @@ html[data-theme="light"] .ptf-theme-btn:hover{background:rgba(184,134,11,.12);co
 	      	<div class="overlay"></div>
 	         <div class="container">
 	          <div class="row d-md-flex no-gutters slider-text align-items-end justify-content-end" data-scrollax-parent="true">
-	          	<div class="one-third js-fullheight order-md-last img" style="background-image:url(images/bg_1.png);">
+	          	<div class="one-third js-fullheight order-md-last img" style="background-image:url(images/bg_11.png);">
 	          	 <div class="overlay"></div>
 	          	</div>
 		          <div class="one-forth d-flex  align-items-center ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
@@ -376,7 +397,7 @@ With over 1 years of comprehensive experience in data science and analytics, I a
 									<!-- <li class="d-flex"><span>Domain:</span> <span>Retail, Ecommerce, BFSI &amp; Digital Marketing</span></li> -->
 									<li class="d-flex"><span>Education:</span> <span>Bachelor of Engineering</span></li>
 									<li class="d-flex"><span>Language:</span> <span>English, Hindi, Kannada, Telugu, Urdu</span></li>
-									<li class="d-flex"><span>Tools:</span> <span>Eclipse, VS Code, Microsoft Power BI, Blender,Canva, Arduino IDE  &amp; Jupiter </span></li>
+									<li class="d-flex"><span>Tools:</span> <span>Eclipse, VS Code, Microsoft Power BI, Grafana, Blender, Canva, Arduino IDE  &amp; Jupiter </span></li>
 									<li class="d-flex"><span>Other Skills:</span> <span>java, HTML, CSS, JS, Node.js, React.js, SQL, Cloud, Arduino IDE, Excel, Git, JIRA, Dooker, Embedded C, Google Analytics &amp; SEO</span></li>
 									<li class="d-flex"><span>Interest:</span> <span>Traveling, Travel Photography, cooking</span></li>
 									
@@ -718,6 +739,7 @@ With over 1 years of comprehensive experience in data science and analytics, I a
               <a href="https://www.cloudflare.com/"><img src="https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=Cloudflare&logoColor=white" alt="Cloudflare"></a>
               <a href="https://www.netlify.com/"><img src="https://img.shields.io/badge/netlify-%23000000.svg?style=for-the-badge&logo=netlify&logoColor=%2300C7B7" alt="Netlify"></a>
               <a href="https://www.jenkins.io/"><img src="https://img.shields.io/badge/jenkins-%232C5263.svg?style=for-the-badge&logo=jenkins&logoColor=white" alt="Jenkins"></a>
+              <a href="https://grafana.com/"><img src="https://img.shields.io/badge/grafana-%23F46800.svg?style=for-the-badge&logo=grafana&logoColor=white" alt="Grafana"></a>
               <a href="https://httpd.apache.org/"><img src="https://img.shields.io/badge/apache-%23D42029.svg?style=for-the-badge&logo=apache&logoColor=white" alt="Apache"></a>
               <a href="https://tomcat.apache.org/"><img src="https://img.shields.io/badge/apache%20tomcat-%23F8DC75.svg?style=for-the-badge&logo=apache-tomcat&logoColor=black" alt="Apache Tomcat"></a>
               <a href="https://maven.apache.org/"><img src="https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white" alt="Apache Maven"></a>
@@ -733,6 +755,16 @@ With over 1 years of comprehensive experience in data science and analytics, I a
               <a href="https://pandas.pydata.org/"><img src="https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas"></a>
               <a href="https://www.nvidia.com/"><img src="https://img.shields.io/badge/nVIDIA-%2376B900.svg?style=for-the-badge&logo=nVIDIA&logoColor=white" alt="nVIDIA"></a>
               <img src="https://img.shields.io/badge/OpenTelemetry-FFFFFF?&style=for-the-badge&logo=opentelemetry&logoColor=black" alt="OpenTelemetry">
+            </div>
+          </div>
+
+          <div class="tech-group">
+            <h3 class="tech-head">3D &amp; Design</h3>
+            <div class="tech-stack">
+              <a href="https://threejs.org/"><img src="https://img.shields.io/badge/ThreeJs-black?style=for-the-badge&logo=three.js&logoColor=white" alt="Three.js"></a>
+              <a href="https://www.blender.org/"><img src="https://img.shields.io/badge/blender-%23F5792A.svg?style=for-the-badge&logo=blender&logoColor=white" alt="Blender"></a>
+              <img src="https://img.shields.io/badge/GLTF-%23FFFFFF.svg?style=for-the-badge&logoColor=black" alt="GLTF">
+              <img src="https://img.shields.io/badge/.glb-%23888888.svg?style=for-the-badge&logoColor=black" alt=".glb">
             </div>
           </div>
 

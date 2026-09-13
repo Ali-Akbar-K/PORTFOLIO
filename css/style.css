@@ -8659,6 +8659,48 @@ h1, h2, h3, h4, h5,
     opacity: 0;
     background: #000000; }
 
+/* Keep the wide hero artwork intact on desktop and use the portrait crop on phones. */
+.owl-carousel.home-slider .slider-item .slider-text .hero-composite {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 750px;
+  z-index: 0;
+  background-image: url("../images/AliPortfolio.png");
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #000;
+}
+
+@media (min-width: 992px) {
+  .owl-carousel.home-slider .slider-item .slider-text .hero-composite ~ .one-forth {
+    display: none !important;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .owl-carousel.home-slider .slider-item .slider-text .hero-composite {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: 750px;
+    background-image: url("../images/bg_11.png") !important;
+    background-size: cover;
+    background-position: center center;
+  }
+
+  .owl-carousel.home-slider .slider-item .slider-text .hero-composite ~ .one-forth {
+    display: flex !important;
+  }
+
+  .owl-carousel.home-slider .slider-item .slider-text .hero-composite ~ .one-forth .text h1,
+  .owl-carousel.home-slider .slider-item .slider-text .hero-composite ~ .one-forth .text h2,
+  .owl-carousel.home-slider .slider-item .slider-text .hero-composite ~ .one-forth .text #typing-animation {
+    color: #fff !important;
+  }
+}
+
 .slider-text h1 {
   font-size: 48px;
   color: #fff;

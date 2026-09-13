@@ -55,36 +55,35 @@
   html[data-theme="dark"] .cat .ico,
   html[data-theme="dark"] .cert-issuer-row img{background:#111;}
 
-  /* ===== Top bar ===== */
-  header{
+  /* ===== Top nav (like index.html) ===== */
+  .topnav{
     position:sticky;top:0;z-index:50;
     background:var(--header-bg);color:var(--header-text);
-    padding:0 32px;height:60px;
-    display:flex;align-items:center;justify-content:space-between;
-    box-shadow:0 1px 3px rgba(0,0,0,.1);
     transition:background .3s,color .3s;
+    box-shadow:0 1px 3px rgba(0,0,0,.1);
   }
-  .brand{display:flex;align-items:center;gap:12px;}
-  .brand .logo{
-    width:38px;height:38px;border-radius:10px;
-    background:linear-gradient(135deg,#ffd76b,#ffbd39);
-    color:#000;
-    display:flex;align-items:center;justify-content:center;
-    font-size:18px;font-weight:800;overflow:hidden;flex-shrink:0;
+  .topnav-inner{
+    max-width:1300px;margin:0 auto;padding:0 32px;height:60px;
+    display:flex;align-items:center;gap:24px;
   }
-  .brand .logo img{width:100%;height:100%;object-fit:cover;}
-  .brand-avatar{
-    width:38px;height:38px;border-radius:50%;
-    object-fit:cover;border:2px solid var(--blue);flex-shrink:0;
-    box-shadow:0 2px 6px rgba(0,0,0,.2);
+  .topnav .brand-link{
+    color:var(--header-text);text-decoration:none;
+    font-size:20px;font-weight:700;letter-spacing:.5px;
+    white-space:nowrap;transition:color .2s;
   }
-  .brand .name{font-size:16px;font-weight:700;}
-  .brand .name small{display:block;font-size:11px;font-weight:400;color:#94a3b8;}
-  .header-right{display:flex;align-items:center;gap:14px;}
+  .topnav .brand-link:hover{color:var(--blue);}
+  .nav-links{display:flex;align-items:center;gap:4px;margin-left:auto;}
+  .nav-links a{
+    color:#cbd5e1;text-decoration:none;font-size:14px;font-weight:600;
+    padding:6px 12px;border-radius:8px;transition:all .2s;
+  }
+  .nav-links a:hover{color:#fff;background:rgba(255,255,255,.06);}
+  .nav-links a.active{color:var(--blue);}
+  .nav-right{display:flex;align-items:center;gap:14px;}
   .count-pill{
     background:#1e293b;border:1px solid #334155;
     color:#cbd5e1;font-size:13px;font-weight:600;
-    padding:6px 14px;border-radius:20px;
+    padding:6px 14px;border-radius:20px;white-space:nowrap;
   }
   .count-pill b{color:#fff;}
   .theme-toggle{
@@ -92,10 +91,27 @@
     background:#1e293b;border:1px solid #334155;
     color:#e2e8f0;cursor:pointer;
     display:flex;align-items:center;justify-content:center;
-    transition:background .2s,transform .2s;
+    transition:background .2s,transform .2s;flex-shrink:0;
   }
   .theme-toggle:hover{background:#334155;transform:rotate(20deg);}
   .theme-toggle svg{width:20px;height:20px;}
+  @media(max-width:900px){
+    .topnav-inner{flex-wrap:wrap;height:auto;padding:12px 16px;gap:10px;}
+    .nav-links{margin-left:0;flex-wrap:wrap;}
+    .nav-right{margin-left:auto;}
+  }
+  @media(max-width:560px){
+    .nav-links a{padding:5px 9px;font-size:13px;}
+    .count-pill{display:none;}
+  }
+
+  /* ===== Footer ===== */
+  .site-footer{
+    background:var(--header-bg);color:#94a3b8;
+    padding:28px 32px;text-align:center;font-size:14px;
+  }
+  .site-footer a{color:var(--blue);text-decoration:none;}
+  .site-footer a:hover{text-decoration:underline;}
 
   /* ===== Layout ===== */
   .layout{
@@ -133,7 +149,7 @@
     font-size:13px;font-weight:800;color:var(--muted);
     background:var(--chip);border-radius:20px;padding:2px 10px;
   }
-  .cat.active .cat-count{background:var(--active-count);color:var(--blue);}
+  .cat.active .cat-count{background:var(--active-count);color:#000;}
 
   /* ===== Main ===== */
   .main h1{font-size:22px;font-weight:800;margin-bottom:4px;}
@@ -247,20 +263,24 @@
 </head>
 <body>
 
-<header>
-  <a href="https://ali-akbar-k.github.io/PORTFOLIO/" class="brand" style="text-decoration:none;color:inherit;">
-    <div class="logo">AK</div>
-    <img class="brand-avatar" src="https://github.com/Ali-Akbar-K/PORTFOLIO/blob/main/images/Alifivacon.ico.png?raw=true" alt="Ali Akbar K">
-    <div class="name">Ali Akbar K
-      <small>Licenses &amp; Certifications</small>
+<header class="topnav">
+  <div class="topnav-inner">
+    <a class="brand-link" href="index.html">Ali Akbar K</a>
+    <nav class="nav-links">
+      <a href="index.html#home-section">Home</a>
+      <a href="index.html#about-section">About</a>
+      <a href="index.html#resume-section">Resume</a>
+      <a href="index.html#project-section">Projects</a>
+      <a href="certifications.html" class="active">Certificates</a>
+      <a href="index.html#contact-section">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <div class="count-pill"><b id="totalCount"></b> certificates</div>
+      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
+        <svg id="iconMoon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        <svg id="iconSun" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0-5a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0V3a1 1 0 0 1 1-1zm0 16a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1zM5.64 5.64a1 1 0 0 1 1.42 0l1.41 1.41a1 1 0 0 1-1.41 1.42L5.64 7.06a1 1 0 0 1 0-1.42zm12.72 0a1 1 0 0 1 0 1.42l-1.41 1.41a1 1 0 1 1-1.42-1.41l1.41-1.42a1 1 0 0 1 1.42 0zM12 20a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1zm8-8a1 1 0 0 1-1 1h-2a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1zm-14 1H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2zm14.36 8.36a1 1 0 0 1-1.42 0l-1.41-1.41a1 1 0 1 1 1.41-1.42l1.42 1.42a1 1 0 0 1 0 1.41zm-12.72 0a1 1 0 0 1 0-1.42l1.41-1.41a1 1 0 1 1 1.42 1.41l-1.41 1.42a1 1 0 0 1-1.42 0z"/></svg>
+      </button>
     </div>
-  </a>
-  <div class="header-right">
-    <div class="count-pill"><b id="totalCount"></b> certificates</div>
-    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
-      <svg id="iconMoon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
-      <svg id="iconSun" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0-5a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0V3a1 1 0 0 1 1-1zm0 16a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1zM5.64 5.64a1 1 0 0 1 1.42 0l1.41 1.41a1 1 0 0 1-1.41 1.42L5.64 7.06a1 1 0 0 1 0-1.42zm12.72 0a1 1 0 0 1 0 1.42l-1.41 1.41a1 1 0 1 1-1.42-1.41l1.41-1.42a1 1 0 0 1 1.42 0zM12 20a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1zm8-8a1 1 0 0 1-1 1h-2a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1zm-14 1H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2zm14.36 8.36a1 1 0 0 1-1.42 0l-1.41-1.41a1 1 0 1 1 1.41-1.42l1.42 1.42a1 1 0 0 1 0 1.41zm-12.72 0a1 1 0 0 1 0-1.42l1.41-1.41a1 1 0 1 1 1.42 1.41l-1.41 1.42a1 1 0 0 1-1.42 0z"/></svg>
-    </button>
   </div>
 </header>
 
@@ -289,6 +309,12 @@
   </main>
 
 </div>
+
+<footer class="site-footer">
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved |
+  This template is made with <span style="color:#ffbd39">&hearts;</span> by
+  <a href="https://www.instagram.com/ali_akbar.k_?igsh=MXJmajNtam9oeDB5Mg==" target="_blank">Ali-Akbar-K</a>
+</footer>
 
 <!-- Modal -->
 <div class="modal" id="modal">
