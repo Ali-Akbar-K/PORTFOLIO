@@ -109,6 +109,73 @@
   transform: scale(1.1);
 }
 
+/* Light theme */
+html[data-theme="light"] body{background:#f4f4f4;color:#6c757d;}
+html[data-theme="light"] h1,
+html[data-theme="light"] h2,
+html[data-theme="light"] h3,
+html[data-theme="light"] h4,
+html[data-theme="light"] h5{color:#111;}
+html[data-theme="light"] .heading-section h1.big{color:rgba(0,0,0,.08);}
+html[data-theme="light"] .resume-wrap{background:rgba(0,0,0,.05);}
+html[data-theme="light"] .contact-section .box{border:1px solid #e5e5e5;}
+html[data-theme="light"] .contact-section .box .icon{background:rgba(0,0,0,.05);}
+html[data-theme="light"] .ftco-footer{background:#101010;}
+html[data-theme="light"] .about-info p,
+html[data-theme="light"] .about-info li{color:#6c757d;}
+html[data-theme="light"] .ftco-about ul.about-info li span:first-child{color:#111;}
+html[data-theme="light"] .about-info .title-s{color:#111;}
+html[data-theme="light"] .ftco-about .counter-wrap .text p{color:#6c757d;}
+html[data-theme="light"] .ftco-about .counter-wrap .text p span{color:#6c757d;}
+html[data-theme="light"] .ftco-about .counter-wrap .text p span.number{color:#bb8500;}
+html[data-theme="light"] .skill-mf span{color:#6c757d;}
+html[data-theme="light"] .skill-mf .pull-right{color:#bb8500;}
+html[data-theme="light"] .ftco-navbar-light.scrolled,
+html[data-theme="light"] .ftco-navbar-light{background:#fff !important;}
+html[data-theme="light"] .ftco-navbar-light .navbar-brand,
+html[data-theme="light"] .ftco-navbar-light.scrolled .navbar-brand,
+html[data-theme="light"] .ftco-navbar-light .nav-item > .nav-link,
+html[data-theme="light"] .ftco-navbar-light.scrolled .nav-item > .nav-link{color:#111 !important;}
+html[data-theme="light"] .ftco-navbar-light .nav-item.active > a,
+html[data-theme="light"] .ftco-navbar-light.scrolled .nav-item.active > a{color:#bb8500 !important;}
+html[data-theme="light"] .ftco-navbar-light .navbar-toggler,
+html[data-theme="light"] .ftco-navbar-light.scrolled .navbar-toggler{color:#111 !important;}
+html[data-theme="light"] .owl-carousel.home-slider .slider-item .overlay{background:rgba(255,255,255,.85);}
+html[data-theme="light"] .owl-carousel.home-slider .slider-item .slider-text h1,
+html[data-theme="light"] .owl-carousel.home-slider .slider-item .slider-text h2{color:#111 !important;}
+html[data-theme="light"] #typing-animation{color:#111 !important;}
+html[data-theme="light"] .btn.btn-white.btn-outline-white{background:transparent !important;border:1px solid #111 !important;color:#111 !important;}
+html[data-theme="light"] .btn.btn-white.btn-outline-white:hover{background:#ffbd39;border-color:#ffbd39;color:#111;}
+html[data-theme="light"] .ftco-counter .block-18{background:#fff;border:1px solid #e5e5e5;}
+html[data-theme="light"] .ftco-counter .block-18 .text span{color:#6c757d;}
+html[data-theme="light"] .ftco-counter .block-18 .text strong.number{color:#bb8500;}
+html[data-theme="light"] .ftco-hireme{background-image:url(images/bg_2.png) !important;background-size:cover;background-position:center;background-repeat:no-repeat;}
+html[data-theme="light"] .ftco-hireme h2 span{color:#ffbd39;}
+html[data-theme="light"] .contact-section .contact-info p{color:#6c757d;}
+html[data-theme="light"] .contact-section .contact-info p a{color:#111;}
+html[data-theme="light"] .counter-wrap .text p{color:#6c757d;}
+html[data-theme="light"] .blog-entry .text p{color:#6c757d;}
+html[data-theme="light"] .blog-entry .heading a{color:#111;}
+html[data-theme="light"] .section-counter,
+html[data-theme="light"] .ftco-hireme{position:relative;}
+html[data-theme="light"] .section-counter .overlay,
+html[data-theme="light"] .ftco-hireme .overlay{background:rgba(0,0,0,.6);}
+
+/* Theme toggle button */
+.ptf-theme-btn{
+  background:none;border:1px solid rgba(255,255,255,.2);color:#ffbd39;
+  width:38px;height:38px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  margin-left:12px;flex-shrink:0;transition:background .2s,color .2s;
+}
+.ptf-theme-btn:hover{background:rgba(255,189,57,.15);color:#ffd76b;}
+.ptf-theme-btn svg{width:18px;height:18px;}
+@media(max-width:991.98px){
+  .ptf-theme-btn{position:absolute;right:76px;top:13px;margin-left:0;}
+}
+html[data-theme="light"] .ptf-theme-btn{border-color:#ddd;color:#b8860b;}
+html[data-theme="light"] .ptf-theme-btn:hover{background:rgba(184,134,11,.12);color:#a37400;}
+
 
 </style>
 
@@ -123,6 +190,10 @@
 	      <button class="navbar-toggler js-fh5co-nav-toggle fh5co-nav-toggle" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="oi oi-menu"></span> Menu
 	      </button>
+	      <button class="ptf-theme-btn" id="ptfThemeToggle" onclick="togglePtfTheme()" title="Toggle theme" aria-label="Toggle theme">
+	        <svg id="ptfIconMoon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+	        <svg id="ptfIconSun" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0-5a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0V3a1 1 0 0 1 1-1zm0 16a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1zM5.64 5.64a1 1 0 0 1 1.42 0l1.41 1.41a1 1 0 0 1-1.41 1.42L5.64 7.06a1 1 0 0 1 0-1.42zm12.72 0a1 1 0 0 1 0 1.42l-1.41 1.41a1 1 0 1 1-1.42-1.41l1.41-1.42a1 1 0 0 1 1.42 0zM12 20a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1zm8-8a1 1 0 0 1-1 1h-2a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1zm-14 1H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2zm14.36 8.36a1 1 0 0 1-1.42 0l-1.41-1.41a1 1 0 1 1 1.41-1.42l1.42 1.42a1 1 0 0 1 0 1.41zm-12.72 0a1 1 0 0 1 0-1.42l1.41-1.41a1 1 0 1 1 1.42 1.41l-1.41 1.42a1 1 0 0 1-1.42 0z"/></svg>
+	      </button>
 
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav nav ml-auto">
@@ -130,6 +201,7 @@
 	          <li class="nav-item"><a href="#about-section" class="nav-link"><span>About</span></a></li>
 	          <li class="nav-item"><a href="#resume-section" class="nav-link"><span>Resume</span></a></li>
 	          <li class="nav-item"><a href="#project-section" class="nav-link"><span>Projects</span></a></li>
+	          <li class="nav-item"><a href="#certificates-section" class="nav-link"><span>Certificates</span></a></li>
 	          <li class="nav-item"><a href="#contact-section" class="nav-link"><span>Contact</span></a></li>
 	        </ul>
 	      </div>
@@ -215,7 +287,7 @@
 								<div class="row">
 									<div class="col-sm-6 col-md-5">
 									  <div class="about-img">
-										<img src="images/about-me.png" class="img-fluid rounded b-shadow-a" alt="">
+										<img src="images/Alifivacon.ico.png" class="img-fluid rounded b-shadow-a" alt="">
 									  </div>
 									</div>
 									<!-- Details next to profile image -->
@@ -258,6 +330,18 @@
 									<span>Embedded Electronics</span> <span class="pull-right">80%</span>
 									<div class="progress">
 										<div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0"
+											aria-valuemax="100"></div>
+									</div>
+									
+									<span>Node.js</span> <span class="pull-right">80%</span>
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0"
+											aria-valuemax="100"></div>
+									</div>
+									
+									<span>Python</span> <span class="pull-right">60%</span>
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0"
 											aria-valuemax="100"></div>
 									</div>
 								</div>
@@ -443,7 +527,7 @@ With over 1 years of comprehensive experience in data science and analytics, I a
 
    
 
-    <section class="ftco-section" id="project-section">
+<section class="ftco-section" id="project-section">
       <div class="container">
         <div class="row justify-content-center mb-5 pb-5">
           <div class="col-md-7 heading-section text-center ftco-animate">
@@ -542,7 +626,7 @@ With over 1 years of comprehensive experience in data science and analytics, I a
     </section>
 
 
-	 <section class="ftco-section" id="project-section">
+	 <section class="ftco-section" id="certificates-section">
       <div class="container">
         <div class="row justify-content-center mb-5 pb-5">
           <div class="col-md-7 heading-section text-center ftco-animate">
@@ -701,6 +785,30 @@ With over 1 years of comprehensive experience in data science and analytics, I a
 		</div>
 	  </footer>
 
+
+  <script>
+(function(){
+  var root = document.documentElement;
+  var saved = 'dark';
+  try{ saved = localStorage.getItem('site-theme') || 'dark'; }catch(e){}
+  root.setAttribute('data-theme', saved);
+  function icons(t){
+    var sun = document.getElementById('ptfIconSun');
+    var moon = document.getElementById('ptfIconMoon');
+    if(!sun || !moon) return;
+    sun.style.display = t === 'dark' ? 'block' : 'none';
+    moon.style.display = t === 'dark' ? 'none' : 'block';
+  }
+  icons(saved);
+  window.togglePtfTheme = function(){
+    var cur = root.getAttribute('data-theme') || 'dark';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try{ localStorage.setItem('site-theme', next); }catch(e){}
+    icons(next);
+  };
+})();
+</script>
 
   <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>

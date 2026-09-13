@@ -10,42 +10,42 @@
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   :root{
-    --blue:#2563eb;
-    --blue-dark:#1d4ed8;
-    --bg:#f1f5f9;
+    --blue:#bb8500;
+    --blue-dark:#9a6f00;
+    --bg:#f5f5f5;
     --card:#ffffff;
-    --border:#e2e8f0;
-    --text:#0f172a;
-    --muted:#64748b;
-    --faint:#94a3b8;
-    --hover:#f1f5f9;
-    --header-bg:#0f172a;
+    --border:#e5e5e5;
+    --text:#111111;
+    --muted:#6c757d;
+    --faint:#8a8f98;
+    --hover:#f0f0f0;
+    --header-bg:#000000;
     --header-text:#ffffff;
-    --preview-bg:#f8fafc;
-    --chip:#f1f5f9;
-    --hicchip:#94a3b8;
-    --active-bg:#eff6ff;
-    --active-count:#dbeafe;
-    --btn-hover:#eff6ff;
+    --preview-bg:#fafafa;
+    --chip:#f0f0f0;
+    --hicchip:#cccccc;
+    --active-bg:#fff8e6;
+    --active-count:#ffbd39;
+    --btn-hover:#fff3d6;
   }
   [data-theme="dark"]{
-    --blue:#3b82f6;
-    --blue-dark:#2563eb;
-    --bg:#0b1120;
-    --card:#111a2e;
-    --border:#1f2b47;
-    --text:#e2e8f0;
-    --muted:#94a3b8;
-    --faint:#64748b;
-    --hover:#16223b;
-    --header-bg:#05090f;
-    --header-text:#e2e8f0;
-    --preview-bg:#0f172a;
-    --chip:#1e293b;
-    --hicchip:#334155;
-    --active-bg:#1e3a5f;
-    --active-count:#1e3a5f;
-    --btn-hover:#16223b;
+    --blue:#ffbd39;
+    --blue-dark:#e6a817;
+    --bg:#0a0a0a;
+    --card:#161616;
+    --border:#2a2a2a;
+    --text:#ffffff;
+    --muted:#999999;
+    --faint:#8a94a6;
+    --hover:#1f1f1f;
+    --header-bg:#000000;
+    --header-text:#ffffff;
+    --preview-bg:#121212;
+    --chip:#222222;
+    --hicchip:#3a3a3a;
+    --active-bg:#1a1a1a;
+    --active-count:#ffbd39;
+    --btn-hover:#1f1f1f;
   }
   body{
     font-family:'Inter',-apple-system,'Segoe UI',Roboto,sans-serif;
@@ -53,7 +53,7 @@
     transition:background .3s,color .3s;
   }
   html[data-theme="dark"] .cat .ico,
-  html[data-theme="dark"] .cert-issuer-row img{background:#0f172a;}
+  html[data-theme="dark"] .cert-issuer-row img{background:#111;}
 
   /* ===== Top bar ===== */
   header{
@@ -67,7 +67,8 @@
   .brand{display:flex;align-items:center;gap:12px;}
   .brand .logo{
     width:38px;height:38px;border-radius:10px;
-    background:linear-gradient(135deg,#60a5fa,#2563eb);
+    background:linear-gradient(135deg,#ffd76b,#ffbd39);
+    color:#000;
     display:flex;align-items:center;justify-content:center;
     font-size:18px;font-weight:800;overflow:hidden;flex-shrink:0;
   }
@@ -129,7 +130,7 @@
   }
   .cat .cat-name{flex:1;font-size:14px;font-weight:600;}
   .cat .cat-count{
-    font-size:12px;font-weight:700;color:var(--faint);
+    font-size:13px;font-weight:800;color:var(--muted);
     background:var(--chip);border-radius:20px;padding:2px 10px;
   }
   .cat.active .cat-count{background:var(--active-count);color:var(--blue);}
@@ -185,7 +186,7 @@
     position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
     background:var(--blue);color:#fff;font-size:12px;font-weight:600;
     padding:6px 14px;border-radius:20px;opacity:0;transition:opacity .2s;
-    box-shadow:0 4px 10px rgba(37,99,235,.3);
+    box-shadow:0 4px 10px rgba(255,189,57,.3);
   }
   .cert:hover .open-hint{opacity:1;}
 
@@ -213,7 +214,7 @@
   }
   .modal.open{display:flex;}
   .modal-card{
-    background:#fff;border-radius:16px;max-width:1000px;width:100%;
+    background:var(--card);border-radius:16px;max-width:1000px;width:100%;
     overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);
   }
   .modal-head{
@@ -570,14 +571,14 @@ function applyTheme(theme){
   const dark = theme === 'dark';
   document.getElementById('iconMoon').style.display = dark ? 'none' : 'block';
   document.getElementById('iconSun').style.display = dark ? 'block' : 'none';
-  try{ localStorage.setItem('cert-theme', theme); }catch(e){}
+  try{ localStorage.setItem('site-theme', theme); }catch(e){}
 }
 function toggleTheme(){
   const cur = document.documentElement.getAttribute('data-theme') || 'light';
   applyTheme(cur === 'dark' ? 'light' : 'dark');
 }
 let saved = 'light';
-try{ saved = localStorage.getItem('cert-theme') || 'light'; }catch(e){}
+try{ saved = localStorage.getItem('site-theme') || 'light'; }catch(e){}
 applyTheme(saved);
 
 renderCats();
