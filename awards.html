@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Awards | Ali Akbar K</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+<link rel="shotcut icon" sizes="20x20" href="https://github.com/Ali-Akbar-K/PORTFOLIO/blob/main/images/Alifivacon.ico.png?raw=true">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{
+    --blue:#bb8500;
+    --blue-dark:#9a6f00;
+    --bg:#f4f4f4;
+    --card:rgba(0,0,0,.05);
+    --border:#e5e5e5;
+    --text:#111111;
+    --muted:#6c757d;
+    --faint:#8a8f98;
+    --hover:rgba(0,0,0,.07);
+    --header-bg:#000000;
+    --header-text:#ffffff;
+    --preview-bg:rgba(0,0,0,.03);
+    --chip:rgba(0,0,0,.07);
+    --hicchip:rgba(0,0,0,.2);
+    --active-bg:rgba(255,189,57,.22);
+    --active-count:#ffbd39;
+    --btn-hover:rgba(255,189,57,.15);
+  }
+  [data-theme="dark"]{
+    --blue:#ffbd39;
+    --blue-dark:#e6a817;
+    --bg:#0a0a0a;
+    --card:rgba(255,255,255,.1);
+    --border:rgba(255,255,255,.14);
+    --text:#ffffff;
+    --muted:#999999;
+    --faint:#8a94a6;
+    --hover:rgba(255,255,255,.14);
+    --header-bg:#000000;
+    --header-text:#ffffff;
+    --preview-bg:rgba(255,255,255,.06);
+    --chip:rgba(255,255,255,.12);
+    --hicchip:rgba(255,255,255,.3);
+    --active-bg:rgba(255,189,57,.15);
+    --active-count:#ffbd39;
+    --btn-hover:rgba(255,189,57,.2);
+  }
+  body{
+    font-family:'Poppins',-apple-system,'Segoe UI',Roboto,sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.5;
+    transition:background .3s,color .3s;
+  }
+  /* ===== Top nav (like index.html) ===== */
+  .topnav{
+    position:sticky;top:0;z-index:50;
+    background:var(--header-bg);color:var(--header-text);
+    transition:background .3s,color .3s;
+    box-shadow:0 1px 3px rgba(0,0,0,.1);
+  }
+  .topnav-inner{
+    max-width:1300px;margin:0 auto;padding:0 32px;height:60px;
+    display:flex;align-items:center;gap:24px;
+  }
+  .topnav .brand-link{
+    color:var(--header-text);text-decoration:none;
+    font-size:20px;font-weight:700;letter-spacing:.5px;
+    white-space:nowrap;transition:color .2s;
+  }
+  .topnav .brand-link:hover{color:var(--blue);}
+  .nav-links{display:flex;align-items:center;gap:4px;margin-left:auto;}
+  .nav-links a{
+    color:#cbd5e1;text-decoration:none;font-size:14px;font-weight:600;
+    padding:6px 12px;border-radius:8px;transition:all .2s;
+  }
+  .nav-links a:hover{color:#fff;background:rgba(255,255,255,.06);}
+  .nav-links a.active{color:var(--blue);}
+  .nav-right{display:flex;align-items:center;gap:14px;}
+  .count-pill{
+    background:#1e293b;border:1px solid #334155;
+    color:#cbd5e1;font-size:13px;font-weight:600;
+    padding:6px 14px;border-radius:20px;white-space:nowrap;
+  }
+  .count-pill b{color:#fff;}
+  .theme-toggle{
+    width:40px;height:40px;border-radius:10px;
+    background:#1e293b;border:1px solid #334155;
+    color:#e2e8f0;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .2s,transform .2s;flex-shrink:0;
+  }
+  .theme-toggle:hover{background:#334155;transform:rotate(20deg);}
+  .theme-toggle svg{width:20px;height:20px;}
+  @media(max-width:900px){
+    .topnav-inner{flex-wrap:wrap;height:auto;padding:12px 16px;gap:10px;}
+    .nav-links{margin-left:0;flex-wrap:wrap;}
+    .nav-right{margin-left:auto;}
+  }
+  @media(max-width:560px){
+    .topnav-inner{flex-wrap:wrap;padding:8px 12px;gap:8px 12px;height:auto;}
+    .brand-link{font-size:17px;}
+    .nav-right{margin-left:auto;}
+    .nav-links{
+      order:3;margin-left:0;flex-wrap:nowrap;overflow-x:auto;
+      width:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+    }
+    .nav-links::-webkit-scrollbar{display:none;}
+    .nav-links a{padding:5px 8px;font-size:13px;white-space:nowrap;}
+    .count-pill{display:none;}
+    .theme-toggle{width:36px;height:36px;}
+  }
+
+  /* ===== Footer ===== */
+  .site-footer{
+    background:var(--header-bg);color:#94a3b8;
+    padding:28px 32px;text-align:center;font-size:14px;
+  }
+  .site-footer a{color:var(--blue);text-decoration:none;}
+  .site-footer a:hover{text-decoration:underline;}
+
+  /* ===== Layout ===== */
+  .layout{
+    max-width:1300px;margin:0 auto;padding:24px 32px 60px;
+  }
+
+  /* ===== Main ===== */
+  .main h1{font-size:22px;font-weight:800;margin-bottom:4px;}
+  .main .sub{color:var(--muted);font-size:14px;margin-bottom:20px;}
+  .toolbar{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-bottom:20px;}
+  .sort-label{font-size:13px;font-weight:600;color:var(--muted);}
+  .sort-select{
+    font-family:inherit;font-size:13px;font-weight:600;
+    color:var(--text);background:var(--card);
+    border:1px solid var(--border);border-radius:10px;
+    padding:8px 12px;cursor:pointer;outline:none;
+  }
+  .sort-select:hover{border-color:var(--hicchip);}
+  .sort-select option{background:var(--card);color:var(--text);}
+  .search-wrap{position:relative;flex:1;max-width:320px;min-width:180px;}
+  .search-wrap svg{
+    position:absolute;left:12px;top:50%;transform:translateY(-50%);
+    width:16px;height:16px;color:var(--faint);pointer-events:none;
+  }
+  .search-input{
+    width:100%;font-family:inherit;font-size:13px;font-weight:600;
+    color:var(--text);background:var(--card);
+    border:1px solid var(--border);border-radius:10px;
+    padding:8px 12px 8px 34px;outline:none;transition:border-color .15s;
+  }
+  .search-input::placeholder{color:var(--faint);font-weight:500;}
+  .search-input:hover{border-color:var(--hicchip);}
+  .search-input:focus{border-color:var(--blue);}
+  .toolbar .sort-label{margin-left:auto;}
+  @media(max-width:600px){
+    .toolbar{flex-wrap:wrap;justify-content:flex-start;}
+    .search-wrap{max-width:none;flex:1 1 100%;min-width:0;}
+    .toolbar .sort-label{margin-left:0;}
+  }
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:20px;
+  }
+
+  .award{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:16px;overflow:hidden;
+    display:flex;flex-direction:column;
+    box-shadow:0 1px 2px rgba(15,23,42,.05),0 1px 1px rgba(15,23,42,.03);
+    transition:transform .15s,box-shadow .15s;
+  }
+  .award:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(15,23,42,.08);
+  }
+  @media(hover:none){
+    .award:hover{transform:none;box-shadow:none;}
+    .award:hover .award-preview img.preview{transform:none;}
+    .award:hover .open-hint{opacity:1;}
+  }
+  .award-preview{
+    position:relative;height:180px;background:var(--preview-bg);
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;cursor:pointer;border-bottom:1px solid var(--border);
+  }
+  .award-preview img.preview{
+    width:100%;height:100%;object-fit:cover;
+    transition:transform .3s;
+  }
+  .award:hover .award-preview img.preview{transform:scale(1.04);}
+  .award-preview .badge{
+    position:absolute;top:10px;right:10px;
+    background:rgba(15,23,42,.75);color:#fff;
+    font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;
+    backdrop-filter:blur(4px);
+  }
+  .award-preview .open-hint{
+    position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
+    background:var(--blue);color:#fff;font-size:12px;font-weight:600;
+    padding:6px 14px;border-radius:20px;opacity:0;transition:opacity .2s;
+    box-shadow:0 4px 10px rgba(255,189,57,.3);
+  }
+  .award:hover .open-hint{opacity:1;}
+
+  .award-body{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1;}
+  .award-title{font-size:15px;font-weight:700;line-height:1.3;margin-bottom:6px;}
+  .award-issuer{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:2px;}
+  .award-date{font-size:12px;color:var(--faint);margin-bottom:8px;}
+  .award-note{
+    margin-top:auto;font-size:12px;color:var(--blue);font-weight:600;
+    border-top:1px dashed var(--border);padding-top:8px;
+  }
+  .empty{grid-column:1/-1;text-align:center;color:var(--faint);padding:60px 0;}
+
+  /* ===== Modal ===== */
+  .modal{
+    display:none;position:fixed;inset:0;z-index:100;
+    background:rgba(15,23,42,.7);padding:40px 20px;
+    align-items:flex-start;justify-content:center;overflow:auto;
+  }
+  .modal.open{display:flex;}
+  .modal-card{
+    background:var(--bg);border:1px solid var(--border);border-radius:16px;max-width:1000px;width:100%;
+    overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);
+  }
+  .modal-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 24px;border-bottom:1px solid var(--border);
+  }
+  .modal-head .m-title{font-size:16px;font-weight:700;}
+  .modal-head .m-sub{font-size:13px;color:var(--muted);}
+  .modal-close{
+    border:none;background:var(--chip);width:34px;height:34px;border-radius:8px;
+    font-size:18px;cursor:pointer;flex-shrink:0;color:var(--muted);
+  }
+  .modal-close:hover{background:var(--hover);color:var(--text);}
+  .modal-body{padding:20px 24px 24px;}
+  .viewer{position:relative;}
+  .viewer img{
+    width:100%;border-radius:10px;border:1px solid var(--border);
+    display:block;
+  }
+  .nav-arrow{
+    position:absolute;top:50%;transform:translateY(-50%);
+    width:38px;height:38px;border-radius:50%;
+    border:none;background:rgba(15,23,42,.6);color:#fff;
+    font-size:24px;line-height:1;cursor:pointer;z-index:2;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .15s;
+  }
+  .nav-arrow:hover{background:var(--blue);color:#fff;}
+  .nav-arrow.prev{left:10px;}
+  .nav-arrow.next{right:10px;}
+  .nav-arrow.hidden{display:none;}
+  .counter{
+    position:absolute;bottom:10px;right:10px;
+    background:rgba(15,23,42,.75);color:#fff;
+    font-size:12px;font-weight:600;padding:3px 10px;border-radius:20px;
+    backdrop-filter:blur(4px);
+  }
+  .modal-meta{margin-top:16px;font-size:13px;color:var(--muted);}
+  .modal-meta .mv{display:flex;gap:8px;margin-bottom:4px;}
+  .modal-meta b{color:var(--text);font-weight:600;}
+  .modal-note{
+    margin-top:12px;font-size:13px;color:var(--blue);font-weight:600;
+    border-top:1px dashed var(--border);padding-top:12px;
+  }
+
+  @media(max-width:560px){
+    .layout{padding:12px;gap:14px;}
+    .main h1{font-size:19px;}
+    .main .sub{font-size:13px;margin-bottom:12px;}
+    .toolbar{margin-bottom:12px;gap:8px;}
+    .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+    .award{border-radius:12px;}
+    .award-preview{height:110px;}
+    .award-body{padding:9px 11px 11px;}
+    .award-title{font-size:12.5px;margin-bottom:4px;}
+    .award-issuer{font-size:11px;}
+    .award-date{font-size:11px;margin-bottom:8px;}
+    .award-note{font-size:11px;}
+    .award-preview .badge{top:6px;right:6px;font-size:10px;padding:2px 7px;}
+    .site-footer{padding:18px 16px;font-size:13px;}
+    .modal{padding:14px 10px;}
+    .modal-head{padding:11px 14px;}
+    .modal-head .m-title{font-size:14px;}
+    .modal-head .m-sub{font-size:12px;}
+    .modal-body{padding:10px 14px 14px;}
+    .modal-meta{font-size:12px;}
+    .empty{padding:40px 0;}
+  }
+</style>
+</head>
+<body>
+
+<header class="topnav">
+  <div class="topnav-inner">
+    <a class="brand-link" href="index.html">Ali Akbar K</a>
+    <nav class="nav-links">
+      <a href="index.html#home-section">Home</a>
+      <a href="index.html#about-section">About</a>
+      <a href="index.html#resume-section">Resume</a>
+      <a href="index.html#project-section">Projects</a>
+      <a href="certifications.html">Certificates</a>
+      <a href="awards.html" class="active">Awards</a>
+      <a href="index.html#contact-section">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <div class="count-pill"><b id="totalCount"></b> awards</div>
+      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
+        <svg id="iconMoon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+        <svg id="iconSun" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0-5a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0V3a1 1 0 0 1 1-1zm0 16a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1zM5.64 5.64a1 1 0 0 1 1.42 0l1.41 1.41a1 1 0 0 1-1.41 1.42L5.64 7.06a1 1 0 0 1 0-1.42zm12.72 0a1 1 0 0 1 0 1.42l-1.41 1.41a1 1 0 1 1-1.42-1.41l1.41-1.42a1 1 0 0 1 1.42 0zM12 20a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1zm8-8a1 1 0 0 1-1 1h-2a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1zm-14 1H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2zm14.36 8.36a1 1 0 0 1-1.42 0l-1.41-1.41a1 1 0 1 1 1.41-1.42l1.42 1.42a1 1 0 0 1 0 1.41zm-12.72 0a1 1 0 0 1 0-1.42l1.41-1.41a1 1 0 1 1 1.42 1.41l-1.41 1.42a1 1 0 0 1-1.42 0z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <main class="main">
+    <h1>Awards &amp; Achievements</h1>
+    <p class="sub" id="currentCat"></p>
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="search" id="searchInput" class="search-input" placeholder="Search awards by name..." autocomplete="off">
+      </div>
+      <label class="sort-label" for="sortSel">Sort by</label>
+      <select id="sortSel" class="sort-select">
+        <option value="new">Newest first</option>
+        <option value="old">Oldest first</option>
+        <option value="nameA">Name A-Z</option>
+        <option value="nameZ">Name Z-A</option>
+      </select>
+    </div>
+    <div class="grid" id="grid"></div>
+  </main>
+
+</div>
+
+<footer class="site-footer">
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved |
+  This template is made with <span style="color:#ffbd39">&hearts;</span> by
+  <a href="https://www.instagram.com/ali_akbar.k_?igsh=MXJmajNtam9oeDB5Mg==" target="_blank">Ali-Akbar-K</a>
+</footer>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div>
+        <div class="m-title" id="mTitle"></div>
+        <div class="m-sub" id="mSub"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="viewer">
+        <img id="mImg" alt="Award">
+        <button class="nav-arrow prev" id="mPrev" onclick="stepImg(-1)" title="Previous">&lsaquo;</button>
+        <button class="nav-arrow next" id="mNext" onclick="stepImg(1)" title="Next">&rsaquo;</button>
+        <div class="counter" id="mCounter"></div>
+      </div>
+      <div class="modal-meta">
+        <div class="mv"><b>Issued by:</b> <span id="mIssuer"></span></div>
+        <div class="mv"><b>Issued:</b> <span id="mDate"></span></div>
+      </div>
+      <div class="modal-note" id="mNote" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const AWARDS = [
+  { title:'Scholarship from JSW', issuer:'JSW Steel Employee Trustee', org:'JSW Steel Student Welfare Scholarship', date:'Jun 2024',
+    imgs:['Awards/Scholarship from JSW/award jsw.jpg'],
+    note:'This one is dedicated to my father' },
+
+  { title:'Academic Topper', issuer:'Principal', org:'Vijaya Vittala Institute of Technology - Bangalore', date:'May 2024',
+    imgs:['Awards/Academic Topper 2024/award with certficate.jpg','Awards/Academic Topper 2024/award pic.jpg'],
+    detail:'Second Prize for being class topper in 6th and 7th sem, for Academic competition of the 15th Annual Day held on 26th May 2024.',
+    note:'This award is dedicated to my brother & friends' },
+
+  { title:'Graduation Day', issuer:'HOD of Electronics and Communication Department', org:'Vijaya Vittala Institute of Technology - Bangalore', date:'May 2024',
+    imgs:['Awards/Graduation Day/graduacton pic.jpg','Awards/Graduation Day/graduaction with friends.jpg'] },
+
+  { title:'Internship Offer Letter', issuer:'Principal', org:'Vstand4U Solutions', date:'Apr 2024',
+    imgs:['Awards/Internship Offer Letter/intern letter.jpg','Awards/Internship Offer Letter/intern offered.jpg'],
+    detail:'Got an internship offer letter from VSTAND4U SOLUTIONS' },
+
+  { title:'Academic Topper', issuer:'HOD of ECE Department', org:'Vijaya Vittala Institute of Technology - Bangalore', date:'Jul 2023',
+    imgs:['Awards/Academic Topper 2023/award with cerficate.jpg','Awards/Academic Topper 2023/certificate.jpg'],
+    detail:'Second Prize for being class topper in 4th sem, for Academic competition of the 14th Annual Day held on 8th July 2023.' },
+
+  { title:'Sports - Kabaddi', issuer:'Principal', org:'Vijaya Vittala Institute of Technology - Bangalore', date:'Jul 2023',
+    imgs:['Awards/Sports - Kabaddi 2023/sports kabbdi 2023.jpg','Awards/Sports - Kabaddi 2023/certificate.jpg'],
+    detail:'First Prize in KABADDI, for cultural/sports competition of the 14th Annual Day held on 8th July 2023.' },
+
+  { title:'Sports - Volley Ball', issuer:'Principal', org:'Vijaya Vittala Institute of Technology - Bangalore', date:'Jul 2023',
+    imgs:['Awards/Sports - Volley Ball/sports volley ball with certificate.jpg','Awards/Sports - Volley Ball/certificate.jpg'],
+    detail:'First Prize in VOLLEY BALL, for cultural/sports competition of the 14th Annual Day held on 8th July 2023.' },
+
+  { title:'Academic Topper', issuer:'Chairperson of College', org:'Vijaya Vittala Institute of Technology - Bangalore', date:'Jun 2022',
+    imgs:['Awards/Academic Topper 2022/Award with certificate.jpg','Awards/Academic Topper 2022/certificate.jpg'],
+    detail:'First Prize for being class topper, for Academic competition of the 13th Annual Day held on 25th June 2022.' },
+
+  { title:'Sports - Kabaddi', issuer:'Principal', org:'Vijaya Vittala Institute of Technology - Bangalore', date:'Jun 2022',
+    imgs:['Awards/Sports - Kabaddi 2022/sports kabbdi with certificate.jpg','Awards/Sports - Kabaddi 2022/certificate.jpg'],
+    detail:'Second Prize in KABADDI, for cultural/sports competition of the 13th Annual Day held on 25th June 2022.' },
+
+  { title:'Content', issuer:'', org:'', date:'',
+    imgs:['Awards/Content/content.jpg','Awards/Content/content1.jpg'] }
+];
+
+let sortMode = 'new';
+let searchQuery = '';
+
+const MONTH_NUM = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+
+function awardDate(a){
+  const parts = String(a.date || '').split(' ');
+  const m = MONTH_NUM[parts[0]];
+  const y = parseInt(parts[1], 10);
+  return (isNaN(y) || m === undefined) ? 0 : new Date(y, m, 1).getTime();
+}
+
+function sortedList(list){
+  const arr = list.slice();
+  if(sortMode === 'new') arr.sort((a,b) => awardDate(b) - awardDate(a));
+  else if(sortMode === 'old') arr.sort((a,b) => awardDate(a) - awardDate(b));
+  else if(sortMode === 'nameA') arr.sort((a,b) => (a.title + a.issuer).localeCompare(b.title + b.issuer));
+  else if(sortMode === 'nameZ') arr.sort((a,b) => (b.title + b.issuer).localeCompare(a.title + a.issuer));
+  return arr;
+}
+
+function renderGrid(){
+  const grid = document.getElementById('grid');
+  const q = searchQuery.trim().toLowerCase();
+  const all = q ? AWARDS.filter(a =>
+    a.title.toLowerCase().includes(q) ||
+    a.issuer.toLowerCase().includes(q) ||
+    (a.org || '').toLowerCase().includes(q)
+  ) : AWARDS.slice();
+  const list = sortedList(all);
+  document.getElementById('currentCat').textContent = 'All awards';
+  document.getElementById('totalCount').textContent = AWARDS.length;
+  grid.innerHTML = '';
+  if(!list.length){
+    grid.innerHTML = '<div class="empty">No awards match your search</div>';
+    return;
+  }
+  list.forEach(a => {
+    const card = document.createElement('div');
+    card.className = 'award';
+    card.innerHTML =
+      '<div class="award-preview" onclick="openModal('+(AWARDS.indexOf(a))+')">' +
+        '<img class="preview" src="'+a.imgs[0]+'" alt="'+a.title+'" onerror="this.style.display=\'none\'">' +
+        '<span class="open-hint">View award</span>' +
+      '</div>' +
+      '<div class="award-body">' +
+        '<div class="award-title">'+a.title+'</div>' +
+        '<div class="award-issuer">'+a.issuer+(a.org ? ' &middot; '+a.org : '')+'</div>' +
+        '<div class="award-date">Issued '+a.date+'</div>' +
+        (a.note ? '<div class="award-note">'+a.note+'</div>' : '') +
+      '</div>';
+    grid.appendChild(card);
+  });
+}
+
+document.getElementById('sortSel').addEventListener('change', function(){
+  sortMode = this.value;
+  renderGrid();
+});
+
+document.getElementById('searchInput').addEventListener('input', function(){
+  searchQuery = this.value;
+  renderGrid();
+});
+
+let curAward = null;
+let curImg = 0;
+
+function showImg(){
+  const a = curAward;
+  if(!a) return;
+  document.getElementById('mImg').src = a.imgs[curImg];
+  document.getElementById('mCounter').textContent = (curImg + 1) + ' / ' + a.imgs.length;
+  document.getElementById('mPrev').classList.toggle('hidden', curImg <= 0);
+  document.getElementById('mNext').classList.toggle('hidden', curImg >= a.imgs.length - 1);
+}
+function stepImg(d){
+  const a = curAward;
+  if(!a) return;
+  curImg += d;
+  if(curImg < 0) curImg = a.imgs.length - 1;
+  if(curImg >= a.imgs.length) curImg = 0;
+  showImg();
+}
+function openModal(idx){
+  const a = AWARDS[idx];
+  curAward = a;
+  curImg = 0;
+  document.getElementById('mTitle').textContent = a.title;
+  document.getElementById('mSub').textContent = (a.issuer ? a.issuer + (a.org ? ' &middot; ' + a.org : '') : '');
+  document.getElementById('mIssuer').textContent = a.issuer || '-';
+  document.getElementById('mDate').textContent = a.date || '-';
+  const note = document.getElementById('mNote');
+  if(a.note){
+    note.style.display = 'block';
+    note.textContent = a.note;
+  } else {
+    note.style.display = 'none';
+  }
+  showImg();
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('modal').addEventListener('click', function(e){
+  if(e.target === this) closeModal();
+});
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') closeModal();
+  else if(e.key === 'ArrowLeft' && document.getElementById('modal').classList.contains('open')) stepImg(-1);
+  else if(e.key === 'ArrowRight' && document.getElementById('modal').classList.contains('open')) stepImg(1);
+});
+
+function applyTheme(theme){
+  document.documentElement.setAttribute('data-theme', theme);
+  const dark = theme === 'dark';
+  document.getElementById('iconMoon').style.display = dark ? 'none' : 'block';
+  document.getElementById('iconSun').style.display = dark ? 'block' : 'none';
+  try{ localStorage.setItem('site-theme', theme); }catch(e){}
+}
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme') || 'light';
+  applyTheme(cur === 'dark' ? 'light' : 'dark');
+}
+let saved = 'light';
+try{ saved = localStorage.getItem('site-theme') || 'light'; }catch(e){}
+applyTheme(saved);
+
+const activeNav = document.querySelector('.nav-links a.active');
+if(activeNav && window.innerWidth <= 560) activeNav.scrollIntoView();
+
+renderGrid();
+</script>
+</body>
+</html>
