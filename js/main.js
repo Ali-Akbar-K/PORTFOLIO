@@ -7,14 +7,19 @@
 
 	"use strict";
 
-	$(window).stellar({
-    responsive: true,
-    parallaxBackgrounds: true,
-    parallaxElements: true,
-    horizontalScrolling: false,
-    hideDistantElements: false,
-    scrollProperty: 'scroll'
-  });
+	// Parallax is expensive on phones/touch devices - only run on large screens
+	var isMobileDevice = (window.innerWidth < 768) || ('ontouchstart' in window);
+
+	if (!isMobileDevice) {
+		$(window).stellar({
+	    responsive: true,
+	    parallaxBackgrounds: true,
+	    parallaxElements: true,
+	    horizontalScrolling: false,
+	    hideDistantElements: false,
+	    scrollProperty: 'scroll'
+	  });
+	}
 
 
 	var fullHeight = function() {
@@ -38,7 +43,9 @@
 	loader();
 
 	// Scrollax
-   $.Scrollax();
+   if (!isMobileDevice) {
+     $.Scrollax();
+   }
 
 
 
@@ -135,40 +142,46 @@
 
 	// scroll
 	var scrollWindow = function() {
-		$(window).scroll(function(){
-			var $w = $(this),
-					st = $w.scrollTop(),
-					navbar = $('.ftco_navbar'),
-					sd = $('.js-scroll-wrap');
+		var ticking = false,
+				$w = $(window);
+		$w.scroll(function(){
+			if ( ticking ) return;
+			ticking = true;
+			requestAnimationFrame(function(){
+				var st = $w.scrollTop(),
+						navbar = $('.ftco_navbar'),
+						sd = $('.js-scroll-wrap');
 
-			if (st > 150) {
-				if ( !navbar.hasClass('scrolled') ) {
-					navbar.addClass('scrolled');	
+				if (st > 150) {
+					if ( !navbar.hasClass('scrolled') ) {
+						navbar.addClass('scrolled');	
+					}
+				} 
+				if (st < 150) {
+					if ( navbar.hasClass('scrolled') ) {
+						navbar.removeClass('scrolled sleep');
+					}
+				} 
+				if ( st > 350 ) {
+					if ( !navbar.hasClass('awake') ) {
+						navbar.addClass('awake');	
+					}
+					
+					if(sd.length > 0) {
+						sd.addClass('sleep');
+					}
 				}
-			} 
-			if (st < 150) {
-				if ( navbar.hasClass('scrolled') ) {
-					navbar.removeClass('scrolled sleep');
+				if ( st < 350 ) {
+					if ( navbar.hasClass('awake') ) {
+						navbar.removeClass('awake');
+						navbar.addClass('sleep');
+					}
+					if(sd.length > 0) {
+						sd.removeClass('sleep');
+					}
 				}
-			} 
-			if ( st > 350 ) {
-				if ( !navbar.hasClass('awake') ) {
-					navbar.addClass('awake');	
-				}
-				
-				if(sd.length > 0) {
-					sd.addClass('sleep');
-				}
-			}
-			if ( st < 350 ) {
-				if ( navbar.hasClass('awake') ) {
-					navbar.removeClass('awake');
-					navbar.addClass('sleep');
-				}
-				if(sd.length > 0) {
-					sd.removeClass('sleep');
-				}
-			}
+				ticking = false;
+			});
 		});
 	};
 	scrollWindow();

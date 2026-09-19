@@ -202,6 +202,11 @@ html,body{overflow-x:hidden;}
   #project-section .blog-entry .text .heading{font-size:14px;}
   #project-section .block-20{height:130px;}
   #project-section .blog-entry .text p{font-size:12px;}
+  #resume-section .resume-wrap{padding:12px 8px;margin-bottom:10px;}
+  #resume-section .resume-wrap .date{font-size:13px;}
+  #resume-section .resume-wrap h2{font-size:15px;margin-bottom:4px;}
+  #resume-section .resume-wrap .position{font-size:9.5px;letter-spacing:1px;line-height:1.5;}
+  #resume-section .resume-wrap p{margin-top:6px !important;font-size:12px;}
   .heading-section h2{font-size:22px;}
   .heading-section h1.big{font-size:64px;}
   .ftco-section{padding:4em 0;}
@@ -226,6 +231,113 @@ html,body{overflow-x:hidden;}
 @media(max-width:991.98px){
   .resume-wrap,.about-wrap,.blog-entry{max-width:100%;}
   .about-info .d-flex{flex-wrap:wrap;}
+}
+
+/* Equal-height education boxes */
+#resume-section .edu-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:26px;
+  align-items:stretch;
+  padding:0 26px;
+}
+#resume-section .edu-row > .col-4{
+  width:auto;max-width:none;flex:initial;padding:0;
+}
+#resume-section .edu-row .resume-wrap{
+  height:100%;
+  margin-bottom:0;
+  display:flex;flex-direction:column;
+  text-align:left;
+  overflow-wrap:break-word;word-break:break-word;
+  padding:26px;
+}
+#resume-section .resume-wrap p{
+  margin-top:auto !important;
+  padding-top:10px;
+}
+#resume-section .resume-wrap .position{
+  margin-bottom:2px;
+}
+#resume-section .resume-wrap h2{margin-bottom:6px;}
+
+@media(max-width:575.98px){
+  #resume-section .edu-row{gap:8px;padding:0 8px;}
+  #resume-section .edu-row .resume-wrap{padding:12px 8px;margin-bottom:0;}
+}
+
+/* Experience accordion */
+.experience-structure{max-width:900px;margin:0 auto;}
+.experience-panel{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:12px;
+  margin-bottom:16px;
+  overflow:hidden;
+  transition:background .2s,border-color .2s;
+}
+.experience-panel:hover{border-color:rgba(255,189,57,.4);}
+.experience-panel-header{
+  display:flex;align-items:center;gap:14px;
+  width:100%;background:none;border:none;cursor:pointer;
+  padding:16px 24px;text-align:left;font:inherit;
+}
+.experience-panel-header h3{margin:0;font-size:20px;font-weight:600;color:#fff;flex:1;min-width:0;}
+.experience-badge{
+  flex-shrink:0;width:44px;height:44px;border-radius:8px;
+  overflow:hidden;
+  background:rgba(255,255,255,.08);
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,.12);
+}
+.experience-badge img{width:100%;height:100%;object-fit:cover;display:block;}
+.experience-badge span{font-weight:700;font-size:15px;color:#ffbd39;}
+.panel-toggle{
+  font-size:28px;font-weight:300;color:#ffbd39;line-height:1;
+  transition:transform .35s ease;flex-shrink:0;
+}
+.experience-panel.is-open .panel-toggle{transform:rotate(45deg);}
+.experience-panel-body{
+  display:none;
+  padding:4px 24px 24px;
+}
+.experience-panel.is-open .experience-panel-body{display:block;}
+.experience-content{min-width:0;}
+.experience-date{
+  font-size:12.5px;color:#ffbd39;font-weight:600;
+  letter-spacing:.6px;text-transform:uppercase;
+  flex-shrink:0;margin-right:14px;white-space:nowrap;
+}
+.experience-role{font-size:20px;font-weight:600;color:#fff;margin:0 0 4px;}
+.experience-meta{font-size:12.5px;color:rgba(255,255,255,.55);display:block;margin-bottom:12px;letter-spacing:.3px;}
+.experience-role-block{margin-bottom:26px;}
+.experience-role-block:last-child{margin-bottom:0;}
+.experience-company{font-size:14px;color:rgba(255,255,255,.65);display:block;margin-bottom:14px;}
+.experience-description p{font-size:14px;color:rgba(255,255,255,.8);margin-bottom:12px;}
+.experience-description ul{padding-left:18px;margin:0;}
+.experience-description ul li{font-size:14px;color:rgba(255,255,255,.8);margin-bottom:8px;}
+.experience-description ul li:last-child{margin-bottom:0;}
+html[data-theme="light"] .experience-panel{background:#fff;border-color:#e5e5e5;}
+html[data-theme="light"] .experience-panel:hover{border-color:rgba(184,134,11,.5);}
+html[data-theme="light"] .experience-panel-header h3,
+html[data-theme="light"] .experience-role{color:#111;}
+html[data-theme="light"] .experience-meta{color:#6c757d;}
+html[data-theme="light"] .experience-company,
+html[data-theme="light"] .experience-description p,
+html[data-theme="light"] .experience-description ul li{color:#6c757d;}
+html[data-theme="light"] .experience-badge{background:rgba(0,0,0,.06);border-color:#e0e0e0;}
+html[data-theme="light"] .experience-badge span{color:#b8860b;}
+html[data-theme="light"] .experience-date{color:#b8860b;}
+@media(max-width:575.98px){
+  .experience-panel-header{padding:12px 16px;gap:10px;}
+  .experience-panel-header h3{font-size:16px;}
+  .experience-badge{width:38px;height:38px;}
+  .experience-badge span{font-size:14px;}
+  .panel-toggle{font-size:24px;}
+  .experience-panel-body{padding:4px 16px 18px;}
+  .experience-role{font-size:17px;}
+  .experience-date{font-size:11px;margin-right:8px;}
+  .experience-meta{font-size:11px;}
 }
 
 </style>
@@ -410,13 +522,17 @@ html,body{overflow-x:hidden;}
 
 With over 1 years of comprehensive experience in data science and analytics, I am proficient in data analysis, statistical analysis, hypothesis testing, customer behavior analysis, and machine learning. I have a proven track record of leading impactful projects, driving innovation, and providing mentorship to teams.</p>
 								<ul class="about-info mt-4 px-md-0 px-2">
-									<li class="d-flex"><span>Profile:</span> <span>Data Science &amp; Analytics</span></li>
-									<!-- <li class="d-flex"><span>Domain:</span> <span>Retail, Ecommerce, BFSI &amp; Digital Marketing</span></li> -->
-									<li class="d-flex"><span>Education:</span> <span>Bachelor of Engineering</span></li>
+									<li class="d-flex"><span>Profile:</span> <span>Backend Development &amp; Distributed Systems | Cloud Engineering</span></li>
+									<li class="d-flex"><span>Education:</span> <span>Bachelor of Engineering, Electronics &amp; Communication Engineering (ECE), Vijaya Vitthal Institute of Technology</span></li>
 									<li class="d-flex"><span>Language:</span> <span>English, Hindi, Kannada, Telugu, Urdu</span></li>
-									<li class="d-flex"><span>Tools:</span> <span>Eclipse, VS Code, Microsoft Power BI, Grafana, Blender, Canva, Arduino IDE  &amp; Jupiter </span></li>
-									<li class="d-flex"><span>Other Skills:</span> <span>java, HTML, CSS, JS, Node.js, React.js, SQL, Cloud, Arduino IDE, Excel, Git, JIRA, Dooker, Embedded C, Google Analytics &amp; SEO</span></li>
-									<li class="d-flex"><span>Interest:</span> <span>Traveling, Travel Photography, cooking</span></li>
+									<li class="d-flex"><span>Tools:</span> <span>VS Code, Git, Postman, GitHub, GitHub Copilot, Kubernetes, Docker, Istio, GCP Cloud Console, Linux/Unix Shell, Ansible, CI/CD Pipelines, Anthropic Claude API</span></li>
+									<li class="d-flex"><span>Coding Languages:</span> <span>Java, JavaScript/Node.js, Python, Shell Scripting, HTML5, SQL</span></li>
+									<li class="d-flex"><span>Frameworks &amp; Platforms:</span> <span>Spring Boot, Express.js (implied from Node.js work), REST APIs, Async Messaging Architecture</span></li>
+									<li class="d-flex"><span>Distributed Systems &amp; Messaging:</span> <span>Apache Kafka, RabbitMQ, Redis, MQTT, Event-Driven Architecture</span></li>
+									<li class="d-flex"><span>Cloud &amp; DevOps:</span> <span>Google Cloud Platform (GCP), Kubernetes, Docker, Ansible, Istio Service Mesh, CI/CD, Linux/Unix</span></li>
+									<li class="d-flex"><span>Databases:</span> <span>PostgreSQL, MySQL</span></li>
+									<li class="d-flex"><span>Other Technical:</span> <span>Git, JIRA (likely used), Performance Benchmarking, System Design, Microservices Architecture</span></li>
+									<li class="d-flex"><span>Interest:</span> <span>AR/VR Development (WebXR, 3D rendering), Filmmaking &amp; Creative Content, Travel Photography, Embedded Systems &amp; IoT</span></li>
 									
 								</ul>
 							</div>
@@ -454,74 +570,117 @@ With over 1 years of comprehensive experience in data science and analytics, I a
 			<div class="underline"></div>
 		</div>
 		<br>
-		
-		<div class="row">
-				<div class="col-md-6">
-					<div class="resume-wrap ftco-animate">
-						<span class="date">2025-Present</span>
-						<h2>Product Developer</h2>
-						<span class="position">Infosys-EdgeVerve, Bengaluru</span>
-						<p class="mt-4">Infosys Financial Services is a division of Infosys, a global leader in digital services and consulting, that focuses on the financial services industry. 
-							<ul>
-								<li>Performed Design and Programming; Resulted in ~100% growth.</li>
-            <li>Delivered multiple training and mentorship sessions on analytical skills.</li>
-            <li>Demonstrated a desire to learn and critical thinking in problem-solving.</li>
-							</ul>
-						</p>
+
+		<div class="experience-structure">
+			<div class="experience-panel ftco-animate is-open">
+				<button class="experience-panel-header" type="button" aria-expanded="true">
+					<span class="experience-badge"><img src="Certificates/Edgeverve an Infosys company.png" alt="Infosys EdgeVerve logo"></span>
+					<span class="experience-badge"><img src="Certificates/edgeverve.jpg" alt="EdgeVerve logo"></span>
+					<h3>EdgeVerve Infosys Finacle</h3>
+					<span class="experience-date">Feb 2025 - Present</span>
+					<span class="panel-toggle">+</span>
+				</button>
+				<div class="experience-panel-body">
+					<div class="experience-content">
+						<div class="experience-role-block">
+							<h2 class="experience-role">Product Developer</h2>
+							<span class="experience-meta">Jul 2026 - Present · 3 mos</span>
+							<div class="experience-description">
+								<p>I am a Associate Product Developer at Infosys Finacle (EdgeVerve Systems), contributing to the development of core banking solutions used by banks worldwide. Finacle, a flagship product of EdgeVerve, powers digital transformation in banking with scalable and secure technology.</p>
+								<ul>
+									<li>AI-Powered Automation Chatbots (Anthropic API): Currently developing two AI-powered automation chatbots using the Anthropic API — one to automate CT (ComponentTest Case) generation and handling, and another to automate Mapper generation — reducing manual effort and improving developer productivity.</li>
+								</ul>
+								<p>Continuously explored new technologies and contributed to improving development efficiency and product quality.</p>
+							</div>
+						</div>
+
+						<div class="experience-role-block">
+							<h2 class="experience-role">Associate Product Developer</h2>
+							<span class="experience-meta">Feb 2025 - Jul 2026 · 1 yr 6 mos</span>
+							<div class="experience-description">
+								<p>I am a Associate Product Developer at Infosys Finacle (EdgeVerve Systems), contributing to the development of core banking solutions used by banks worldwide. Finacle, a flagship product of EdgeVerve, powers digital transformation in banking with scalable and secure technology.</p>
+								<ul>
+									<li>GCP Namespace Recovery: Independently recovered a deleted Kubernetes namespace in 3 days — diagnosed and fixed 3-year-old deprecated Ansible playbooks via GitHub Copilot, replaced deprecated modules, reinstalled all applications.</li>
+									<li>Outbound Flow Integration: Implemented cross-technology microservice integration from Node.js to Java Spring Boot across OE-Cloud framework boundaries. Conducted performance testing to ensure high availability and optimised response time.</li>
+									<li>Performance Benchmarking: Benchmarked outbound flow across OE-Cloud vs Node.js vs Spring Boot — CI/CD pipeline. Tracked 8 metrics per run: TPS, TPS/vCPU, CPU utilisation, messages, start/end time, pod count. Documented in Excel for data-driven architecture decisions.</li>
+									<li>PNB AsyncAPI/SyncAPI POC: Designed and delivered production-ready SyncAPI integration for Punjab National Bank — message-queue architecture (Account-Service → App.queue → Message-Service → App1.queue → DB with correlation ID tracking), tested locally, deployed to dev environment, achieved high TPS, and shipped to production after approval and Payses team integration.</li>
+								</ul>
+								<p>Continuously explored new technologies and contributed to improving development efficiency and product quality.</p>
+							</div>
+						</div>
 					</div>
-
 				</div>
-
-				<div class="col-md-6">
-					<div class="resume-wrap ftco-animate">
-						<span class="date">2024(Dec–Feb)</span>
-						<h2>Technical Support Engineer</h2>
-						<span class="position">!BETSOL Software India Pvt, Bengaluru</span>
-						<p class="mt-4">BETSOL is a cloud-first digital transformation and data management company offering products and IT services to enterprises in over 40 countries. 
-							<ul>
-								 <li>Performed troubleshooting and documenting; Resulted in ~100% growth.</li>
-            <li>Delivered mentorship on tools like Incident Ticketing, Salesforce and other tools to document data.</li>
-            <li>Demonstrated learning attitude, critical thinking and troubleshooting technics.</li>
-							</ul>
-						</p>
-					</div>
-
-				</div>
-
-<div class="col-md-6">
-					<div class="resume-wrap ftco-animate">
-						<span class="date">2023 (Aug–Sep)</span>
-						<h2>Student Intern</h2>
-						<span class="position">Nano Robotics Embed Technologies, Bengaluru</span>
-						<p class="mt-4">Nano Robotics Embed Technologies.an engineering project consultancy and training firm offering courses and projects in areas like Arduino, Artificial Intelligence, Embedded Systems, and Internet of Things. 
-							<ul>
-								 <li>Project: Warehouse Monitoring System using IoT.</li>
-            <li>Developed time series models (92% performance).</li>
-            <li>Focused on learning and hands-on applications.</li>
-							</ul>
-						</p>
-					</div>
-
-				</div>
-
-<div class="col-md-6">
-					<div class="resume-wrap ftco-animate">
-						<span class="date">2023 (Mar–Apr)</span>
-						<h2>Student Intern</h2>
-						<span class="position">Indian Tech-Keys, Bengaluru</span>
-						<p class="mt-4">Indian Tech-Keys is a hardware and software solutions for the embedded real-time systems market. Some of our services include integrated hardware and software.
-							<ul>
-							          <li>Worked on Embedded System Design and IoT Programming.</li>
-            <li>Used tools like Arduino IDE, Embedded C, and Python.</li>
-            <li>Demonstrated eagerness to learn and problem-solving.</li>
-							</ul>
-						</p>
-					</div>
-
-				</div>
-
-			
 			</div>
+
+			<div class="experience-panel ftco-animate">
+				<button class="experience-panel-header" type="button" aria-expanded="false">
+					<span class="experience-badge"><img src="Certificates/betsol.png" alt="BETSOL logo"></span>
+					<h3>BETSOL</h3>
+					<span class="experience-date">Dec 2024 - Feb 2025</span>
+					<span class="panel-toggle">+</span>
+				</button>
+				<div class="experience-panel-body">
+					<div class="experience-content">
+						<h2 class="experience-role">Technical Support Engineer</h2>
+						<span class="experience-company">BETSOL · Full-time</span>
+						<div class="experience-description">
+							<p>A technical support engineer at BETSOL provides technical support to clients via chat and phone.</p>
+							<ul>
+								<li>Responded to client queries in a timely and effective manner.</li>
+								<li>Handled multiple chats simultaneously while ensuring policy compliance.</li>
+								<li>Maintained productivity expectations and supported clients across multiple regions.</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="experience-panel ftco-animate">
+				<button class="experience-panel-header" type="button" aria-expanded="false">
+					<span class="experience-badge"><img src="Certificates/Nano Robotics Embed Technologies.jpg" alt="Nano Robotics logo"></span>
+					<h3>Nano Robotics</h3>
+					<span class="experience-date">2023 (Aug–Sep)</span>
+					<span class="panel-toggle">+</span>
+				</button>
+				<div class="experience-panel-body">
+					<div class="experience-content">
+						<h2 class="experience-role">Student Intern</h2>
+						<span class="experience-company">Nano Robotics Embed Technologies, Bengaluru</span>
+						<div class="experience-description">
+							<p>Engineering project consultancy and training firm focused on Arduino, AI, Embedded Systems, and IoT.</p>
+							<ul>
+								<li>Project: Warehouse Monitoring System using IoT.</li>
+								<li>Developed time series models with 92% performance.</li>
+								<li>Focused on learning and hands-on applications.</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="experience-panel ftco-animate">
+				<button class="experience-panel-header" type="button" aria-expanded="false">
+					<span class="experience-badge"><img src="Certificates/Indian Tech-Keys.png" alt="Indian Tech-Keys logo"></span>
+					<h3>Indian Tech-Keys</h3>
+					<span class="experience-date">2023 (Mar–Apr)</span>
+					<span class="panel-toggle">+</span>
+				</button>
+				<div class="experience-panel-body">
+					<div class="experience-content">
+						<h2 class="experience-role">Student Intern</h2>
+						<span class="experience-company">Indian Tech-Keys, Bengaluru</span>
+						<div class="experience-description">
+							<p>Embedded systems and hardware-software solutions company for real-time systems.</p>
+							<ul>
+								<li>Worked on Embedded System Design and IoT Programming.</li>
+								<li>Used Arduino IDE, Embedded C, and Python.</li>
+								<li>Demonstrated eagerness to learn and problem-solving.</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
 
@@ -535,8 +694,8 @@ With over 1 years of comprehensive experience in data science and analytics, I a
 		</div>
 		<br>
 		
-			<div class="row">
-    			<div class="col-md-6">
+			<div class="row edu-row">
+    			<div class="col-4">
     				<div class="resume-wrap ftco-animate">
     					<span class="date">2023-2024</span>
     					<h2>Bachelor of Engineering</h2>
@@ -546,7 +705,7 @@ With over 1 years of comprehensive experience in data science and analytics, I a
     				</div>
     			</div>
 
-    			<div class="col-md-6">
+    			<div class="col-4">
     				<div class="resume-wrap ftco-animate">
     					<span class="date">2018-2020</span>
     					<h2>PUC-(PCMB)</h2>
@@ -555,16 +714,15 @@ With over 1 years of comprehensive experience in data science and analytics, I a
     					<p class="mt-4">Grade: 81.33%</p>
     				</div>
 				</div>
-    		</div>
-			<!-- <div class="col-md-6">
-				<div class="resume-wrap ftco-animate">
-					<span class="date">2007-2018</span>
-					<h2>PUC-(PCMB)</h2>
-					<span class="position">Shri Shaileshwara Vidya Kendra,</span>
-					<span class="position">Karnataka Secondary Education Examination Board, Sandur</span>
-					<p class="mt-4">Grade: 90.08%</p>
-				</div>
-			</div> -->
+			<div class="col-4">
+    				<div class="resume-wrap ftco-animate">
+    					<span class="date">2007-2018</span>
+    					<h2>SSLC - (10th)</h2>
+    					<span class="position">Shri Shaileshwara Vidya Kendra, Sandur 583119</span>
+						<span class="position">Karnataka Secondary Education Examination Board</span>
+    					<p class="mt-4">Grade: 90.08%</p>
+    				</div>
+    			</div>
 		</div>
 
     		<div class="row justify-content-center mt-5">
@@ -969,6 +1127,18 @@ With over 1 years of comprehensive experience in data science and analytics, I a
     try{ localStorage.setItem('site-theme', next); }catch(e){}
     icons(next);
   };
+})();
+
+(function(){
+  document.querySelectorAll('.experience-panel-header').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var panel = btn.closest('.experience-panel');
+      if(!panel) return;
+      var isOpen = panel.classList.contains('is-open');
+      panel.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+    });
+  });
 })();
 </script>
 
