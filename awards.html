@@ -126,7 +126,28 @@
 
   /* ===== Main ===== */
   .main h1{font-size:22px;font-weight:800;margin-bottom:4px;}
-  .main .sub{color:var(--muted);font-size:14px;margin-bottom:20px;}
+  .main .sub{color:var(--muted);font-size:14px;margin-bottom:16px;}
+
+  /* ===== Marquee notice ===== */
+  .marquee{
+    overflow:hidden;white-space:nowrap;
+    border:1px solid var(--border);border-radius:12px;
+    background:var(--card);margin-bottom:16px;
+    position:relative;
+  }
+  .marquee-track{
+    display:inline-block;white-space:nowrap;
+    padding:10px 0;font-size:13px;font-weight:600;color:var(--blue);
+    animation:marquee-scroll 22s linear infinite;
+    will-change:transform;
+  }
+  .marquee-track span{margin-right:64px;}
+  @media(hover:none){ .marquee-track{animation-duration:16s;} }
+  @keyframes marquee-scroll{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+  .marquee-divider{grid-column:1/-1;margin:8px 0 2px;}
   .toolbar{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-bottom:20px;}
   .sort-label{font-size:13px;font-weight:600;color:var(--muted);}
   .sort-select{
@@ -234,10 +255,14 @@
   }
   .modal-close:hover{background:var(--hover);color:var(--text);}
   .modal-body{padding:20px 24px 24px;}
-  .viewer{position:relative;}
+  .viewer{
+    position:relative;display:flex;justify-content:center;align-items:flex-start;
+    background:var(--preview-bg);border:1px solid var(--border);
+    border-radius:10px;padding:10px;min-height:120px;
+  }
   .viewer img{
-    width:100%;border-radius:10px;border:1px solid var(--border);
-    display:block;
+    max-width:100%;max-height:78vh;height:auto;
+    border-radius:8px;display:block;
   }
   .nav-arrow{
     position:absolute;top:50%;transform:translateY(-50%);
@@ -264,6 +289,8 @@
     margin-top:12px;font-size:13px;color:var(--blue);font-weight:600;
     border-top:1px dashed var(--border);padding-top:12px;
   }
+  .modal-actions{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;}
+  .modal-actions .btn{flex:0 0 auto;}
 
   @media(max-width:560px){
     .layout{padding:12px;gap:14px;}
@@ -324,13 +351,6 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
         <input type="search" id="searchInput" class="search-input" placeholder="Search awards by name..." autocomplete="off">
       </div>
-      <label class="sort-label" for="sortSel">Sort by</label>
-      <select id="sortSel" class="sort-select">
-        <option value="new">Newest first</option>
-        <option value="old">Oldest first</option>
-        <option value="nameA">Name A-Z</option>
-        <option value="nameZ">Name Z-A</option>
-      </select>
     </div>
     <div class="grid" id="grid"></div>
   </main>
@@ -361,17 +381,24 @@
         <div class="counter" id="mCounter"></div>
       </div>
       <div class="modal-meta">
+        <div class="mv" id="mDetailWrap" style="display:none"><b>Details:</b> <span id="mDetail"></span></div>
         <div class="mv"><b>Issued by:</b> <span id="mIssuer"></span></div>
         <div class="mv"><b>Issued:</b> <span id="mDate"></span></div>
       </div>
       <div class="modal-note" id="mNote" style="display:none"></div>
+      <div class="modal-actions">
+        <a class="btn" id="mOpen" href="#" target="_blank" rel="noopener">Open full image</a>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
 const AWARDS = [
-  { title:'Scholarship from JSW', issuer:'JSW Steel Employee Trustee', org:'JSW Steel Student Welfare Scholarship', date:'Jun 2024',
+  { title:'Content', issuer:'', org:'', date:'', group:'post',
+    imgs:['Awards/Content/content.jpg','Awards/Content/content1.jpg'] },
+
+  { title:'Scholarship from JSW', issuer:'JSW Steel Employee Trustee', org:'JSW Steel Student Welfare Scholarship', date:'Jun 2024', group:'post',
     imgs:['Awards/Scholarship from JSW/award jsw.jpg'],
     note:'This one is dedicated to my father' },
 
@@ -385,7 +412,7 @@ const AWARDS = [
 
   { title:'Internship Offer Letter', issuer:'Principal', org:'Vstand4U Solutions', date:'Apr 2024',
     imgs:['Awards/Internship Offer Letter/intern letter.jpg','Awards/Internship Offer Letter/intern offered.jpg'],
-    detail:'Got an internship offer letter from VSTAND4U SOLUTIONS' },
+    detail:'Got an internship offer letter from VSTAND4U SOLUTIONS, Bengaluru, Karnataka, India (On-site). Testing and Test Automation.' },
 
   { title:'Academic Topper', issuer:'HOD of ECE Department', org:'Vijaya Vittala Institute of Technology - Bangalore', date:'Jul 2023',
     imgs:['Awards/Academic Topper 2023/award with cerficate.jpg','Awards/Academic Topper 2023/certificate.jpg'],
@@ -405,32 +432,10 @@ const AWARDS = [
 
   { title:'Sports - Kabaddi', issuer:'Principal', org:'Vijaya Vittala Institute of Technology - Bangalore', date:'Jun 2022',
     imgs:['Awards/Sports - Kabaddi 2022/sports kabbdi with certificate.jpg','Awards/Sports - Kabaddi 2022/certificate.jpg'],
-    detail:'Second Prize in KABADDI, for cultural/sports competition of the 13th Annual Day held on 25th June 2022.' },
-
-  { title:'Content', issuer:'', org:'', date:'',
-    imgs:['Awards/Content/content.jpg','Awards/Content/content1.jpg'] }
+    detail:'Second Prize in KABADDI, for cultural/sports competition of the 13th Annual Day held on 25th June 2022.' }
 ];
 
-let sortMode = 'new';
 let searchQuery = '';
-
-const MONTH_NUM = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
-
-function awardDate(a){
-  const parts = String(a.date || '').split(' ');
-  const m = MONTH_NUM[parts[0]];
-  const y = parseInt(parts[1], 10);
-  return (isNaN(y) || m === undefined) ? 0 : new Date(y, m, 1).getTime();
-}
-
-function sortedList(list){
-  const arr = list.slice();
-  if(sortMode === 'new') arr.sort((a,b) => awardDate(b) - awardDate(a));
-  else if(sortMode === 'old') arr.sort((a,b) => awardDate(a) - awardDate(b));
-  else if(sortMode === 'nameA') arr.sort((a,b) => (a.title + a.issuer).localeCompare(b.title + b.issuer));
-  else if(sortMode === 'nameZ') arr.sort((a,b) => (b.title + b.issuer).localeCompare(a.title + a.issuer));
-  return arr;
-}
 
 function renderGrid(){
   const grid = document.getElementById('grid');
@@ -440,7 +445,7 @@ function renderGrid(){
     a.issuer.toLowerCase().includes(q) ||
     (a.org || '').toLowerCase().includes(q)
   ) : AWARDS.slice();
-  const list = sortedList(all);
+  const list = all;
   document.getElementById('currentCat').textContent = 'All awards';
   document.getElementById('totalCount').textContent = AWARDS.length;
   grid.innerHTML = '';
@@ -448,7 +453,18 @@ function renderGrid(){
     grid.innerHTML = '<div class="empty">No awards match your search</div>';
     return;
   }
+  const marqueeMsg = 'I had offers of 2 internships and Zypp. ';
+  let prevGroup = '';
   list.forEach(a => {
+    const g = a.group || 'college';
+    if(g === 'college' && prevGroup === 'post'){
+      const m = document.createElement('div');
+      m.className = 'marquee marquee-divider';
+      m.setAttribute('aria-hidden', 'true');
+      m.innerHTML = '<div class="marquee-track"><span>' + marqueeMsg + '</span><span>' + marqueeMsg + '</span></div>';
+      grid.appendChild(m);
+    }
+    prevGroup = g;
     const card = document.createElement('div');
     card.className = 'award';
     card.innerHTML =
@@ -466,11 +482,6 @@ function renderGrid(){
   });
 }
 
-document.getElementById('sortSel').addEventListener('change', function(){
-  sortMode = this.value;
-  renderGrid();
-});
-
 document.getElementById('searchInput').addEventListener('input', function(){
   searchQuery = this.value;
   renderGrid();
@@ -483,6 +494,7 @@ function showImg(){
   const a = curAward;
   if(!a) return;
   document.getElementById('mImg').src = a.imgs[curImg];
+  document.getElementById('mOpen').href = a.imgs[curImg];
   document.getElementById('mCounter').textContent = (curImg + 1) + ' / ' + a.imgs.length;
   document.getElementById('mPrev').classList.toggle('hidden', curImg <= 0);
   document.getElementById('mNext').classList.toggle('hidden', curImg >= a.imgs.length - 1);
@@ -503,6 +515,13 @@ function openModal(idx){
   document.getElementById('mSub').textContent = (a.issuer ? a.issuer + (a.org ? ' &middot; ' + a.org : '') : '');
   document.getElementById('mIssuer').textContent = a.issuer || '-';
   document.getElementById('mDate').textContent = a.date || '-';
+  const detailWrap = document.getElementById('mDetailWrap');
+  if(a.detail){
+    detailWrap.style.display = 'flex';
+    document.getElementById('mDetail').textContent = a.detail;
+  } else {
+    detailWrap.style.display = 'none';
+  }
   const note = document.getElementById('mNote');
   if(a.note){
     note.style.display = 'block';
