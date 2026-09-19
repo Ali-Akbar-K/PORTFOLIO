@@ -150,7 +150,8 @@ html[data-theme="light"] .ftco-counter .block-18{background:#fff;border:1px soli
 html[data-theme="light"] .ftco-counter .block-18 .text span{color:#6c757d;}
 html[data-theme="light"] .ftco-counter .block-18 .text strong.number{color:#bb8500;}
 html[data-theme="light"] .ftco-hireme{background-image:url(images/bg_2.png) !important;background-size:cover;background-position:center;background-repeat:no-repeat;}
-html[data-theme="light"] .home-slider .one-third.img{background-image:url(images/bg_22.png) !important;background-size:cover;background-position:center;background-repeat:no-repeat;}
+html[data-theme="light"] .home-slider .one-third.img{background:#f4f4f4 !important;background-image:none !important;}
+html[data-theme="light"] .owl-carousel.home-slider .slider-text .one-third .overlay{opacity:0 !important;}
 html[data-theme="light"] .ftco-hireme h2 span{color:#ffbd39;}
 html[data-theme="light"] .contact-section .contact-info p{color:#6c757d;}
 html[data-theme="light"] .contact-section .contact-info p a{color:#111;}
@@ -185,6 +186,8 @@ html[data-theme="light"] .ftco-hireme .overlay{background:rgba(0,0,0,.6);}
 .ptf-theme-btn svg{width:18px;height:18px;}
 @media(max-width:991.98px){
   .ptf-theme-btn{position:absolute;right:110px;top:12px;margin-left:0;}
+  .ftco-navbar-light .navbar-toggler{margin-right:2px;}
+  .ftco-navbar-light .ptf-theme-btn{top:50%;transform:translateY(-50%);}
 }
 html[data-theme="light"] .ptf-theme-btn{border-color:#ddd;color:#b8860b;}
 html[data-theme="light"] .ptf-theme-btn:hover{background:rgba(184,134,11,.12);color:#a37400;}
@@ -193,15 +196,26 @@ html[data-theme="light"] .ptf-theme-btn:hover{background:rgba(184,134,11,.12);co
 html,body{overflow-x:hidden;}
 .tech-stack img{max-width:100%;}
 @media(max-width:575.98px){
-  .ptf-theme-btn{right:105px;top:10px;}
+  .ptf-theme-btn{right:105px;}
   .tech-stack img{height:22px;}
   .tech-wrap{padding:0 8px;}
   .heading-section h2{font-size:22px;}
   .heading-section h1.big{font-size:64px;}
   .ftco-section{padding:4em 0;}
-  .navbar-brand{font-size:17px;}
   .btn{padding-left:24px !important;padding-right:24px !important;}
   .ftco-counter .block-18{margin-bottom:15px;}
+  .ftco-counter .row.d-md-flex{display:flex;flex-wrap:wrap;}
+  .ftco-counter .col-md{flex:0 0 50%;max-width:50%;}
+  .ftco-counter .block-18{padding:18px 10px;}
+  .ftco-counter .text strong.number{font-size:24px;}
+  .ftco-counter .text span{font-size:13px;}
+  .contact-section .col-md-6{flex:0 0 50%;max-width:50%;}
+  .contact-section .box{padding:18px 10px !important;}
+  .contact-section .box .icon{width:56px;height:56px;margin-bottom:14px !important;}
+  .contact-section .box .icon span{font-size:20px;}
+  .contact-section .box h3{font-size:14px;margin-bottom:8px !important;}
+  .contact-section .box p{font-size:12.5px;margin-bottom:0 !important;word-break:break-word;}
+  .contact-section .box p a{font-size:12.5px;word-break:break-word;}
 }
 @media(min-width:576px) and (max-width:767.98px){
   .tech-stack img{height:24px;}

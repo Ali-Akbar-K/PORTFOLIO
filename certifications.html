@@ -5,56 +5,53 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Certifications | Ali Akbar K</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
 <link rel="shotcut icon" sizes="20x20" href="https://github.com/Ali-Akbar-K/PORTFOLIO/blob/main/images/Alifivacon.ico.png?raw=true">
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   :root{
     --blue:#bb8500;
     --blue-dark:#9a6f00;
-    --bg:#f5f5f5;
-    --card:#ffffff;
+    --bg:#f4f4f4;
+    --card:rgba(0,0,0,.05);
     --border:#e5e5e5;
     --text:#111111;
     --muted:#6c757d;
     --faint:#8a8f98;
-    --hover:#f0f0f0;
+    --hover:rgba(0,0,0,.07);
     --header-bg:#000000;
     --header-text:#ffffff;
-    --preview-bg:#fafafa;
-    --chip:#f0f0f0;
-    --hicchip:#cccccc;
-    --active-bg:#fff8e6;
+    --preview-bg:rgba(0,0,0,.03);
+    --chip:rgba(0,0,0,.07);
+    --hicchip:rgba(0,0,0,.2);
+    --active-bg:rgba(255,189,57,.22);
     --active-count:#ffbd39;
-    --btn-hover:#fff3d6;
+    --btn-hover:rgba(255,189,57,.15);
   }
   [data-theme="dark"]{
     --blue:#ffbd39;
     --blue-dark:#e6a817;
     --bg:#0a0a0a;
-    --card:#161616;
-    --border:#2a2a2a;
+    --card:rgba(255,255,255,.1);
+    --border:rgba(255,255,255,.14);
     --text:#ffffff;
     --muted:#999999;
     --faint:#8a94a6;
-    --hover:#1f1f1f;
+    --hover:rgba(255,255,255,.14);
     --header-bg:#000000;
     --header-text:#ffffff;
-    --preview-bg:#121212;
-    --chip:#222222;
-    --hicchip:#3a3a3a;
-    --active-bg:#1a1a1a;
+    --preview-bg:rgba(255,255,255,.06);
+    --chip:rgba(255,255,255,.12);
+    --hicchip:rgba(255,255,255,.3);
+    --active-bg:rgba(255,189,57,.15);
     --active-count:#ffbd39;
-    --btn-hover:#1f1f1f;
+    --btn-hover:rgba(255,189,57,.2);
   }
   body{
-    font-family:'Inter',-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-family:'Poppins',-apple-system,'Segoe UI',Roboto,sans-serif;
     background:var(--bg);color:var(--text);line-height:1.5;
     transition:background .3s,color .3s;
   }
-  html[data-theme="dark"] .cat .ico,
-  html[data-theme="dark"] .cert-issuer-row img{background:#111;}
-
   /* ===== Top nav (like index.html) ===== */
   .topnav{
     position:sticky;top:0;z-index:50;
@@ -101,8 +98,17 @@
     .nav-right{margin-left:auto;}
   }
   @media(max-width:560px){
-    .nav-links a{padding:5px 9px;font-size:13px;}
+    .topnav-inner{flex-wrap:wrap;padding:8px 12px;gap:8px 12px;height:auto;}
+    .brand-link{font-size:17px;}
+    .nav-right{margin-left:auto;}
+    .nav-links{
+      order:3;margin-left:0;flex-wrap:nowrap;overflow-x:auto;
+      width:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+    }
+    .nav-links::-webkit-scrollbar{display:none;}
+    .nav-links a{padding:5px 8px;font-size:13px;white-space:nowrap;}
     .count-pill{display:none;}
+    .theme-toggle{width:36px;height:36px;}
   }
 
   /* ===== Footer ===== */
@@ -125,6 +131,7 @@
     position:sticky;top:84px;
     background:var(--card);border:1px solid var(--border);
     border-radius:16px;padding:20px;overflow:hidden;
+    box-shadow:0 1px 3px rgba(15,23,42,.05);
   }
   .sidebar h3{
     font-size:12px;text-transform:uppercase;letter-spacing:.08em;
@@ -141,7 +148,7 @@
   .cat.active{background:var(--active-bg);color:var(--blue);}
   .cat .ico{
     width:34px;height:34px;border-radius:8px;flex-shrink:0;
-    background:#fff;object-fit:contain;border:1px solid var(--border);
+    background:var(--chip);object-fit:contain;border:1px solid var(--border);
     padding:3px;
   }
   .cat .cat-name{flex:1;font-size:14px;font-weight:600;}
@@ -164,8 +171,25 @@
   }
   .sort-select:hover{border-color:var(--hicchip);}
   .sort-select option{background:var(--card);color:var(--text);}
+  .search-wrap{position:relative;flex:1;max-width:320px;min-width:180px;}
+  .search-wrap svg{
+    position:absolute;left:12px;top:50%;transform:translateY(-50%);
+    width:16px;height:16px;color:var(--faint);pointer-events:none;
+  }
+  .search-input{
+    width:100%;font-family:inherit;font-size:13px;font-weight:600;
+    color:var(--text);background:var(--card);
+    border:1px solid var(--border);border-radius:10px;
+    padding:8px 12px 8px 34px;outline:none;transition:border-color .15s;
+  }
+  .search-input::placeholder{color:var(--faint);font-weight:500;}
+  .search-input:hover{border-color:var(--hicchip);}
+  .search-input:focus{border-color:var(--blue);}
+  .toolbar .sort-label{margin-left:auto;}
   @media(max-width:600px){
-    .toolbar{justify-content:flex-start;}
+    .toolbar{flex-wrap:wrap;justify-content:flex-start;}
+    .search-wrap{max-width:none;flex:1 1 100%;min-width:0;}
+    .toolbar .sort-label{margin-left:0;}
   }
   .grid{
     display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:20px;
@@ -175,12 +199,17 @@
     background:var(--card);border:1px solid var(--border);
     border-radius:16px;overflow:hidden;
     display:flex;flex-direction:column;
-    box-shadow:0 1px 2px rgba(15,23,42,.04);
+    box-shadow:0 1px 2px rgba(15,23,42,.05),0 1px 1px rgba(15,23,42,.03);
     transition:transform .15s,box-shadow .15s;
   }
   .cert:hover{
     transform:translateY(-3px);
     box-shadow:0 10px 25px rgba(15,23,42,.08);
+  }
+  @media(hover:none){
+    .cert:hover{transform:none;box-shadow:none;}
+    .cert:hover .cert-preview img.preview{transform:none;}
+    .cert:hover .open-hint{opacity:1;}
   }
   .cert-preview{
     position:relative;height:180px;background:var(--preview-bg);
@@ -208,7 +237,7 @@
 
   .cert-body{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1;}
   .cert-issuer-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-  .cert-issuer-row img{width:30px;height:30px;border-radius:6px;object-fit:contain;border:1px solid var(--border);padding:2px;}
+  .cert-issuer-row img{width:30px;height:30px;border-radius:6px;object-fit:contain;border:1px solid var(--border);padding:2px;background:var(--chip);}
   .cert-issuer-row .issuer{font-size:12px;font-weight:600;color:var(--muted);}
   .cert-title{font-size:15px;font-weight:700;line-height:1.3;margin-bottom:6px;}
   .cert-date{font-size:12px;color:var(--faint);margin-bottom:10px;}
@@ -230,7 +259,7 @@
   }
   .modal.open{display:flex;}
   .modal-card{
-    background:var(--card);border-radius:16px;max-width:1000px;width:100%;
+    background:var(--bg);border:1px solid var(--border);border-radius:16px;max-width:1000px;width:100%;
     overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);
   }
   .modal-head{
@@ -255,9 +284,37 @@
 
   @media(max-width:820px){
     .layout{grid-template-columns:1fr;padding:16px;}
-    .sidebar{position:static;overflow-x:auto;display:flex;flex-wrap:wrap;gap:8px;}
-    .sidebar h3{width:100%;}
-    .cat{width:auto;}
+    .sidebar{position:static;overflow-x:auto;display:flex;flex-wrap:wrap;gap:8px;padding:12px;border-radius:12px;}
+    .sidebar h3{width:100%;margin-bottom:10px;}
+    .cat{width:auto;padding:8px 10px;gap:8px;}
+    .cat .ico{width:28px;height:28px;}
+    .cat-name{font-size:13px;}
+    .cat-count{font-size:12px;padding:1px 8px;}
+  }
+  @media(max-width:560px){
+    .layout{padding:12px;gap:14px;}
+    .main h1{font-size:19px;}
+    .main .sub{font-size:13px;margin-bottom:12px;}
+    .toolbar{margin-bottom:12px;gap:8px;}
+    .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+    .cert{border-radius:12px;}
+    .cert-preview{height:110px;}
+    .cert-body{padding:9px 11px 11px;}
+    .cert-issuer-row{gap:7px;margin-bottom:5px;}
+    .cert-issuer-row img{width:22px;height:22px;border-radius:5px;}
+    .cert-issuer-row .issuer{font-size:11px;}
+    .cert-title{font-size:12.5px;margin-bottom:4px;}
+    .cert-date{font-size:11px;margin-bottom:8px;}
+    .cert .btn{font-size:12px;padding:7px 8px;border-radius:8px;}
+    .cert-preview .badge{top:6px;right:6px;font-size:10px;padding:2px 7px;}
+    .site-footer{padding:18px 16px;font-size:13px;}
+    .modal{padding:14px 10px;}
+    .modal-head{padding:11px 14px;}
+    .modal-head .m-title{font-size:14px;}
+    .modal-head .m-sub{font-size:12px;}
+    .modal-body{padding:10px 14px 14px;}
+    .modal-actions{margin-top:12px;gap:8px;}
+    .empty{padding:40px 0;}
   }
 </style>
 </head>
@@ -297,6 +354,10 @@
     <h1>Licenses &amp; Certifications</h1>
     <p class="sub" id="currentCat"></p>
     <div class="toolbar">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="search" id="searchInput" class="search-input" placeholder="Search certificates by name..." autocomplete="off">
+      </div>
       <label class="sort-label" for="sortSel">Sort by</label>
       <select id="sortSel" class="sort-select">
         <option value="new">Newest first</option>
@@ -345,7 +406,8 @@ const CATS = [
   {key:'betsol', name:'BETSOL', icon:'Certificates/betsol.png'},
   {key:'jspiders', name:'JSpiders', icon:'Certificates/jspiders.png'},
   {key:'vvit', name:'VVIT', icon:'Certificates/Vijaya Vittala Institute of Technology.png'},
-  {key:'iot', name:'IOT / Internships', icon:'Certificates/iot.png'}
+  {key:'nano', name:'Nano Robotics', icon:'Certificates/Nano Robotics Embed Technologies.jpg'},
+  {key:'techkeys', name:'Indian Tech-Keys', icon:'Certificates/Indian Tech-Keys.png'}
 ];
 
 const CERTS = [
@@ -473,17 +535,18 @@ const CERTS = [
     img:'Certificates/JSpiders - Training & Development Center/fullstack- java,sql,html,css,js,reactjs.jpg',
     file:'Certificates/JSpiders - Training & Development Center/fullstack- java,sql,html,css,js,reactjs.jpg'},
 
-  {cat:'iot', title:'Nano Robotics Embed Technologies', issuer:'Nano Robotics', date:'Aug 2023',
+  {cat:'nano', title:'Nano Robotics Embed Technologies', issuer:'Nano Robotics', date:'Aug 2023',
     img:'Certificates/Nano Robotics Embed Technologes/WAREHOUSE MONITORING SYSTEM USING IOT  - internship2.jpg',
     file:'Certificates/Nano Robotics Embed Technologes/WAREHOUSE MONITORING SYSTEM USING IOT  - internship2.jpg'},
 
-  {cat:'iot', title:'Indian Tech-Keys', issuer:'Indian Tech-Keys', date:'Mar 2023',
+  {cat:'techkeys', title:'Indian Tech-Keys', issuer:'Indian Tech-Keys', date:'Mar 2023',
     img:'Certificates/Indian Tech-Keys/Embedded System Design and IoT Programming.jpg',
     file:'Certificates/Indian Tech-Keys/Embedded System Design and IoT Programming.jpg'}
 ];
 
 let activeCat = 'all';
 let sortMode = 'new';
+let searchQuery = '';
 
 const MONTH_NUM = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
 
@@ -511,10 +574,17 @@ function catName(key){
   return c ? c.name : key;
 }
 
+function maxCertDate(catKey){
+  return Math.max(-1, ...CERTS.filter(c => c.cat===catKey).map(c => certDate(c)));
+}
+
 function renderCats(){
   const holder = document.getElementById('cats');
   holder.innerHTML = '';
-  CATS.forEach(c => {
+  const ordered = [CATS[0]].concat(
+    CATS.slice(1).sort((a,b) => maxCertDate(b.key) - maxCertDate(a.key))
+  );
+  ordered.forEach(c => {
     const count = c.key==='all' ? CERTS.length : CERTS.filter(x => x.cat===c.key).length;
     if(count===0 && c.key!=='all') return;
     const btn = document.createElement('button');
@@ -530,13 +600,18 @@ function renderCats(){
 
 function renderGrid(){
   const grid = document.getElementById('grid');
-  const all = activeCat==='all' ? CERTS : CERTS.filter(c => c.cat===activeCat);
+  const byCat = activeCat==='all' ? CERTS : CERTS.filter(c => c.cat===activeCat);
+  const q = searchQuery.trim().toLowerCase();
+  const all = q ? byCat.filter(c =>
+    c.title.toLowerCase().includes(q) ||
+    c.issuer.toLowerCase().includes(q)
+  ) : byCat;
   const list = sortedList(all);
   document.getElementById('currentCat').textContent =
     activeCat==='all' ? 'All certificates' : catName(activeCat)+' certificates';
   grid.innerHTML = '';
   if(!list.length){
-    grid.innerHTML = '<div class="empty">No certificates in this category</div>';
+    grid.innerHTML = '<div class="empty">No certificates match your search</div>';
     return;
   }
   list.forEach((c, i) => {
@@ -574,6 +649,11 @@ document.getElementById('sortSel').addEventListener('change', function(){
   renderGrid();
 });
 
+document.getElementById('searchInput').addEventListener('input', function(){
+  searchQuery = this.value;
+  renderGrid();
+});
+
 function openModal(idx){
   const c = CERTS[idx];
   document.getElementById('mTitle').textContent = c.title;
@@ -606,6 +686,9 @@ function toggleTheme(){
 let saved = 'light';
 try{ saved = localStorage.getItem('site-theme') || 'light'; }catch(e){}
 applyTheme(saved);
+
+const activeNav = document.querySelector('.nav-links a.active');
+if(activeNav && window.innerWidth <= 560) activeNav.scrollIntoView();
 
 renderCats();
 renderGrid();
