@@ -1,26 +1,9 @@
- AOS.init({
- 	duration: 800,
- 	easing: 'slide'
- });
-
-(function($) {
+ (function($) {
 
 	"use strict";
 
 	// Parallax is expensive on phones/touch devices - only run on large screens
 	var isMobileDevice = (window.innerWidth < 768) || ('ontouchstart' in window);
-
-	if (!isMobileDevice) {
-		$(window).stellar({
-	    responsive: true,
-	    parallaxBackgrounds: true,
-	    parallaxElements: true,
-	    horizontalScrolling: false,
-	    hideDistantElements: false,
-	    scrollProperty: 'scroll'
-	  });
-	}
-
 
 	var fullHeight = function() {
 
@@ -46,10 +29,6 @@
    if (!isMobileDevice) {
      $.Scrollax();
    }
-
-
-
-   // Burger Menu
 	var burgerMenu = function() {
 
 		$('body').on('click', '.js-fh5co-nav-toggle', function(event){
@@ -100,7 +79,6 @@
 	    nav:false,
 	    autoplayHoverPause: false,
 	    items: 1,
-	    navText : ["<span class='ion-md-arrow-back'></span>","<span class='ion-chevron-right'></span>"],
 	    responsive:{
 	      0:{
 	        items:1
@@ -116,30 +94,6 @@
 	};
 	carousel();
 
-	$('nav .dropdown').hover(function(){
-		var $this = $(this);
-		// 	 timer;
-		// clearTimeout(timer);
-		$this.addClass('show');
-		$this.find('> a').attr('aria-expanded', true);
-		// $this.find('.dropdown-menu').addClass('animated-fast fadeInUp show');
-		$this.find('.dropdown-menu').addClass('show');
-	}, function(){
-		var $this = $(this);
-			// timer;
-		// timer = setTimeout(function(){
-			$this.removeClass('show');
-			$this.find('> a').attr('aria-expanded', false);
-			// $this.find('.dropdown-menu').removeClass('animated-fast fadeInUp show');
-			$this.find('.dropdown-menu').removeClass('show');
-		// }, 100);
-	});
-
-
-	$('#dropdown04').on('show.bs.dropdown', function () {
-	  console.log('show');
-	});
-
 	// scroll
 	var scrollWindow = function() {
 		var ticking = false,
@@ -149,8 +103,7 @@
 			ticking = true;
 			requestAnimationFrame(function(){
 				var st = $w.scrollTop(),
-						navbar = $('.ftco_navbar'),
-						sd = $('.js-scroll-wrap');
+						navbar = $('.ftco_navbar');
 
 				if (st > 150) {
 					if ( !navbar.hasClass('scrolled') ) {
@@ -166,18 +119,11 @@
 					if ( !navbar.hasClass('awake') ) {
 						navbar.addClass('awake');	
 					}
-					
-					if(sd.length > 0) {
-						sd.addClass('sleep');
-					}
 				}
 				if ( st < 350 ) {
 					if ( navbar.hasClass('awake') ) {
 						navbar.removeClass('awake');
 						navbar.addClass('sleep');
-					}
-					if(sd.length > 0) {
-						sd.removeClass('sleep');
 					}
 				}
 				ticking = false;
@@ -198,7 +144,6 @@
 				$('.number').each(function(){
 					var $this = $(this),
 						num = $this.data('number');
-						console.log(num);
 					$this.animateNumber(
 					  {
 					    number: num,
@@ -240,7 +185,7 @@
 								el.addClass('fadeInUp ftco-animated');
 							}
 							el.removeClass('item-animate');
-						},  k * 50, 'easeInOutExpo' );
+						},  k * 50 );
 					});
 					
 				}, 100);
@@ -250,41 +195,6 @@
 		} , { offset: '95%' } );
 	};
 	contentWayPoint();
-
-	// magnific popup
-	$('.image-popup').magnificPopup({
-    type: 'image',
-    closeOnContentClick: true,
-    closeBtnInside: false,
-    fixedContentPos: true,
-    mainClass: 'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
-     gallery: {
-      enabled: true,
-      navigateByImgClick: true,
-      preload: [0,1] // Will preload 0 - before current, and 1 after the current image
-    },
-    image: {
-      verticalFit: true
-    },
-    zoom: {
-      enabled: true,
-      duration: 300 // don't foget to change the duration also in CSS
-    }
-  });
-
-  $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
-    disableOn: 700,
-    type: 'iframe',
-    mainClass: 'mfp-fade',
-    removalDelay: 160,
-    preloader: false,
-
-    fixedContentPos: false
-  });
-
-
-
-
 
 })(jQuery);
 

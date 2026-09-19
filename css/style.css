@@ -9284,30 +9284,6 @@ textarea.form-control {
   background-repeat: no-repeat;
   background-position: center center; }
 
-.image-popup {
-  cursor: -webkit-zoom-in;
-  cursor: -moz-zoom-in;
-  cursor: zoom-in; }
-
-.mfp-with-zoom .mfp-container,
-.mfp-with-zoom.mfp-bg {
-  opacity: 0;
-  -webkit-backface-visibility: hidden;
-  -webkit-transition: all 0.3s ease-out;
-  -moz-transition: all 0.3s ease-out;
-  -o-transition: all 0.3s ease-out;
-  transition: all 0.3s ease-out; }
-
-.mfp-with-zoom.mfp-ready .mfp-container {
-  opacity: 1; }
-
-.mfp-with-zoom.mfp-ready.mfp-bg {
-  opacity: 0.8; }
-
-.mfp-with-zoom.mfp-removing .mfp-container,
-.mfp-with-zoom.mfp-removing.mfp-bg {
-  opacity: 0; }
-
 #section-counter {
   position: relative;
   z-index: 0; }
