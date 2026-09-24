@@ -10,8 +10,8 @@
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   :root{
-    --blue:#bb8500;
-    --blue-dark:#9a6f00;
+    --blue:#ffbd39;
+    --blue-dark:#e6a817;
     --bg:#f4f4f4;
     --card:rgba(0,0,0,.05);
     --border:#e5e5e5;
@@ -19,14 +19,16 @@
     --muted:#6c757d;
     --faint:#8a8f98;
     --hover:rgba(0,0,0,.07);
-    --header-bg:#000000;
-    --header-text:#ffffff;
+    --header-bg:#ffffff;
+    --header-text:#111111;
     --preview-bg:rgba(0,0,0,.03);
     --chip:rgba(0,0,0,.07);
     --hicchip:rgba(0,0,0,.2);
     --active-bg:rgba(255,189,57,.22);
     --active-count:#ffbd39;
     --btn-hover:rgba(255,189,57,.15);
+    --nav-link:#111111;
+    --nav-hover:rgba(0,0,0,.06);
   }
   [data-theme="dark"]{
     --blue:#ffbd39;
@@ -46,6 +48,8 @@
     --active-bg:rgba(255,189,57,.15);
     --active-count:#ffbd39;
     --btn-hover:rgba(255,189,57,.2);
+    --nav-link:#cbd5e1;
+    --nav-hover:rgba(255,255,255,.06);
   }
   body{
     font-family:'Poppins',-apple-system,'Segoe UI',Roboto,sans-serif;
@@ -71,10 +75,10 @@
   .topnav .brand-link:hover{color:var(--blue);}
   .nav-links{display:flex;align-items:center;gap:4px;margin-left:auto;}
   .nav-links a{
-    color:#cbd5e1;text-decoration:none;font-size:14px;font-weight:600;
+    color:var(--nav-link);text-decoration:none;font-size:14px;font-weight:600;
     padding:6px 12px;border-radius:8px;transition:all .2s;
   }
-  .nav-links a:hover{color:#fff;background:rgba(255,255,255,.06);}
+  .nav-links a:hover{color:var(--header-text);background:var(--nav-hover);}
   .nav-links a.active{color:var(--blue);}
   .nav-right{display:flex;align-items:center;gap:14px;}
   .count-pill{
@@ -93,20 +97,20 @@
   .theme-toggle:hover{background:#334155;transform:rotate(20deg);}
   .theme-toggle svg{width:20px;height:20px;}
   @media(max-width:900px){
-    .topnav-inner{flex-wrap:wrap;height:auto;padding:12px 16px;gap:10px;}
+    .topnav-inner{width:100%;flex-wrap:wrap;height:auto;padding:12px 16px;gap:10px;}
     .nav-links{margin-left:0;flex-wrap:wrap;}
-    .nav-right{margin-left:auto;}
+    .nav-right{order:2;margin-left:auto;}
+    .topnav .brand-link{order:1;}
   }
   @media(max-width:560px){
-    .topnav-inner{flex-wrap:wrap;padding:8px 12px;gap:8px 12px;height:auto;}
-    .brand-link{font-size:17px;}
+    .topnav-inner{width:100%;flex-wrap:wrap;padding:8px 12px;gap:8px 12px;height:auto;}
+    .topnav .brand-link{font-size:17px;order:1;}
     .nav-right{margin-left:auto;}
     .nav-links{
-      order:3;margin-left:0;flex-wrap:nowrap;overflow-x:auto;
-      width:100%;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+      order:3;margin-left:0;flex-wrap:wrap;overflow:visible;
+      width:100%;gap:2px 4px;
     }
-    .nav-links::-webkit-scrollbar{display:none;}
-    .nav-links a{padding:5px 8px;font-size:13px;white-space:nowrap;}
+    .nav-links a{padding:5px 6px;font-size:12px;white-space:nowrap;}
     .count-pill{display:none;}
     .theme-toggle{width:36px;height:36px;}
   }
@@ -317,6 +321,7 @@
     .empty{padding:40px 0;}
   }
 </style>
+<link rel="stylesheet" href="css/page-theme-effects.css">
 </head>
 <body>
 
@@ -676,23 +681,33 @@ document.addEventListener('keydown', function(e){
 function applyTheme(theme){
   document.documentElement.setAttribute('data-theme', theme);
   const dark = theme === 'dark';
+  const sun = document.getElementById('iconSun');
+  if(!sun.dataset.cleaned){
+    sun.innerHTML = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/>';
+    sun.setAttribute('fill','none');
+    sun.setAttribute('stroke','currentColor');
+    sun.setAttribute('stroke-width','2');
+    sun.setAttribute('stroke-linecap','round');
+    sun.dataset.cleaned = 'true';
+  }
   document.getElementById('iconMoon').style.display = dark ? 'none' : 'block';
-  document.getElementById('iconSun').style.display = dark ? 'block' : 'none';
+  sun.style.display = dark ? 'block' : 'none';
   try{ localStorage.setItem('site-theme', theme); }catch(e){}
 }
 function toggleTheme(){
   const cur = document.documentElement.getAttribute('data-theme') || 'light';
   applyTheme(cur === 'dark' ? 'light' : 'dark');
 }
-let saved = 'light';
-try{ saved = localStorage.getItem('site-theme') || 'light'; }catch(e){}
+let saved = 'dark';
+try{ saved = localStorage.getItem('site-theme') || 'dark'; }catch(e){}
 applyTheme(saved);
 
 const activeNav = document.querySelector('.nav-links a.active');
-if(activeNav && window.innerWidth <= 560) activeNav.scrollIntoView();
+if(activeNav && window.innerWidth <= 560) document.querySelector('.nav-links').scrollLeft = 0;
 
 renderCats();
 renderGrid();
 </script>
+<script src="js/page-theme-effects.js"></script>
 </body>
 </html>

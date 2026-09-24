@@ -102,14 +102,37 @@
   transform: scale(1.1);
 }
 
+/* Shared motion: keep the foreground lively while the background stays subtle. */
+.hero .text > * {
+  animation: ptf-content-rise .8s cubic-bezier(.22,.61,.36,1) both;
+}
+.hero .text .subheading { animation-delay:.08s; }
+.hero .text h1 { animation-delay:.16s; }
+.hero .text #typing-animation { animation-delay:.24s; }
+.hero .text h2 { animation-delay:.32s; }
+.hero .text p { animation-delay:.4s; }
+.hero .text .btn { transition:transform .25s ease,box-shadow .25s ease; }
+.hero .text .btn:hover { transform:translateY(-3px);box-shadow:0 10px 22px rgba(0,0,0,.14); }
+.about-img img { animation:ptf-image-float 6s ease-in-out infinite; }
+
+@keyframes ptf-content-rise {
+  from { opacity:0;transform:translateY(18px); }
+  to { opacity:1;transform:translateY(0); }
+}
+
+@keyframes ptf-image-float {
+  0%,100% { transform:translateY(0); }
+  50% { transform:translateY(-8px); }
+}
+
 /* Light theme */
-html[data-theme="light"] body{background:#f4f4f4;color:#6c757d;}
+html[data-theme="light"] body{background:#fffaf0;color:#6c757d;}
 html[data-theme="light"] h1,
 html[data-theme="light"] h2,
 html[data-theme="light"] h3,
 html[data-theme="light"] h4,
 html[data-theme="light"] h5{color:#111;}
-html[data-theme="light"] .heading-section h1.big{color:rgba(0,0,0,.08);}
+html[data-theme="light"] .heading-section h1.big{color:rgba(0,0,0,.035);}
 html[data-theme="light"] .resume-wrap{background:rgba(0,0,0,.05);}
 html[data-theme="light"] .contact-section .box{border:1px solid #e5e5e5;}
 html[data-theme="light"] .contact-section .box .icon{background:rgba(0,0,0,.05);}
@@ -120,9 +143,9 @@ html[data-theme="light"] .ftco-about ul.about-info li span:first-child{color:#11
 html[data-theme="light"] .about-info .title-s{color:#111;}
 html[data-theme="light"] .ftco-about .counter-wrap .text p{color:#6c757d;}
 html[data-theme="light"] .ftco-about .counter-wrap .text p span{color:#6c757d;}
-html[data-theme="light"] .ftco-about .counter-wrap .text p span.number{color:#bb8500;}
+html[data-theme="light"] .ftco-about .counter-wrap .text p span.number{color:#ffbd39;}
 html[data-theme="light"] .skill-mf span{color:#6c757d;}
-html[data-theme="light"] .skill-mf .pull-right{color:#bb8500;}
+html[data-theme="light"] .skill-mf .pull-right{color:#ffbd39;}
 html[data-theme="light"] .ftco-navbar-light.scrolled,
 html[data-theme="light"] .ftco-navbar-light{background:#fff !important;}
 html[data-theme="light"] .ftco-navbar-light .navbar-brand,
@@ -130,7 +153,7 @@ html[data-theme="light"] .ftco-navbar-light.scrolled .navbar-brand,
 html[data-theme="light"] .ftco-navbar-light .nav-item > .nav-link,
 html[data-theme="light"] .ftco-navbar-light.scrolled .nav-item > .nav-link{color:#111 !important;}
 html[data-theme="light"] .ftco-navbar-light .nav-item.active > a,
-html[data-theme="light"] .ftco-navbar-light.scrolled .nav-item.active > a{color:#bb8500 !important;}
+html[data-theme="light"] .ftco-navbar-light.scrolled .nav-item.active > a{color:#ffbd39 !important;}
 html[data-theme="light"] .ftco-navbar-light .navbar-toggler,
 html[data-theme="light"] .ftco-navbar-light.scrolled .navbar-toggler{color:#111 !important;}
 html[data-theme="light"] .owl-carousel.home-slider .slider-item .overlay{background:rgba(255,255,255,.85);}
@@ -141,20 +164,48 @@ html[data-theme="light"] .btn.btn-white.btn-outline-white{background:transparent
 html[data-theme="light"] .btn.btn-white.btn-outline-white:hover{background:#ffbd39;border-color:#ffbd39;color:#111;}
 html[data-theme="light"] .ftco-counter .block-18{background:#fff;border:1px solid #e5e5e5;}
 html[data-theme="light"] .ftco-counter .block-18 .text span{color:#6c757d;}
-html[data-theme="light"] .ftco-counter .block-18 .text strong.number{color:#bb8500;}
+html[data-theme="light"] .ftco-counter .block-18 .text strong.number{color:#ffbd39;}
+.ftco-counter .block-18{background:rgba(25,25,25,.72);border:1px solid rgba(255,255,255,.12);}
+html[data-theme="light"] .ftco-counter .block-18{background:rgba(255,255,255,.36);border-color:rgba(120,100,60,.14);}
 html[data-theme="light"] .ftco-hireme{background-image:url(images/bg_2.png) !important;background-size:cover;background-position:center;background-repeat:no-repeat;}
-html[data-theme="light"] .home-slider .one-third.img{background:#f4f4f4 !important;background-image:none !important;}
+.home-slider .one-third.img{display:none !important;}
 html[data-theme="light"] .owl-carousel.home-slider .slider-text .one-third .overlay{opacity:0 !important;}
 html[data-theme="light"] .ftco-hireme h2 span{color:#ffbd39;}
 html[data-theme="light"] .contact-section .contact-info p{color:#6c757d;}
 html[data-theme="light"] .contact-section .contact-info p a{color:#111;}
+.contact-section .contact-info .contact-address{color:#fff !important;}
+html[data-theme="light"] .contact-section .contact-info .contact-address{color:#ffbd39 !important;}
 html[data-theme="light"] .counter-wrap .text p{color:#6c757d;}
 html[data-theme="light"] .blog-entry .text p{color:#6c757d;}
-html[data-theme="light"] .blog-entry .heading a{color:#111;}
+html[data-theme="light"] #project-section .blog-entry .heading,
+html[data-theme="light"] #project-section .blog-entry .heading a{color:#8a5a00 !important;}
+html[data-theme="light"] #project-section .blog-entry .heading a:hover{color:#ffbd39;}
 html[data-theme="light"] .section-counter,
 html[data-theme="light"] .ftco-hireme{position:relative;}
 html[data-theme="light"] .section-counter .overlay,
 html[data-theme="light"] .ftco-hireme .overlay{background:rgba(0,0,0,.6);}
+
+html[data-theme="light"] a,
+html[data-theme="light"] a:hover,
+html[data-theme="light"] a:focus,
+html[data-theme="light"] .text-primary,
+html[data-theme="light"] .subheading,
+html[data-theme="light"] .ftco-about .counter-wrap .text p span.number,
+html[data-theme="light"] .skill-mf .pull-right,
+html[data-theme="light"] .ftco-navbar-light .nav-item.active > a,
+html[data-theme="light"] .ftco-navbar-light.scrolled .nav-item.active > a,
+html[data-theme="light"] .ftco-hireme h2 span,
+html[data-theme="light"] .tech-head,
+html[data-theme="light"] .ptf-theme-btn,
+html[data-theme="light"] .experience-badge span,
+html[data-theme="light"] .panel-toggle,
+html[data-theme="light"] .experience-date{color:#ffbd39 !important;}
+html[data-theme="light"] .skill-mf .progress .progress-bar,
+html[data-theme="light"] .btn-primary,
+html[data-theme="light"] .btn.btn-white.btn-outline-white:hover{background:#ffbd39 !important;}
+html[data-theme="light"] .btn-primary,
+html[data-theme="light"] .btn.btn-white.btn-outline-white:hover{border-color:#ffbd39 !important;}
+html[data-theme="light"] .ptf-theme-btn:hover{background:rgba(255,189,57,.12);}
 
 /* Theme toggle button */
 .tech-wrap{max-width:1050px;margin:0 auto;}
@@ -180,10 +231,15 @@ html[data-theme="light"] .ftco-hireme .overlay{background:rgba(0,0,0,.6);}
 @media(max-width:991.98px){
   .ptf-theme-btn{position:absolute;right:110px;top:12px;margin-left:0;}
   .ftco-navbar-light .navbar-toggler{margin-right:2px;}
-  .ftco-navbar-light .ptf-theme-btn{top:50%;transform:translateY(-50%);}
+  .ftco-navbar-light .ptf-theme-btn{top:12px;transform:none;z-index:4;}
+  .ftco-navbar-light .container{width:100%;max-width:100%;display:flex;align-items:center;}
+  .ftco-navbar-light .navbar-brand{order:1;margin-right:auto;}
+  .ftco-navbar-light .ptf-theme-btn{order:2;position:static;margin:0 12px 0 0;}
+  .ftco-navbar-light .navbar-toggler{order:3;margin:0;}
+  .ftco-navbar-light .navbar-collapse{order:4;flex-basis:100%;}
 }
-html[data-theme="light"] .ptf-theme-btn{border-color:#ddd;color:#b8860b;}
-html[data-theme="light"] .ptf-theme-btn:hover{background:rgba(184,134,11,.12);color:#a37400;}
+html[data-theme="light"] .ptf-theme-btn{border-color:#ddd;color:#ffbd39;}
+html[data-theme="light"] .ptf-theme-btn:hover{background:rgba(255,189,57,.12);color:#ffbd39;}
 
 /* Mobile optimizations */
 html,body{overflow-x:hidden;}
@@ -310,8 +366,8 @@ html,body{overflow-x:hidden;}
 .experience-description ul{padding-left:18px;margin:0;}
 .experience-description ul li{font-size:14px;color:rgba(255,255,255,.8);margin-bottom:8px;}
 .experience-description ul li:last-child{margin-bottom:0;}
-html[data-theme="light"] .experience-panel{background:#fff;border-color:#e5e5e5;}
-html[data-theme="light"] .experience-panel:hover{border-color:rgba(184,134,11,.5);}
+html[data-theme="light"] .experience-panel{background:rgba(255,255,255,.28);border-color:rgba(120,100,60,.12);}
+html[data-theme="light"] .experience-panel:hover{background:rgba(255,255,255,.4);border-color:rgba(255,189,57,.45);}
 html[data-theme="light"] .experience-panel-header h3,
 html[data-theme="light"] .experience-role{color:#111;}
 html[data-theme="light"] .experience-meta{color:#6c757d;}
@@ -319,8 +375,8 @@ html[data-theme="light"] .experience-company,
 html[data-theme="light"] .experience-description p,
 html[data-theme="light"] .experience-description ul li{color:#6c757d;}
 html[data-theme="light"] .experience-badge{background:rgba(0,0,0,.06);border-color:#e0e0e0;}
-html[data-theme="light"] .experience-badge span{color:#b8860b;}
-html[data-theme="light"] .experience-date{color:#b8860b;}
+html[data-theme="light"] .experience-badge span{color:#ffbd39;}
+html[data-theme="light"] .experience-date{color:#ffbd39;}
 @media(max-width:575.98px){
   .experience-panel-header{padding:12px 16px;gap:10px;}
   .experience-panel-header h3{font-size:16px;}
@@ -333,11 +389,131 @@ html[data-theme="light"] .experience-date{color:#b8860b;}
   .experience-meta{font-size:11px;}
 }
 
+/* ===== Animated background (dark + light) ===== */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  pointer-events: none;
+  will-change: background-position;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(255,189,57,.20) 0, rgba(255,189,57,0) 42%),
+    radial-gradient(circle at 82% 18%, rgba(64,120,255,.18) 0, rgba(64,120,255,0) 40%),
+    radial-gradient(circle at 22% 78%, rgba(255,120,194,.14) 0, rgba(255,120,194,0) 40%),
+    radial-gradient(circle at 78% 82%, rgba(34,211,160,.15) 0, rgba(34,211,160,0) 44%),
+    linear-gradient(135deg, #0b1224 0%, #101a33 50%, #0d1528 100%);
+  background-size: 230% 230%, 230% 230%, 230% 230%, 230% 230%, 100% 100%;
+  animation: ptf-bg-shift 40s ease-in-out infinite alternate;
+}
+
+html[data-theme="light"] body::before {
+  opacity:.72;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(224,122,95,.22) 0, rgba(224,122,95,0) 42%),
+    radial-gradient(circle at 82% 18%, rgba(64,120,255,.24) 0, rgba(64,120,255,0) 40%),
+    radial-gradient(circle at 22% 78%, rgba(255,120,194,.20) 0, rgba(255,120,194,0) 40%),
+    radial-gradient(circle at 78% 82%, rgba(34,211,160,.22) 0, rgba(34,211,160,0) 44%),
+    linear-gradient(135deg, #ffffff 0%, #f4f6fb 50%, #fdfbf4 100%);
+}
+
+@keyframes ptf-bg-shift {
+  0%   { background-position: 0% 0%, 100% 100%, 0% 100%, 100% 0%, 0 0; }
+  25%  { background-position: 30% 45%, 70% 55%, 45% 20%, 80% 70%, 0 0; }
+  50%  { background-position: 60% 80%, 40% 20%, 80% 60%, 20% 30%, 0 0; }
+  75%  { background-position: 80% 40%, 20% 80%, 30% 80%, 60% 40%, 0 0; }
+  100% { background-position: 100% 100%, 0% 0%, 100% 0%, 0% 100%, 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  #ptf-bg-orbs span { animation: none !important; }
+}
+
+/* Floating blurred orbs (layer 2) */
+#ptf-bg-orbs {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+#ptf-bg-orbs span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: .5;
+  will-change: transform;
+}
+#ptf-bg-orbs span:nth-child(1) {
+  width: 45vmax; height: 45vmax; left: -10vmax; top: -10vmax;
+  background: rgba(255,189,57,.32);
+  animation: ptf-orb-1 26s ease-in-out infinite alternate;
+}
+#ptf-bg-orbs span:nth-child(2) {
+  width: 40vmax; height: 40vmax; right: -8vmax; top: 8%;
+  background: rgba(64,120,255,.30);
+  animation: ptf-orb-2 31s ease-in-out infinite alternate;
+}
+#ptf-bg-orbs span:nth-child(3) {
+  width: 38vmax; height: 38vmax; bottom: -12vmax; left: 18%;
+  background: rgba(255,120,194,.24);
+  animation: ptf-orb-3 35s ease-in-out infinite alternate;
+}
+#ptf-bg-orbs span:nth-child(4) {
+  width: 36vmax; height: 36vmax; right: 14%; bottom: -14vmax;
+  background: rgba(34,211,160,.24);
+  animation: ptf-orb-4 29s ease-in-out infinite alternate;
+}
+html[data-theme="light"] #ptf-bg-orbs span:nth-child(1){ background: rgba(224,122,95,.22); }
+html[data-theme="light"] #ptf-bg-orbs span:nth-child(2){ background: rgba(64,120,255,.24); }
+html[data-theme="light"] #ptf-bg-orbs span:nth-child(3){ background: rgba(255,120,194,.20); }
+html[data-theme="light"] #ptf-bg-orbs span:nth-child(4){ background: rgba(34,211,160,.22); }
+html[data-theme="light"] #ptf-bg-orbs{opacity:.52;}
+
+@keyframes ptf-orb-1 {
+  0%   { transform: translate(0,0) scale(1); }
+  50%  { transform: translate(14vmax,6vmax) scale(1.15); }
+  100% { transform: translate(6vmax,12vmax) scale(.95); }
+}
+@keyframes ptf-orb-2 {
+  0%   { transform: translate(0,0) scale(1); }
+  50%  { transform: translate(-12vmax,10vmax) scale(1.2); }
+  100% { transform: translate(-6vmax,-4vmax) scale(.9); }
+}
+@keyframes ptf-orb-3 {
+  0%   { transform: translate(0,0) scale(1); }
+  50%  { transform: translate(10vmax,-12vmax) scale(1.1); }
+  100% { transform: translate(18vmax,-4vmax) scale(1.25); }
+}
+@keyframes ptf-orb-4 {
+  0%   { transform: translate(0,0) scale(1); }
+  50%  { transform: translate(-16vmax,-10vmax) scale(1.18); }
+  100% { transform: translate(-8vmax,-16vmax) scale(.92); }
+}
+
+/* Particle network canvas (layer 3, above gradient + orbs) */
+#ptf-bg-canvas {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+html[data-theme="light"] #ptf-bg-canvas{opacity:.48;}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero .text > *,
+  .about-img img { animation:none !important; }
+}
+
 </style>
 
   </head>
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
-	  
+	  <canvas id="ptf-bg-canvas" aria-hidden="true"></canvas>
+	  <div id="ptf-bg-orbs" aria-hidden="true">
+	    <span></span><span></span><span></span><span></span>
+	  </div>
 	  
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar ftco-navbar-light site-navbar-target" id="ftco-navbar">
 	    <div class="container">
@@ -382,11 +558,14 @@ html[data-theme="light"] .experience-date{color:#b8860b;}
 
 						<script>
 
-						// Initialize the typing animation
-						const typingAnimationElement = document.getElementById('typing-animation');
+            if (!window.ptfTypingStarted) {
+            window.ptfTypingStarted = true;
+
+            // Initialize the typing animation
+            var typingAnimationElement = document.getElementById('typing-animation');
 
 						// Create an array of typing text
-						const typingTexts = [
+            var typingTexts = [
 						'Product Developer  ',
 						'Software Engineer  ',
 						'Embedded Engineer  ',
@@ -410,6 +589,7 @@ html[data-theme="light"] .experience-date{color:#b8860b;}
 
 						// Start the typing animation loop
 						playTypingAnimation(typingTexts[0]);
+            }
 
 						</script>
 
@@ -453,7 +633,7 @@ html[data-theme="light"] .experience-date{color:#b8860b;}
 										<p><span class="title-s">Name: </span> <span>Ali Akbar K</span></p>
 										<p><span class="title-s">Job Role: </span> <span>Product Developer</span></p>
 										<p><span class="title-s">Experience: </span> <span id="experience-value" data-start="2024-12">3 Months</span></p>
-										<p><span class="title-s">Address: </span> <span>Bengaluru, India</span></p>
+                    <p><span class="title-s">Address: </span> <span>Bengaluru, India</span></p>
 									  </div>
 									</div>
 								  </div>
@@ -1047,7 +1227,7 @@ With over 1 years of comprehensive experience in data science and analytics, I a
           			<span class="icon-map-signs"></span>
           		</div>
           		<h3 class="mb-4">Address</h3>
-	            <p>Bengaluru, India</p>
+              <p class="contact-address">Bengaluru, India</p>
 	          </div>
           </div>
           <div class="col-md-6 col-lg-3 d-flex ftco-animate">
@@ -1128,6 +1308,14 @@ With over 1 years of comprehensive experience in data science and analytics, I a
     var sun = document.getElementById('ptfIconSun');
     var moon = document.getElementById('ptfIconMoon');
     if(!sun || !moon) return;
+    if(!sun.dataset.cleaned){
+      sun.innerHTML = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/>';
+      sun.setAttribute('fill','none');
+      sun.setAttribute('stroke','currentColor');
+      sun.setAttribute('stroke-width','2');
+      sun.setAttribute('stroke-linecap','round');
+      sun.dataset.cleaned = 'true';
+    }
     sun.style.display = t === 'dark' ? 'block' : 'none';
     moon.style.display = t === 'dark' ? 'none' : 'block';
   }
@@ -1139,6 +1327,87 @@ With over 1 years of comprehensive experience in data science and analytics, I a
     try{ localStorage.setItem('site-theme', next); }catch(e){}
     icons(next);
   };
+})();
+
+(function(){
+  var canvas = document.getElementById('ptf-bg-canvas');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  if(!ctx) return;
+  var dpr = window.devicePixelRatio || 1;
+  var W = 0, H = 0;
+  var particles = [];
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize(){
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = Math.floor(W * dpr);
+    canvas.height = Math.floor(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function makeParticles(){
+    var count = Math.max(40, Math.min(110, Math.floor(W * H / 16000)));
+    particles = [];
+    for(var i = 0; i < count; i++){
+      particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        r: Math.random() * 1.7 + 0.7
+      });
+    }
+  }
+
+  function themeColors(){
+    var light = document.documentElement.getAttribute('data-theme') === 'light';
+    return light
+      ? { dot: '224,122,95', line: '55,75,110', lineAlpha: 0.46 }
+      : { dot: '255,189,57', line: '130,165,255', lineAlpha: 0.32 };
+  }
+
+  function step(){
+    ctx.clearRect(0, 0, W, H);
+    var c = themeColors();
+    var i, j, dx, dy, d, p;
+    for(i = 0; i < particles.length; i++){
+      p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      if(p.x < -12) p.x = W + 12; else if(p.x > W + 12) p.x = -12;
+      if(p.y < -12) p.y = H + 12; else if(p.y > H + 12) p.y = -12;
+    }
+    for(i = 0; i < particles.length; i++){
+      for(j = i + 1; j < particles.length; j++){
+        dx = particles[i].x - particles[j].x;
+        dy = particles[i].y - particles[j].y;
+        d = dx * dx + dy * dy;
+        if(d < 16900){
+          ctx.strokeStyle = 'rgba(' + c.line + ',' + ((1 - d / 16900) * c.lineAlpha).toFixed(3) + ')';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    for(i = 0; i < particles.length; i++){
+      p = particles[i];
+      ctx.fillStyle = 'rgba(' + c.dot + ',0.65)';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    if(!reduced) requestAnimationFrame(step);
+  }
+
+  window.addEventListener('resize', function(){ resize(); makeParticles(); });
+  resize();
+  makeParticles();
+  step();
 })();
 
 (function(){
