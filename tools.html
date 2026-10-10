@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Tools | Ali Akbar K</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('site-theme')==='light'?'light':'dark')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+<link rel="shotcut icon" sizes="20x20" href="https://github.com/Ali-Akbar-K/PORTFOLIO/blob/main/images/Alifivacon.ico.png?raw=true">
+<link rel="stylesheet" href="css/tools.css">
+</head>
+<body>
+  <header class="topnav">
+    <div class="topnav-inner">
+      <a class="brand-link" href="index.html">Ali Akbar K</a>
+      <nav class="nav-links">
+        <a href="index.html#home-section">Home</a>
+        <a href="index.html#about-section">About</a>
+        <a href="index.html#resume-section">Resume</a>
+        <a href="index.html#project-section">Projects</a>
+        <a href="certifications.html">Certificates</a>
+        <a href="awards.html">Awards</a>
+        <a href="tools.html" class="active">Tools</a>
+        <a href="index.html#contact-section">Contact</a>
+      </nav>
+      <div class="nav-right">
+        <div class="count-pill"><b>5</b> tools</div>
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Switch to light mode" aria-label="Switch to light mode" aria-pressed="false">
+          <svg id="iconMoon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
+          <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="tool-layout">
+      <aside class="tool-sidebar">
+        <div class="sidebar-heading">Services</div>
+        <nav class="tool-nav" aria-label="Tool navigation">
+          <button class="tool-nav-button is-active" type="button" data-tab="calc" aria-label="Calculator" aria-pressed="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="8" y1="18" x2="12" y2="18"/></svg>
+            <span>Calculator</span>
+          </button>
+          <button class="tool-nav-button" type="button" data-tab="music" aria-label="Audio library" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            <span>Audio</span>
+          </button>
+          <button class="tool-nav-button" type="button" data-tab="radio" aria-label="Worldwide live radio" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="m5 7 14-5M7 12h.01M11 12h.01M15 12h.01M7 16h10"/></svg>
+            <span>FM World</span>
+          </button>
+          <button class="tool-nav-button" type="button" data-tab="notes" aria-label="Notes to Google Drive" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+            <span>Notes</span>
+          </button>
+          <button class="tool-nav-button" type="button" data-tab="cal" aria-label="Calendar" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Calendar</span>
+          </button>
+        </nav>
+      </aside>
+
+      <div class="tool-content">
+        <section class="dashboard-overview" aria-labelledby="dashboardTitle">
+          <div class="dashboard-heading">
+            <h1 id="dashboardTitle">Services</h1>
+            <p>Choose a tool to get started</p>
+          </div>
+          <div class="service-grid">
+            <button class="service-card service-calc is-active" type="button" data-tab="calc" aria-pressed="true">
+              <span class="service-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="8" y1="18" x2="12" y2="18"/></svg>
+              </span>
+              <span class="service-copy"><strong>Calculator</strong><small>Quick calculations</small></span>
+              <span class="service-arrow" aria-hidden="true">&rarr;</span>
+            </button>
+            <button class="service-card service-audio" type="button" data-tab="music" aria-pressed="false">
+              <span class="service-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              </span>
+              <span class="service-copy"><strong>Audio Library</strong><small>Music for every mood</small></span>
+              <span class="service-arrow" aria-hidden="true">&rarr;</span>
+            </button>
+            <button class="service-card service-radio" type="button" data-tab="radio" aria-label="Worldwide live FM and radio" aria-pressed="false">
+              <span class="service-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="m5 7 14-5M7 12h.01M11 12h.01M15 12h.01M7 16h10"/></svg>
+              </span>
+              <span class="service-copy"><strong>Worldwide Live FM</strong><small>Stations from 240+ countries</small></span>
+              <span class="service-arrow" aria-hidden="true">&rarr;</span>
+            </button>
+            <button class="service-card service-notes" type="button" data-tab="notes" aria-pressed="false">
+              <span class="service-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+              </span>
+              <span class="service-copy"><strong>Notes &amp; Drive</strong><small>Save notes to Google Drive</small></span>
+              <span class="service-arrow" aria-hidden="true">&rarr;</span>
+            </button>
+            <button class="service-card service-calendar" type="button" data-tab="cal" aria-pressed="false">
+              <span class="service-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </span>
+              <span class="service-copy"><strong>Calendar</strong><small>Plan your days</small></span>
+              <span class="service-arrow" aria-hidden="true">&rarr;</span>
+            </button>
+          </div>
+        </section>
+
+      <div class="panes">
+
+        <!-- ================= CALCULATOR ================= -->
+        <div class="pane is-active" data-pane="calc">
+          <div class="calc">
+            <div class="calc-disp">
+              <div class="calc-expr" id="calcExpr"></div>
+              <div class="calc-out" id="calcOut">0</div>
+            </div>
+            <div class="calc-keys" id="calcKeys">
+              <button type="button" class="op" data-c="clear">C</button>
+              <button type="button" class="op" data-c="back">&#9003;</button>
+              <button type="button" class="op" data-c="pct">%</button>
+              <button type="button" class="op" data-v="/">&#247;</button>
+              <button type="button" data-v="7">7</button>
+              <button type="button" data-v="8">8</button>
+              <button type="button" data-v="9">9</button>
+              <button type="button" class="op" data-v="*">&#215;</button>
+              <button type="button" data-v="4">4</button>
+              <button type="button" data-v="5">5</button>
+              <button type="button" data-v="6">6</button>
+              <button type="button" class="op" data-v="-">&#8722;</button>
+              <button type="button" data-v="1">1</button>
+              <button type="button" data-v="2">2</button>
+              <button type="button" data-v="3">3</button>
+              <button type="button" class="op" data-v="+">+</button>
+              <button type="button" class="op" data-c="neg">&#177;</button>
+              <button type="button" data-v="0">0</button>
+              <button type="button" data-v=".">.</button>
+              <button type="button" class="eq" data-c="eq">=</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= MUSIC (Instagram-style audio) ================= -->
+        <div class="pane" data-pane="music">
+          <div class="ig-music">
+            <div class="ig-toolbar">
+              <input type="search" class="ig-search" id="igSearch" placeholder="Search music, artist...">
+            </div>
+            <div class="ig-chips" id="igChips"></div>
+
+            <div class="ig-subhead">
+              <span class="ig-spark">&#9835;</span> Audio library <em>tap a track to preview it</em>
+            </div>
+            <div class="ig-grid" id="igGrid"></div>
+
+            <p class="ig-tip">Library tracks preview for 30 seconds. Open Worldwide Live FM &amp; Radio to browse stations by country.</p>
+          </div>
+        </div>
+
+        <!-- ================= WORLDWIDE LIVE FM ================= -->
+        <div class="pane" data-pane="radio">
+          <div class="ig-music">
+            <div class="fm-intro">
+              <span class="ig-live-badge">LIVE</span>
+              <div>
+                <h2>Worldwide Live FM &amp; Radio</h2>
+                <p>News stations are shown first. Choose a country or search by station name, then press play.</p>
+              </div>
+            </div>
+            <div class="radio-controls">
+              <label class="radio-category-wrap" for="radioCategory">
+                <span>Station type</span>
+                <select class="input" id="radioCategory">
+                  <option value="news">News stations</option>
+                  <option value="">All stations</option>
+                </select>
+              </label>
+              <label class="radio-country-wrap" for="radioCountry">
+                <span>Country</span>
+                <select class="input" id="radioCountry">
+                  <option value="">All countries</option>
+                </select>
+              </label>
+              <label class="radio-search-wrap" for="radioSearch">
+                <span>Station</span>
+                <input class="input" type="search" id="radioSearch" placeholder="Search stations worldwide...">
+              </label>
+              <button class="btn ghost radio-refresh" id="radioRefresh" type="button">Refresh stations</button>
+            </div>
+            <p class="radio-status" id="radioStatus" role="status" aria-live="polite">Choose Live FM to load stations worldwide.</p>
+            <div class="ig-grid ig-radio" id="igRadio" aria-label="Worldwide live radio stations"></div>
+            <button class="btn ghost radio-more" id="radioMore" type="button" hidden>Load more stations</button>
+            <p class="ig-tip">Live streams are provided by the stations. Availability and audio format can vary by country and browser.</p>
+          </div>
+        </div>
+
+        <div class="ig-player" id="igPlayer" role="region" aria-label="Audio player">
+          <div class="ig-player-art" id="igPlayerArt">&#9835;</div>
+          <div class="ig-player-meta">
+            <div class="ig-player-title" id="igPlayerTitle">&mdash;</div>
+            <div class="ig-player-sub" id="igPlayerSub">&mdash;</div>
+            <a class="ig-player-link" id="igPlayerLink" href="#" target="_blank" rel="noopener noreferrer" hidden>Open station website</a>
+          </div>
+          <div class="ig-player-prog">
+            <div class="ig-player-bar"><div class="ig-player-track" id="igPlayerTrack"></div></div>
+          </div>
+          <button class="ig-play" id="igPlayPause" type="button" aria-label="Play / Pause">
+            <svg id="igPlayIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <svg id="igPauseIcon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+          </button>
+          <button class="ig-close" id="igClose" type="button" aria-label="Close player">&times;</button>
+        </div>
+
+        <!-- ================= NOTES -> GOOGLE DRIVE ================= -->
+        <div class="pane" data-pane="notes">
+          <div class="notes">
+            <div class="field">
+              <label for="noteTitle">Title</label>
+              <input class="input" id="noteTitle" type="text" placeholder="Note title (goes into the Drive doc)">
+            </div>
+            <div class="field">
+              <label for="noteBody">Your note</label>
+              <textarea class="input" id="noteBody" placeholder="Type here... press Save to send it to your Google Drive Doc."></textarea>
+            </div>
+            <div class="note-actions">
+              <button class="btn" type="button" data-n="drive">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M7.71 3.5 1.15 15l3.42 6 6.56-11.5zM9.94 3.5 3.38 15h13.12L22.85 3.5zM22.85 15H9.73l-3.42 6h13.12z"/></svg>
+                Save to Google Drive
+              </button>
+              <button class="btn ghost" type="button" data-n="local">Save locally</button>
+              <button class="btn ghost" type="button" data-n="clear">Clear</button>
+              <span class="status" id="noteStatus"></span>
+            </div>
+
+            <details class="guide">
+              <summary>Connect your Google Drive Doc (one-time setup)</summary>
+              <div class="guide-inner">
+                <div class="field" style="margin:8px 0 12px">
+                  <label for="driveUrl">Apps Script Web App URL</label>
+                  <input class="input" id="driveUrl" type="url" placeholder="https://script.google.com/macros/s/XXXX/exec">
+                  <button class="btn ghost" type="button" data-n="saveurl" style="margin-top:8px">Save URL</button>
+                </div>
+                <ol>
+                  <li>Open <a href="https://script.google.com" target="_blank" rel="noopener">script.google.com</a> &rarr; New project.</li>
+                  <li>Paste the code from <code>google-apps-script/DriveNotes.gs</code> (also shown below) and set <code>DOC_ID</code> to your Google Doc ID (the long id in the Doc URL between <code>/d/</code> and <code>/edit</code>).</li>
+                  <li>Deploy &rarr; New deployment &rarr; type <b>Web app</b>. Execute as: <b>Me</b>. Who has access: <b>Anyone</b>.</li>
+                  <li>Copy the Web app URL ending in <code>/exec</code>, paste it above, click <b>Save URL</b>.</li>
+                </ol>
+                <pre id="driveCode"></pre>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <!-- ================= CALENDAR ================= -->
+        <div class="pane" data-pane="cal">
+          <div class="cal">
+            <div class="cal-head">
+              <div class="cal-mon" id="calMon">&nbsp;</div>
+              <div class="cal-nav">
+                <button type="button" data-cal="prev" title="Previous month">&#8249;</button>
+                <button type="button" data-cal="today" title="Today" class="cal-today">Today</button>
+                <button type="button" data-cal="next" title="Next month">&#8250;</button>
+              </div>
+            </div>
+            <div class="cal-grid" id="calGrid"></div>
+            <div class="cal-day">
+              <h4 id="calDayTitle">&nbsp;</h4>
+              <div class="cal-add">
+                <input class="input" id="calInput" type="text" placeholder="Add a note or reminder...">
+                <button class="btn" type="button" data-cal="add">Add</button>
+              </div>
+              <ul class="cal-events" id="calEvents"></ul>
+            </div>
+            <p class="ig-tip">Day notes are saved in this browser (localStorage), so they persist between visits.</p>
+          </div>
+        </div>
+
+      </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; <script>document.write(new Date().getFullYear());</script> Ali Akbar K &middot; Built with <a href="https://www.instagram.com/ali_akbar.k_" target="_blank" rel="noopener">love</a> &middot; <a href="index.html">Back to Home</a></p>
+  </footer>
+
+  <script src="js/tools.js"></script>
+</body>
+</html>
