@@ -1,4 +1,4 @@
-/* ===== My Tools page (Calculator · Live Music · Drive Notes · Calendar) ===== */
+/* ===== My Tools page (Calculator · Audio · Radio · TV · Notes · Calendar) ===== */
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   color-scheme:light;
@@ -171,6 +171,7 @@ body.has-player{padding-bottom:100px;}
 .service-calc{background:linear-gradient(135deg,#7978ff,#9f97ff);}
 .service-audio{background:linear-gradient(135deg,#ffab35,#ff743f);}
 .service-radio{background:linear-gradient(135deg,#35a9ff,#3979ec);}
+.service-tv{background:linear-gradient(135deg,#ef5364,#b63575);}
 .service-notes{background:linear-gradient(135deg,#e477ef,#c34ddc);}
 .service-calendar{background:linear-gradient(135deg,#24c6b4,#1799b8);}
 .service-icon{position:absolute;left:16px;top:14px;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.95);color:#4d4ab8;}
@@ -269,6 +270,10 @@ body.has-player{padding-bottom:100px;}
 .radio-controls{display:grid;grid-template-columns:minmax(150px,.8fr) minmax(160px,.8fr) minmax(220px,1.4fr) auto;align-items:end;gap:12px;margin:0 0 12px;}
 .radio-controls label{display:grid;gap:5px;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;}
 .radio-controls .input{height:43px;font-size:13px;}
+.radio-controls select.input option{background:var(--panel);color:var(--text);}
+.radio-controls select.input option:checked{background:var(--active-bg);color:var(--text);}
+[data-theme="dark"] .radio-controls select.input{color-scheme:dark;}
+[data-theme="light"] .radio-controls select.input{color-scheme:light;}
 .radio-refresh{height:43px;white-space:nowrap;padding:8px 13px;}
 .radio-status{min-height:20px;margin:0 0 14px;color:var(--muted);font-size:12px;}
 .radio-status:empty{display:none;}
@@ -279,6 +284,27 @@ body.has-player{padding-bottom:100px;}
 .ig-radio .ig-live-tag{font-size:10px;letter-spacing:.3px;}
 .ig-radio .ig-card-body .a{white-space:normal;min-height:34px;}
 .ig-radio .ig-card-body .meta{margin-top:8px;}
+.tv-player-wrap{margin:0 0 18px;border:1px solid var(--border);border-radius:14px;background:#000;overflow:hidden;}
+.tv-player{display:block;width:100%;max-height:min(62vw,520px);aspect-ratio:16/9;background:#000;}
+.tv-player-info{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;}
+.tv-now-playing{min-height:34px;color:#fff;font-size:12px;}
+.tv-player-actions{display:flex;align-items:center;gap:12px;}
+.tv-copy-button{flex:0 0 auto;padding:5px 9px;border:1px solid rgba(255,255,255,.25);border-radius:7px;background:transparent;color:#fff;font:inherit;font-size:11px;cursor:pointer;}
+.tv-copy-button:hover{border-color:var(--blue);color:var(--blue);}
+.tv-copy-button[hidden]{display:none;}
+.tv-stream-link{flex:0 0 auto;color:var(--blue);font-size:12px;font-weight:600;text-decoration:none;}
+.tv-stream-link[hidden]{display:none;}
+.tv-stream-link:hover{text-decoration:underline;}
+.tv-controls{margin-top:4px;}
+.ig-tv .ig-card-art{aspect-ratio:16/10;background:linear-gradient(135deg,#252a50,#424a76);font-size:32px;}
+.tv-channel-logo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:12px;background:#fff;}
+.tv-channel-initial{position:absolute;inset:0;display:grid;place-items:center;}
+.tv-channel-logo:not([hidden])~.tv-channel-initial{display:none;}
+.ig-tv .ig-card-body .a{white-space:normal;min-height:18px;}
+.ig-tv .ig-card-body .meta{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tv-empty{grid-column:1/-1;color:var(--muted);text-align:center;padding:30px 0;}
+.ig-tip a{color:var(--blue);text-decoration:none;}
+.ig-tip a:hover{text-decoration:underline;}
 
 /* ---- Mini player (sticky, like a music app) ---- */
 .ig-player{
@@ -325,6 +351,7 @@ body.has-player{padding-bottom:100px;}
   .radio-category-wrap,.radio-country-wrap{grid-column:auto;}
   .radio-search-wrap{grid-column:1 / -1;}
   .radio-refresh{grid-column:1 / -1;width:100%;}
+  .tv-player{max-height:none;}
 }
 
 /* ===== Notes -> Drive ===== */

@@ -1,4 +1,4 @@
-/* ===== My Tools page (Calculator · Live Music · Drive Notes · Calendar) ===== */
+/* ===== My Tools page (Calculator · Audio · Radio · TV · Notes · Calendar) ===== */
 (function () {
   'use strict';
 
@@ -57,6 +57,8 @@
       pane.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     if (name === 'radio') loadRadioStations();
+    if (name === 'tv') loadTVChannels();
+    else stopTVPlayback();
   }
   $all('.tool-nav-button, .service-card').forEach(function (t) {
     t.addEventListener('click', function () {
@@ -314,6 +316,26 @@
     return tryFetch();
   }
 
+  function loadHlsLibrary() {
+    if (window.Hls) return Promise.resolve();
+    if (!hlsLoadPromise) {
+      hlsLoadPromise = new Promise(function (resolve, reject) {
+        var script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/hls.js@1.5.20/dist/hls.min.js';
+        script.onload = function () {
+          if (window.Hls) resolve();
+          else reject(new Error('HLS support could not be loaded.'));
+        };
+        script.onerror = function () { reject(new Error('HLS support could not be loaded.')); };
+        document.head.appendChild(script);
+      }).catch(function (error) {
+        hlsLoadPromise = null;
+        throw error;
+      });
+    }
+    return hlsLoadPromise;
+  }
+
   function playIconSVG() { return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'; }
   function pauseIconSVG() { return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>'; }
   function gradFor(name) { var n = 0; for (var i = 0; i < name.length; i++) n += name.charCodeAt(i); return GRADS[n % GRADS.length]; }
@@ -431,23 +453,8 @@
     var nativeHls = hlsSupport === 'probably' || (hlsSupport === 'maybe' && !window.MediaSource);
     if (isHls && !nativeHls) {
       if (!window.Hls) {
-        if (!hlsLoadPromise) {
-          hlsLoadPromise = new Promise(function (resolve, reject) {
-            var script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/hls.js@1.5.20/dist/hls.min.js';
-            script.onload = function () {
-              if (window.Hls) resolve();
-              else reject(new Error('HLS support could not be loaded.'));
-            };
-            script.onerror = function () { reject(new Error('HLS support could not be loaded.')); };
-            document.head.appendChild(script);
-          }).catch(function (error) {
-            hlsLoadPromise = null;
-            throw error;
-          });
-        }
         var requestedSource = source;
-        hlsLoadPromise.then(function () {
+        loadHlsLibrary().then(function () {
           if (current && current.sources[streamSourceIndex] === requestedSource) playCurrent(requestId);
         }).catch(function (error) {
           if (current && current.sources[streamSourceIndex] === requestedSource) tryNextStream(error, requestId);
@@ -787,6 +794,338 @@
   });
   radioRefreshEl.addEventListener('click', function () { loadRadioStations(false); });
   radioMoreEl.addEventListener('click', function () { loadRadioStations(true); });
+
+  /* ============ IPTV-ORG LIVE TV ============ */
+  var TV_PLAYLIST_URL = 'https://iptv-org.github.io/iptv/index.m3u';
+  var tvChannelsEl = $('#tvChannels');
+  var tvPlayerEl = $('#tvPlayer');
+  var tvStatusEl = $('#tvStatus');
+  var tvNowPlayingEl = $('#tvNowPlaying');
+  var tvStreamLinkEl = $('#tvStreamLink');
+  var tvCopyStreamEl = $('#tvCopyStream');
+  var tvGroupEl = $('#tvGroup');
+  var tvCountryEl = $('#tvCountry');
+  var tvSearchEl = $('#tvSearch');
+  var tvRefreshEl = $('#tvRefresh');
+  var tvMoreEl = $('#tvMore');
+  var tvData = [];
+  var tvFilteredData = [];
+  var tvVisibleCount = 0;
+  var tvRequestId = 0;
+  var tvController = null;
+  var tvSearchTimer = null;
+  var tvHls = null;
+  var tvPlaybackId = 0;
+  var tvCurrentChannel = null;
+  var TV_PAGE_SIZE = 40;
+
+  function findM3UDelimiter(line) {
+    var quoted = false;
+    for (var i = 0; i < line.length; i++) {
+      if (line.charAt(i) === '"') quoted = !quoted;
+      else if (line.charAt(i) === ',' && !quoted) return i;
+    }
+    return -1;
+  }
+
+  function countryName(code) {
+    if (!code) return '';
+    code = code.toUpperCase();
+    if (!/^[A-Z]{2,3}$/.test(code)) return code;
+    if (typeof Intl.DisplayNames === 'function') {
+      var displayName = new Intl.DisplayNames(['en'], { type: 'region' }).of(code);
+      if (displayName && displayName !== code) return displayName;
+    }
+    return code;
+  }
+
+  function parseM3U(text) {
+    var channels = [];
+    var metadata = null;
+    text.split(/\r?\n/).forEach(function (line) {
+      line = line.trim();
+      if (!line) return;
+      if (line.indexOf('#EXTINF:') === 0) {
+        var comma = findM3UDelimiter(line);
+        var header = comma < 0 ? line : line.slice(0, comma);
+        var title = comma < 0 ? '' : line.slice(comma + 1).trim();
+        var attributes = {};
+        header.replace(/([\w-]+)="([^"]*)"/g, function (match, key, value) {
+          attributes[key.toLowerCase()] = value;
+          return match;
+        });
+        var countryMatch = (attributes['tvg-id'] || '').match(/\.([a-z]{2,3})(?:@|$)/i);
+        var countryCode = (attributes['tvg-country'] || '').split(/[;,]/)[0].trim() ||
+          (countryMatch ? countryMatch[1] : '');
+        var categories = (attributes['group-title'] || 'Other').split(';')
+          .map(function (category) { return category.trim(); })
+          .filter(function (category, index, all) { return category && all.indexOf(category) === index; });
+        metadata = {
+          name: attributes['tvg-name'] || title || 'Unnamed channel',
+          logo: attributes['tvg-logo'] || '',
+          country: countryName(countryCode),
+          categories: categories.length ? categories : ['Other']
+        };
+        return;
+      }
+      if (line.charAt(0) === '#') return;
+      if (!metadata) return;
+      try {
+        var url = new URL(line);
+        if (url.protocol === 'http:' || url.protocol === 'https:') {
+          channels.push({
+            name: metadata.name,
+            logo: metadata.logo,
+            country: metadata.country,
+            categories: metadata.categories,
+            url: url.href
+          });
+        }
+      } catch (error) {
+        console.warn('Skipping an invalid IPTV channel URL:', line);
+      }
+      metadata = null;
+    });
+    return channels;
+  }
+
+  function replaceTVOptions(select, values, allLabel) {
+    select.options.length = 0;
+    select.add(new Option(allLabel, ''));
+    values.forEach(function (value) {
+      var label = value === 'Animation' ? 'Cartoons & Animation'
+        : value === 'Kids' ? 'Kids & Children'
+        : value === 'Religious' ? 'Religious & Faith'
+        : value;
+      select.add(new Option(label, value));
+    });
+  }
+
+  function renderTVChannels(append) {
+    if (!append) {
+      tvChannelsEl.innerHTML = '';
+      tvVisibleCount = 0;
+    }
+    tvFilteredData = tvData.filter(function (channel) {
+      var query = tvSearchEl.value.trim().toLowerCase();
+      return (!tvGroupEl.value || channel.categories.indexOf(tvGroupEl.value) > -1) &&
+        (!tvCountryEl.value || channel.country === tvCountryEl.value) &&
+        (!query || (channel.name + ' ' + channel.categories.join(' ') + ' ' + channel.country).toLowerCase().indexOf(query) > -1);
+    });
+    var nextCount = Math.min(tvVisibleCount + TV_PAGE_SIZE, tvFilteredData.length);
+    for (var i = tvVisibleCount; i < nextCount; i++) {
+      var channel = tvFilteredData[i];
+      var card = el('button', { type: 'button', class: 'ig-card tv-channel-card', 'aria-label': 'Watch ' + channel.name });
+      var art = el('div', { class: 'ig-card-art tv-channel-art' });
+      if (channel.logo) {
+        try {
+          var logoUrl = new URL(channel.logo);
+          if (logoUrl.protocol === 'http:' || logoUrl.protocol === 'https:') {
+            var logo = el('img', { class: 'tv-channel-logo', alt: '', loading: 'lazy' });
+            logo.src = logoUrl.href;
+            logo.addEventListener('error', function () { this.hidden = true; });
+            art.appendChild(logo);
+          }
+        } catch (error) {
+          // Ignore invalid optional logo URLs; the channel remains available.
+        }
+      }
+      var initial = el('span', { class: 'tv-channel-initial' });
+      initial.textContent = channel.name.charAt(0).toUpperCase();
+      art.appendChild(initial);
+      card.appendChild(art);
+      var body = el('div', { class: 'ig-card-body' });
+      var title = el('div', { class: 't' });
+      title.textContent = channel.name;
+      body.appendChild(title);
+      var country = el('div', { class: 'a' });
+      country.textContent = channel.country || 'Worldwide';
+      body.appendChild(country);
+      var group = el('div', { class: 'meta' });
+      group.textContent = channel.categories.join(' · ');
+      body.appendChild(group);
+      card.appendChild(body);
+      card.addEventListener('click', function (selectedChannel) {
+        return function () { playTVChannel(selectedChannel); };
+      }(channel));
+      tvChannelsEl.appendChild(card);
+    }
+    tvVisibleCount = nextCount;
+    tvMoreEl.hidden = tvVisibleCount >= tvFilteredData.length;
+    if (!tvFilteredData.length) {
+      tvChannelsEl.appendChild(el('p', { class: 'tv-empty' }, 'No channels match these filters.'));
+    }
+    if (tvData.length) {
+      tvStatusEl.textContent = 'Showing ' + tvVisibleCount + ' of ' + tvFilteredData.length +
+        ' matching channels (' + tvData.length + ' in the playlist).';
+    }
+  }
+
+  function loadTVChannels() {
+    if (tvData.length) return;
+    if (tvController) tvController.abort();
+    tvController = new AbortController();
+    var requestId = ++tvRequestId;
+    tvRefreshEl.disabled = true;
+    tvStatusEl.textContent = 'Loading the IPTV-org channel playlist...';
+    fetch(TV_PLAYLIST_URL, { signal: tvController.signal }).then(function (response) {
+      if (!response.ok) throw new Error('Playlist request failed (' + response.status + ').');
+      return response.text();
+    }).then(function (text) {
+      if (requestId !== tvRequestId) return;
+      tvData = parseM3U(text);
+      if (!tvData.length) throw new Error('The playlist did not contain any playable HTTP(S) channels.');
+      var groups = {};
+      var countries = {};
+      tvData.forEach(function (channel) {
+        channel.categories.forEach(function (category) { groups[category] = true; });
+        if (channel.country) countries[channel.country] = true;
+      });
+      replaceTVOptions(tvGroupEl, Object.keys(groups).sort(), 'All categories');
+      replaceTVOptions(tvCountryEl, Object.keys(countries).sort(), 'All countries');
+      renderTVChannels(false);
+    }).catch(function (error) {
+      if (error.name === 'AbortError' || requestId !== tvRequestId) return;
+      console.error('Could not load the IPTV-org playlist:', error);
+      tvStatusEl.textContent = 'Could not load TV channels. Check your connection and use Reload playlist to try again.';
+    }).then(function () {
+      if (requestId === tvRequestId) tvRefreshEl.disabled = false;
+    });
+  }
+
+  function destroyTVHls() {
+    if (tvHls) {
+      tvHls.destroy();
+      tvHls = null;
+    }
+  }
+
+  function stopTVPlayback() {
+    tvPlaybackId++;
+    tvCurrentChannel = null;
+    destroyTVHls();
+    tvPlayerEl.pause();
+    tvPlayerEl.removeAttribute('src');
+    tvPlayerEl.load();
+    tvStreamLinkEl.hidden = true;
+    tvCopyStreamEl.hidden = true;
+    tvNowPlayingEl.textContent = 'Choose a channel to start watching.';
+  }
+
+  function tvPlaybackError(channel, error) {
+    var mediaError = tvPlayerEl.error;
+    if ((error && error.name === 'NotSupportedError') || (mediaError && mediaError.code === 4)) {
+      return channel.name + ' uses a media codec this browser cannot decode. Open the stream URL in VLC or try a browser with the required codec.';
+    }
+    if (mediaError && mediaError.code === 3) {
+      return channel.name + ' could not be decoded by this browser. Try another channel or open the stream URL in VLC.';
+    }
+    return channel.name + ' could not be played. The provider may be offline, geo-restricted, or blocking browser playback.';
+  }
+
+  function playTVChannel(channel) {
+    var playbackId = ++tvPlaybackId;
+    tvCurrentChannel = channel;
+    destroyTVHls();
+    tvPlayerEl.pause();
+    tvPlayerEl.removeAttribute('src');
+    tvPlayerEl.load();
+    tvStreamLinkEl.href = channel.url;
+    tvStreamLinkEl.hidden = false;
+    tvCopyStreamEl.hidden = false;
+    tvNowPlayingEl.textContent = 'Connecting to ' + channel.name + '...';
+    var isHls = /\.m3u8(?:$|[?#])/i.test(channel.url);
+    var hlsSupport = tvPlayerEl.canPlayType('application/vnd.apple.mpegurl');
+    var nativeHls = hlsSupport === 'probably' || (hlsSupport === 'maybe' && !window.MediaSource);
+    function attemptPlay() {
+      if (playbackId !== tvPlaybackId) return;
+      var result = tvPlayerEl.play();
+      if (result && typeof result.catch === 'function') {
+        result.catch(function (error) {
+          if (playbackId !== tvPlaybackId) return;
+          tvNowPlayingEl.textContent = error.name === 'NotAllowedError'
+            ? channel.name + ' is ready. Press Play to start watching.'
+            : tvPlaybackError(channel, error);
+        });
+      }
+    }
+    function startPlayback() {
+      if (playbackId !== tvPlaybackId) return;
+      if (isHls && !nativeHls && window.Hls && window.Hls.isSupported()) {
+        var instance = new window.Hls();
+        tvHls = instance;
+        instance.attachMedia(tvPlayerEl);
+        instance.on(window.Hls.Events.MEDIA_ATTACHED, function () {
+          if (playbackId !== tvPlaybackId || tvHls !== instance) return;
+          instance.loadSource(channel.url);
+        });
+        instance.on(window.Hls.Events.MANIFEST_PARSED, function () {
+          if (playbackId !== tvPlaybackId || tvHls !== instance) return;
+          attemptPlay();
+        });
+        instance.on(window.Hls.Events.ERROR, function (event, data) {
+          if (data.fatal && playbackId === tvPlaybackId && tvHls === instance) {
+            tvNowPlayingEl.textContent = tvPlaybackError(channel);
+            destroyTVHls();
+          }
+        });
+      } else if (isHls && !nativeHls) {
+        tvNowPlayingEl.textContent = 'HLS playback is not supported by this browser.';
+        return;
+      } else {
+        tvPlayerEl.src = channel.url;
+        attemptPlay();
+      }
+    }
+    tvNowPlayingEl.textContent = 'Connecting to ' + channel.name + '...';
+    if (isHls && !nativeHls && !window.Hls) {
+      loadHlsLibrary().then(startPlayback).catch(function (error) {
+        if (playbackId !== tvPlaybackId) return;
+        console.error('Could not load HLS playback support:', error);
+        tvNowPlayingEl.textContent = 'HLS playback support could not be loaded. Check your connection and try again.';
+      });
+    } else {
+      startPlayback();
+    }
+  }
+
+  tvPlayerEl.addEventListener('playing', function () {
+    tvNowPlayingEl.textContent = 'Now playing live TV.';
+  });
+  tvPlayerEl.addEventListener('error', function () {
+    if (tvPlayerEl.currentSrc && tvCurrentChannel) {
+      tvNowPlayingEl.textContent = tvPlaybackError(tvCurrentChannel);
+    }
+  });
+  tvGroupEl.addEventListener('change', function () { renderTVChannels(false); });
+  tvCountryEl.addEventListener('change', function () { renderTVChannels(false); });
+  tvSearchEl.addEventListener('input', function () {
+    window.clearTimeout(tvSearchTimer);
+    tvSearchTimer = window.setTimeout(function () { renderTVChannels(false); }, 200);
+  });
+  tvRefreshEl.addEventListener('click', function () {
+    tvData = [];
+    tvGroupEl.value = '';
+    tvCountryEl.value = '';
+    tvSearchEl.value = '';
+    renderTVChannels(false);
+    loadTVChannels();
+  });
+  tvMoreEl.addEventListener('click', function () { renderTVChannels(true); });
+  tvCopyStreamEl.addEventListener('click', function () {
+    if (!tvCurrentChannel) return;
+    if (!navigator.clipboard || !navigator.clipboard.writeText) {
+      tvNowPlayingEl.textContent = 'Copy the Open stream URL link address and paste it into VLC under Media > Open Network Stream.';
+      return;
+    }
+    navigator.clipboard.writeText(tvCurrentChannel.url).then(function () {
+      tvNowPlayingEl.textContent = 'Stream URL copied. In VLC, choose Media > Open Network Stream and paste it.';
+    }).catch(function (error) {
+      console.error('Could not copy the TV stream URL:', error);
+      tvNowPlayingEl.textContent = 'Could not copy the stream URL. Use Open stream URL and copy its address into VLC.';
+    });
+  });
+
   $('#igPlayPause').addEventListener('click', toggle);
   $('#igClose').addEventListener('click', stop);
 

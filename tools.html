@@ -25,7 +25,7 @@
         <a href="index.html#contact-section">Contact</a>
       </nav>
       <div class="nav-right">
-        <div class="count-pill"><b>5</b> tools</div>
+        <div class="count-pill"><b>6</b> tools</div>
         <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Switch to light mode" aria-label="Switch to light mode" aria-pressed="false">
           <svg id="iconMoon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
           <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>
@@ -50,6 +50,10 @@
           <button class="tool-nav-button" type="button" data-tab="radio" aria-label="Worldwide live radio" aria-pressed="false">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="m5 7 14-5M7 12h.01M11 12h.01M15 12h.01M7 16h10"/></svg>
             <span>FM World</span>
+          </button>
+          <button class="tool-nav-button" type="button" data-tab="tv" aria-label="Live TV channels" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="m8 2 4 5 4-5M7 12h10M7 16h6"/></svg>
+            <span>TV</span>
           </button>
           <button class="tool-nav-button" type="button" data-tab="notes" aria-label="Notes to Google Drive" aria-pressed="false">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
@@ -88,6 +92,13 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="m5 7 14-5M7 12h.01M11 12h.01M15 12h.01M7 16h10"/></svg>
               </span>
               <span class="service-copy"><strong>Worldwide Live FM</strong><small>Stations from 240+ countries</small></span>
+              <span class="service-arrow" aria-hidden="true">&rarr;</span>
+            </button>
+            <button class="service-card service-tv" type="button" data-tab="tv" aria-label="Live TV channels" aria-pressed="false">
+              <span class="service-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="m8 2 4 5 4-5M7 12h10M7 16h6"/></svg>
+              </span>
+              <span class="service-copy"><strong>Live TV</strong><small>Browse public IPTV channels</small></span>
               <span class="service-arrow" aria-hidden="true">&rarr;</span>
             </button>
             <button class="service-card service-notes" type="button" data-tab="notes" aria-pressed="false">
@@ -192,6 +203,48 @@
             <div class="ig-grid ig-radio" id="igRadio" aria-label="Worldwide live radio stations"></div>
             <button class="btn ghost radio-more" id="radioMore" type="button" hidden>Load more stations</button>
             <p class="ig-tip">Live streams are provided by the stations. Availability and audio format can vary by country and browser.</p>
+          </div>
+        </div>
+
+        <!-- ================= LIVE TV (IPTV-ORG) ================= -->
+        <div class="pane" data-pane="tv">
+          <div class="ig-music">
+            <div class="fm-intro">
+              <span class="ig-live-badge">LIVE</span>
+              <div>
+                <h2>Live TV</h2>
+                <p>Browse public channels from the IPTV-org network playlist and select a channel to watch.</p>
+              </div>
+            </div>
+            <div class="tv-player-wrap">
+              <video class="tv-player" id="tvPlayer" controls playsinline preload="none" aria-label="Live TV player"></video>
+              <div class="tv-player-info">
+                <p class="tv-now-playing" id="tvNowPlaying" role="status" aria-live="polite">Choose a channel to start watching.</p>
+                <div class="tv-player-actions">
+                  <button class="tv-copy-button" id="tvCopyStream" type="button" hidden>Copy for VLC</button>
+                  <a class="tv-stream-link" id="tvStreamLink" href="#" target="_blank" rel="noopener noreferrer" hidden>Open stream URL</a>
+                </div>
+              </div>
+            </div>
+            <div class="radio-controls tv-controls">
+              <label class="radio-category-wrap" for="tvGroup">
+                <span>Category</span>
+                <select class="input" id="tvGroup"><option value="">All categories</option></select>
+              </label>
+              <label class="radio-country-wrap" for="tvCountry">
+                <span>Country</span>
+                <select class="input" id="tvCountry"><option value="">All countries</option></select>
+              </label>
+              <label class="radio-search-wrap" for="tvSearch">
+                <span>Channel</span>
+                <input class="input" type="search" id="tvSearch" placeholder="Search channels...">
+              </label>
+              <button class="btn ghost radio-refresh" id="tvRefresh" type="button">Reload playlist</button>
+            </div>
+            <p class="radio-status" id="tvStatus" role="status" aria-live="polite">Choose Live TV to load channels.</p>
+            <div class="ig-grid ig-tv" id="tvChannels" aria-label="Live TV channels"></div>
+            <button class="btn ghost radio-more" id="tvMore" type="button" hidden>Load more channels</button>
+            <p class="ig-tip">Playlist: <a href="https://iptv-org.github.io/iptv/index.m3u" target="_blank" rel="noopener noreferrer">iptv-org.github.io/iptv/index.m3u</a> · <a href="https://github.com/iptv-org/iptv" target="_blank" rel="noopener noreferrer">IPTV-org project</a>. To open the full playlist in VLC, copy the playlist link, then choose <b>Media &rarr; Open Network Stream</b>. Streams are provided by third parties; availability and viewing rights vary by channel and region.</p>
           </div>
         </div>
 
