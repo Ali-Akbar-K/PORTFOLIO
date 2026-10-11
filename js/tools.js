@@ -797,12 +797,16 @@
 
   /* ============ IPTV-ORG LIVE TV ============ */
   var TV_PLAYLIST_URL = 'https://iptv-org.github.io/iptv/index.m3u';
+  var tvOpenPlaylistEl = $('#tvOpenPlaylist');
+  var tvCopyPlaylistEl = $('#tvCopyPlaylist');
+  var tvPlaylistStatusEl = $('#tvPlaylistStatus');
   var tvChannelsEl = $('#tvChannels');
   var tvPlayerEl = $('#tvPlayer');
   var tvStatusEl = $('#tvStatus');
   var tvNowPlayingEl = $('#tvNowPlaying');
   var tvStreamLinkEl = $('#tvStreamLink');
   var tvCopyStreamEl = $('#tvCopyStream');
+  var tvNextChannelEl = $('#tvNextChannel');
   var tvGroupEl = $('#tvGroup');
   var tvCountryEl = $('#tvCountry');
   var tvSearchEl = $('#tvSearch');
@@ -817,6 +821,9 @@
   var tvHls = null;
   var tvPlaybackId = 0;
   var tvCurrentChannel = null;
+  var tvCurrentIndex = -1;
+  var tvFailureHandledId = 0;
+  var tvSkipCounts = { headers: 0, insecure: 0 };
   var TV_PAGE_SIZE = 40;
 
   function findM3UDelimiter(line) {
@@ -826,6 +833,36 @@
       else if (line.charAt(i) === ',' && !quoted) return i;
     }
     return -1;
+  }
+
+  function vlcPlaylistUrl() {
+    var userAgent = navigator.userAgent || '';
+    var isIOS = /iPad|iPhone|iPod/.test(userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (isIOS) {
+      return 'vlc-x-callback://x-callback-url/stream?url=' + encodeURIComponent(TV_PLAYLIST_URL);
+    }
+    if (/Android/i.test(userAgent)) {
+      var playlist = new URL(TV_PLAYLIST_URL);
+      return 'intent://' + playlist.host + playlist.pathname +
+        '#Intent;scheme=' + playlist.protocol.slice(0, -1) +
+        ';package=org.videolan.vlc;S.browser_fallback_url=' +
+        encodeURIComponent('https://play.google.com/store/apps/details?id=org.videolan.vlc') + ';end';
+    }
+    return '';
+  }
+
+  function copyTVUrl(url, statusEl, successMessage, fallbackMessage) {
+    if (!navigator.clipboard || !navigator.clipboard.writeText) {
+      statusEl.textContent = fallbackMessage;
+      return;
+    }
+    navigator.clipboard.writeText(url).then(function () {
+      statusEl.textContent = successMessage;
+    }).catch(function (error) {
+      console.error('Could not copy the TV link:', error);
+      statusEl.textContent = fallbackMessage;
+    });
   }
 
   function countryName(code) {
@@ -860,12 +897,19 @@
         var categories = (attributes['group-title'] || 'Other').split(';')
           .map(function (category) { return category.trim(); })
           .filter(function (category, index, all) { return category && all.indexOf(category) === index; });
+        var requiresHeaders = Boolean(attributes['http-user-agent'] || attributes['http-referrer']);
         metadata = {
           name: attributes['tvg-name'] || title || 'Unnamed channel',
           logo: attributes['tvg-logo'] || '',
           country: countryName(countryCode),
-          categories: categories.length ? categories : ['Other']
+          categories: categories.length ? categories : ['Other'],
+          requiresHeaders: requiresHeaders
         };
+        return;
+      }
+      if (metadata && line.indexOf('#EXTVLCOPT:') === 0 &&
+          /http-(?:user-agent|referrer)\s*=/i.test(line)) {
+        metadata.requiresHeaders = true;
         return;
       }
       if (line.charAt(0) === '#') return;
@@ -873,13 +917,19 @@
       try {
         var url = new URL(line);
         if (url.protocol === 'http:' || url.protocol === 'https:') {
-          channels.push({
-            name: metadata.name,
-            logo: metadata.logo,
-            country: metadata.country,
-            categories: metadata.categories,
-            url: url.href
-          });
+          if (metadata.requiresHeaders) {
+            tvSkipCounts.headers++;
+          } else if (document.location.protocol === 'https:' && url.protocol !== 'https:') {
+            tvSkipCounts.insecure++;
+          } else {
+            channels.push({
+              name: metadata.name,
+              logo: metadata.logo,
+              country: metadata.country,
+              categories: metadata.categories,
+              url: url.href
+            });
+          }
         }
       } catch (error) {
         console.warn('Skipping an invalid IPTV channel URL:', line);
@@ -957,7 +1007,9 @@
     }
     if (tvData.length) {
       tvStatusEl.textContent = 'Showing ' + tvVisibleCount + ' of ' + tvFilteredData.length +
-        ' matching channels (' + tvData.length + ' in the playlist).';
+        ' matching browser-compatible channels (' + tvData.length + ' available' +
+        (tvSkipCounts.headers ? ', ' + tvSkipCounts.headers + ' requiring VLC headers' : '') +
+        (tvSkipCounts.insecure ? ', ' + tvSkipCounts.insecure + ' HTTP-only on this secure page' : '') + ').';
     }
   }
 
@@ -973,6 +1025,7 @@
       return response.text();
     }).then(function (text) {
       if (requestId !== tvRequestId) return;
+      tvSkipCounts = { headers: 0, insecure: 0 };
       tvData = parseM3U(text);
       if (!tvData.length) throw new Error('The playlist did not contain any playable HTTP(S) channels.');
       var groups = {};
@@ -1009,23 +1062,58 @@
     tvPlayerEl.load();
     tvStreamLinkEl.hidden = true;
     tvCopyStreamEl.hidden = true;
+    tvNextChannelEl.hidden = true;
+    tvCurrentIndex = -1;
     tvNowPlayingEl.textContent = 'Choose a channel to start watching.';
   }
 
-  function tvPlaybackError(channel, error) {
+  function tvPlaybackError(channel, error, hlsError) {
     var mediaError = tvPlayerEl.error;
+    if (error && error.message === 'HLS playback is not supported by this browser.') {
+      return error.message + ' Open the stream URL in VLC or try another browser.';
+    }
     if ((error && error.name === 'NotSupportedError') || (mediaError && mediaError.code === 4)) {
       return channel.name + ' uses a media codec this browser cannot decode. Open the stream URL in VLC or try a browser with the required codec.';
     }
     if (mediaError && mediaError.code === 3) {
       return channel.name + ' could not be decoded by this browser. Try another channel or open the stream URL in VLC.';
     }
+    var responseCode = hlsError && hlsError.response && hlsError.response.code;
+    if (responseCode === 403) return channel.name + ' was denied by its provider (403). It may be geo-restricted or require provider headers.';
+    if (responseCode === 404) return channel.name + ' was not found (404). The stream may have been removed.';
+    if (hlsError && hlsError.type === window.Hls.ErrorTypes.NETWORK_ERROR && !responseCode) {
+      return channel.name + ' could not be reached. This may be a CORS restriction, blocked request, or offline stream.';
+    }
+    if (mediaError && mediaError.code === 2) {
+      return channel.name + ' lost its network connection. It may be offline or blocked by its provider.';
+    }
     return channel.name + ' could not be played. The provider may be offline, geo-restricted, or blocking browser playback.';
+  }
+
+  function nextTVChannel() {
+    if (tvFilteredData.length < 2 || tvCurrentIndex < 0) {
+      tvNextChannelEl.hidden = true;
+      return;
+    }
+    var nextIndex = (tvCurrentIndex + 1) % tvFilteredData.length;
+    playTVChannel(tvFilteredData[nextIndex]);
+  }
+
+  function handleTVPlaybackFailure(channel, playbackId, error, hlsError) {
+    if (playbackId !== tvPlaybackId || tvFailureHandledId === playbackId) return;
+    tvFailureHandledId = playbackId;
+    destroyTVHls();
+    tvPlayerEl.pause();
+    var message = tvPlaybackError(channel, error, hlsError);
+    if (tvFilteredData.length < 2) tvNextChannelEl.hidden = true;
+    tvNowPlayingEl.textContent = message + ' Use Next channel to keep browsing, or open the stream in VLC.';
   }
 
   function playTVChannel(channel) {
     var playbackId = ++tvPlaybackId;
     tvCurrentChannel = channel;
+    tvCurrentIndex = tvFilteredData.indexOf(channel);
+    tvFailureHandledId = 0;
     destroyTVHls();
     tvPlayerEl.pause();
     tvPlayerEl.removeAttribute('src');
@@ -1033,6 +1121,7 @@
     tvStreamLinkEl.href = channel.url;
     tvStreamLinkEl.hidden = false;
     tvCopyStreamEl.hidden = false;
+    tvNextChannelEl.hidden = false;
     tvNowPlayingEl.textContent = 'Connecting to ' + channel.name + '...';
     var isHls = /\.m3u8(?:$|[?#])/i.test(channel.url);
     var hlsSupport = tvPlayerEl.canPlayType('application/vnd.apple.mpegurl');
@@ -1045,6 +1134,8 @@
           if (playbackId !== tvPlaybackId) return;
           tvNowPlayingEl.textContent = error.name === 'NotAllowedError'
             ? channel.name + ' is ready. Press Play to start watching.'
+            : error.name === 'NotSupportedError'
+            ? handleTVPlaybackFailure(channel, playbackId, error)
             : tvPlaybackError(channel, error);
         });
       }
@@ -1065,12 +1156,11 @@
         });
         instance.on(window.Hls.Events.ERROR, function (event, data) {
           if (data.fatal && playbackId === tvPlaybackId && tvHls === instance) {
-            tvNowPlayingEl.textContent = tvPlaybackError(channel);
-            destroyTVHls();
+            handleTVPlaybackFailure(channel, playbackId, null, data);
           }
         });
       } else if (isHls && !nativeHls) {
-        tvNowPlayingEl.textContent = 'HLS playback is not supported by this browser.';
+        handleTVPlaybackFailure(channel, playbackId, new Error('HLS playback is not supported by this browser.'));
         return;
       } else {
         tvPlayerEl.src = channel.url;
@@ -1094,9 +1184,10 @@
   });
   tvPlayerEl.addEventListener('error', function () {
     if (tvPlayerEl.currentSrc && tvCurrentChannel) {
-      tvNowPlayingEl.textContent = tvPlaybackError(tvCurrentChannel);
+      handleTVPlaybackFailure(tvCurrentChannel, tvPlaybackId);
     }
   });
+  tvNextChannelEl.addEventListener('click', nextTVChannel);
   tvGroupEl.addEventListener('change', function () { renderTVChannels(false); });
   tvCountryEl.addEventListener('change', function () { renderTVChannels(false); });
   tvSearchEl.addEventListener('input', function () {
@@ -1112,18 +1203,31 @@
     loadTVChannels();
   });
   tvMoreEl.addEventListener('click', function () { renderTVChannels(true); });
-  tvCopyStreamEl.addEventListener('click', function () {
-    if (!tvCurrentChannel) return;
-    if (!navigator.clipboard || !navigator.clipboard.writeText) {
-      tvNowPlayingEl.textContent = 'Copy the Open stream URL link address and paste it into VLC under Media > Open Network Stream.';
+  tvOpenPlaylistEl.addEventListener('click', function () {
+    var appUrl = vlcPlaylistUrl();
+    if (!appUrl) {
+      tvPlaylistStatusEl.textContent = 'On a phone, install VLC, then use Open in VLC. On a computer, copy the playlist link into VLC under Media > Open Network Stream.';
       return;
     }
-    navigator.clipboard.writeText(tvCurrentChannel.url).then(function () {
-      tvNowPlayingEl.textContent = 'Stream URL copied. In VLC, choose Media > Open Network Stream and paste it.';
-    }).catch(function (error) {
-      console.error('Could not copy the TV stream URL:', error);
-      tvNowPlayingEl.textContent = 'Could not copy the stream URL. Use Open stream URL and copy its address into VLC.';
-    });
+    tvPlaylistStatusEl.textContent = 'Opening the complete playlist in VLC...';
+    window.location.href = appUrl;
+  });
+  tvCopyPlaylistEl.addEventListener('click', function () {
+    copyTVUrl(
+      TV_PLAYLIST_URL,
+      tvPlaylistStatusEl,
+      'Playlist link copied. Open VLC and use Open Network Stream to load all channels.',
+      'Copy the playlist link shown below, then paste it into VLC using Open Network Stream.'
+    );
+  });
+  tvCopyStreamEl.addEventListener('click', function () {
+    if (!tvCurrentChannel) return;
+    copyTVUrl(
+      tvCurrentChannel.url,
+      tvNowPlayingEl,
+      'Stream URL copied. In VLC, choose Media > Open Network Stream and paste it.',
+      'Copy the Open stream URL link address and paste it into VLC under Media > Open Network Stream.'
+    );
   });
 
   $('#igPlayPause').addEventListener('click', toggle);

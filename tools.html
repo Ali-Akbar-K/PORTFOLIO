@@ -221,6 +221,7 @@
               <div class="tv-player-info">
                 <p class="tv-now-playing" id="tvNowPlaying" role="status" aria-live="polite">Choose a channel to start watching.</p>
                 <div class="tv-player-actions">
+                  <button class="tv-copy-button" id="tvNextChannel" type="button" hidden>Next channel</button>
                   <button class="tv-copy-button" id="tvCopyStream" type="button" hidden>Copy for VLC</button>
                   <a class="tv-stream-link" id="tvStreamLink" href="#" target="_blank" rel="noopener noreferrer" hidden>Open stream URL</a>
                 </div>
@@ -241,10 +242,15 @@
               </label>
               <button class="btn ghost radio-refresh" id="tvRefresh" type="button">Reload playlist</button>
             </div>
+            <div class="tv-playlist-actions">
+              <button class="btn" id="tvOpenPlaylist" type="button">Open full playlist in VLC</button>
+              <button class="btn ghost" id="tvCopyPlaylist" type="button">Copy playlist link</button>
+              <span class="tv-playlist-status" id="tvPlaylistStatus" role="status" aria-live="polite"></span>
+            </div>
             <p class="radio-status" id="tvStatus" role="status" aria-live="polite">Choose Live TV to load channels.</p>
             <div class="ig-grid ig-tv" id="tvChannels" aria-label="Live TV channels"></div>
             <button class="btn ghost radio-more" id="tvMore" type="button" hidden>Load more channels</button>
-            <p class="ig-tip">Playlist: <a href="https://iptv-org.github.io/iptv/index.m3u" target="_blank" rel="noopener noreferrer">iptv-org.github.io/iptv/index.m3u</a> · <a href="https://github.com/iptv-org/iptv" target="_blank" rel="noopener noreferrer">IPTV-org project</a>. To open the full playlist in VLC, copy the playlist link, then choose <b>Media &rarr; Open Network Stream</b>. Streams are provided by third parties; availability and viewing rights vary by channel and region.</p>
+            <p class="ig-tip">For phones, install <a href="https://apps.apple.com/app/vlc-media-player/id650377962" target="_blank" rel="noopener noreferrer">VLC for iPhone</a> or <a href="https://play.google.com/store/apps/details?id=org.videolan.vlc" target="_blank" rel="noopener noreferrer">VLC for Android</a>, then open the full playlist above and choose a channel in VLC. If VLC does not open, copy this <a href="https://iptv-org.github.io/iptv/index.m3u" target="_blank" rel="noopener noreferrer">playlist link</a> and open it in VLC using Network Stream. The original playlist preserves stream settings required by some channels. <a href="https://github.com/iptv-org/iptv" target="_blank" rel="noopener noreferrer">IPTV-org project</a>. Streams are provided by third parties; availability and viewing rights vary by channel and region.</p>
           </div>
         </div>
 
