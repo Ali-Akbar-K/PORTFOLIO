@@ -817,6 +817,7 @@
   var tvVisibleCount = 0;
   var tvRequestId = 0;
   var tvController = null;
+  var tvPlaybackQueue = [];
   var tvSearchTimer = null;
   var tvHls = null;
   var tvPlaybackId = 0;
@@ -825,6 +826,52 @@
   var tvFailureHandledId = 0;
   var tvSkipCounts = { headers: 0, insecure: 0 };
   var TV_PAGE_SIZE = 40;
+  var TV_PROXY_URL = (window.TV_PROXY_URL || '').replace(/\/+$/, '');
+
+  function buildTVProxyUrl(url, referer, userAgent) {
+    if (!url || !TV_PROXY_URL) return '';
+    try {
+      var params = new URLSearchParams({ url: new URL(url, window.location.href).href });
+      if (referer) params.set('referer', referer);
+      if (userAgent) params.set('ua', userAgent);
+      return TV_PROXY_URL + '/proxy?' + params.toString();
+    } catch (error) {
+      return '';
+    }
+  }
+
+  function buildTVTranscodeUrl(url, mode, referer, userAgent) {
+    if (!url || !TV_PROXY_URL) return '';
+    try {
+      var params = new URLSearchParams({
+        url: new URL(url, window.location.href).href,
+        mode: mode || 'audio'
+      });
+      if (referer) params.set('referer', referer);
+      if (userAgent) params.set('ua', userAgent);
+      return TV_PROXY_URL + '/transcode?' + params.toString();
+    } catch (error) {
+      return '';
+    }
+  }
+
+  function buildTVPlaybackQueue(channel) {
+    var queue = [];
+    var seen = {};
+    function add(source) {
+      if (!source || !source.url || seen[source.url]) return;
+      queue.push(source);
+      seen[source.url] = true;
+    }
+    if (channel && channel.url) add({ label: 'direct', url: channel.url });
+    var proxyUrl = buildTVProxyUrl(channel.url, channel.referer, channel.userAgent);
+    if (proxyUrl) add({ label: 'proxy', url: proxyUrl });
+    var audioUrl = buildTVTranscodeUrl(channel.url, 'audio', channel.referer, channel.userAgent);
+    var videoUrl = buildTVTranscodeUrl(channel.url, 'video', channel.referer, channel.userAgent);
+    if (audioUrl) add({ label: 'transcode-audio', url: audioUrl });
+    if (videoUrl) add({ label: 'transcode-video', url: videoUrl });
+    return queue;
+  }
 
   function findM3UDelimiter(line) {
     var quoted = false;
@@ -897,19 +944,29 @@
         var categories = (attributes['group-title'] || 'Other').split(';')
           .map(function (category) { return category.trim(); })
           .filter(function (category, index, all) { return category && all.indexOf(category) === index; });
-        var requiresHeaders = Boolean(attributes['http-user-agent'] || attributes['http-referrer']);
         metadata = {
           name: attributes['tvg-name'] || title || 'Unnamed channel',
           logo: attributes['tvg-logo'] || '',
           country: countryName(countryCode),
           categories: categories.length ? categories : ['Other'],
-          requiresHeaders: requiresHeaders
+          requiresHeaders: false,
+          referer: '',
+          userAgent: ''
         };
         return;
       }
-      if (metadata && line.indexOf('#EXTVLCOPT:') === 0 &&
-          /http-(?:user-agent|referrer)\s*=/i.test(line)) {
-        metadata.requiresHeaders = true;
+      if (metadata && line.indexOf('#EXTVLCOPT:') === 0) {
+        var option = line.slice('#EXTVLCOPT:'.length);
+        var refMatch = option.match(/http-referrer\s*=\s*"?([^"\s]+)"?/i);
+        var uaMatch = option.match(/http-user-agent\s*=\s*"?([^"\s]+)"?/i);
+        if (refMatch) {
+          metadata.referer = decodeURIComponent(refMatch[1]);
+          metadata.requiresHeaders = true;
+        }
+        if (uaMatch) {
+          metadata.userAgent = decodeURIComponent(uaMatch[1]);
+          metadata.requiresHeaders = true;
+        }
         return;
       }
       if (line.charAt(0) === '#') return;
@@ -917,19 +974,20 @@
       try {
         var url = new URL(line);
         if (url.protocol === 'http:' || url.protocol === 'https:') {
-          if (metadata.requiresHeaders) {
-            tvSkipCounts.headers++;
-          } else if (document.location.protocol === 'https:' && url.protocol !== 'https:') {
+          if (document.location.protocol === 'https:' && url.protocol !== 'https:') {
             tvSkipCounts.insecure++;
-          } else {
-            channels.push({
-              name: metadata.name,
-              logo: metadata.logo,
-              country: metadata.country,
-              categories: metadata.categories,
-              url: url.href
-            });
           }
+          channels.push({
+            name: metadata.name,
+            logo: metadata.logo,
+            country: metadata.country,
+            categories: metadata.categories,
+            url: url.href,
+            referer: metadata.referer || '',
+            userAgent: metadata.userAgent || '',
+            requiresHeaders: metadata.requiresHeaders,
+            insecure: document.location.protocol === 'https:' && url.protocol !== 'https:'
+          });
         }
       } catch (error) {
         console.warn('Skipping an invalid IPTV channel URL:', line);
@@ -1114,6 +1172,7 @@
     tvCurrentChannel = channel;
     tvCurrentIndex = tvFilteredData.indexOf(channel);
     tvFailureHandledId = 0;
+    tvPlaybackQueue = buildTVPlaybackQueue(channel);
     destroyTVHls();
     tvPlayerEl.pause();
     tvPlayerEl.removeAttribute('src');
@@ -1123,9 +1182,22 @@
     tvCopyStreamEl.hidden = false;
     tvNextChannelEl.hidden = false;
     tvNowPlayingEl.textContent = 'Connecting to ' + channel.name + '...';
+
+    var playbackQueue = tvPlaybackQueue;
+    var playbackIndex = 0;
     var isHls = /\.m3u8(?:$|[?#])/i.test(channel.url);
     var hlsSupport = tvPlayerEl.canPlayType('application/vnd.apple.mpegurl');
     var nativeHls = hlsSupport === 'probably' || (hlsSupport === 'maybe' && !window.MediaSource);
+
+    tvPlayerEl._tvErrorHandler = function () {
+      if (playbackId !== tvPlaybackId || !tvCurrentChannel) return;
+      if (playbackQueue.length > playbackIndex + 1) {
+        tryNextSource();
+        return;
+      }
+      handleTVPlaybackFailure(tvCurrentChannel, playbackId);
+    };
+
     function attemptPlay() {
       if (playbackId !== tvPlaybackId) return;
       var result = tvPlayerEl.play();
@@ -1140,42 +1212,70 @@
         });
       }
     }
-    function startPlayback() {
+
+    function tryNextSource(error, hlsError) {
       if (playbackId !== tvPlaybackId) return;
-      if (isHls && !nativeHls && window.Hls && window.Hls.isSupported()) {
+      playbackIndex += 1;
+      var source = playbackQueue[playbackIndex];
+      if (!source) {
+        handleTVPlaybackFailure(channel, playbackId, error, hlsError);
+        return;
+      }
+      tvStreamLinkEl.href = source.url;
+      tvNowPlayingEl.textContent = 'Trying the ' + source.label + ' source for ' + channel.name + '...';
+      startPlayback(source.url, source.label);
+    }
+
+    function startPlayback(sourceUrl, sourceLabel) {
+      if (playbackId !== tvPlaybackId) return;
+      var useHls = /\.m3u8(?:$|[?#])/i.test(sourceUrl);
+      function onFatal(error, hlsError) {
+        if (playbackId !== tvPlaybackId) return;
+        tryNextSource(error, hlsError);
+      }
+      if (useHls && !nativeHls && window.Hls && window.Hls.isSupported()) {
         var instance = new window.Hls();
         tvHls = instance;
         instance.attachMedia(tvPlayerEl);
         instance.on(window.Hls.Events.MEDIA_ATTACHED, function () {
           if (playbackId !== tvPlaybackId || tvHls !== instance) return;
-          instance.loadSource(channel.url);
+          instance.loadSource(sourceUrl);
         });
         instance.on(window.Hls.Events.MANIFEST_PARSED, function () {
           if (playbackId !== tvPlaybackId || tvHls !== instance) return;
           attemptPlay();
         });
         instance.on(window.Hls.Events.ERROR, function (event, data) {
-          if (data.fatal && playbackId === tvPlaybackId && tvHls === instance) {
-            handleTVPlaybackFailure(channel, playbackId, null, data);
+          if (data && data.fatal && playbackId === tvPlaybackId && tvHls === instance) {
+            onFatal(null, data);
           }
         });
-      } else if (isHls && !nativeHls) {
-        handleTVPlaybackFailure(channel, playbackId, new Error('HLS playback is not supported by this browser.'));
+      } else if (useHls && !nativeHls) {
+        onFatal(new Error('HLS playback is not supported by this browser.'));
         return;
       } else {
-        tvPlayerEl.src = channel.url;
+        tvPlayerEl.src = sourceUrl;
+        tvPlayerEl.load();
         attemptPlay();
       }
     }
-    tvNowPlayingEl.textContent = 'Connecting to ' + channel.name + '...';
+
+    if (!playbackQueue.length) {
+      handleTVPlaybackFailure(channel, playbackId, new Error('No playable URL was generated for this channel.'));
+      return;
+    }
+
+    var firstSource = playbackQueue[0];
+    tvStreamLinkEl.href = firstSource.url;
+    tvNowPlayingEl.textContent = 'Trying the ' + firstSource.label + ' source for ' + channel.name + '...';
     if (isHls && !nativeHls && !window.Hls) {
-      loadHlsLibrary().then(startPlayback).catch(function (error) {
+      loadHlsLibrary().then(function () { startPlayback(firstSource.url, firstSource.label); }).catch(function (error) {
         if (playbackId !== tvPlaybackId) return;
         console.error('Could not load HLS playback support:', error);
         tvNowPlayingEl.textContent = 'HLS playback support could not be loaded. Check your connection and try again.';
       });
     } else {
-      startPlayback();
+      startPlayback(firstSource.url, firstSource.label);
     }
   }
 
@@ -1184,6 +1284,10 @@
   });
   tvPlayerEl.addEventListener('error', function () {
     if (tvPlayerEl.currentSrc && tvCurrentChannel) {
+      if (typeof tvPlayerEl._tvErrorHandler === 'function') {
+        tvPlayerEl._tvErrorHandler();
+        return;
+      }
       handleTVPlaybackFailure(tvCurrentChannel, tvPlaybackId);
     }
   });
