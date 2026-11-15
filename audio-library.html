@@ -1,0 +1,1031 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090b10">
+  <title>Audio Library | Ali Akbar K</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #090b10;
+      --panel: #11151d;
+      --card: #171d28;
+      --border: #2b3443;
+      --text: #f5f7fb;
+      --muted: #9ba7b8;
+      --accent: #ffbd39;
+      --danger: #ff7272;
+      --shadow: 0 18px 50px rgba(0, 0, 0, .35);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; min-height: 100vh; padding-bottom: 245px; background: var(--bg); color: var(--text); }
+    button, input, select { font: inherit; }
+    button, label, select, input[type="range"] { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, a:focus-visible, label:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .page-header, main { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+    .page-header { padding: 28px 0 22px; }
+    .back-link { color: var(--muted); text-decoration: none; font-size: 14px; }
+    .back-link:hover { color: var(--accent); }
+    h1 { margin: 14px 0 5px; font-size: clamp(26px, 5vw, 38px); line-height: 1.15; }
+    .intro, .status, .help { color: var(--muted); line-height: 1.55; }
+    .intro { margin: 0; }
+
+    .panel { padding: 16px; border: 1px solid var(--border); border-radius: 16px; background: var(--panel); box-shadow: var(--shadow); }
+    .actions, .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .actions { margin-bottom: 8px; }
+    .button, .file-picker {
+      min-height: 46px; display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px; padding: 10px 16px; border: 1px solid var(--accent); border-radius: 12px;
+      background: var(--accent); color: #17120a; font-weight: 750; text-align: center;
+      text-decoration: none; cursor: pointer; transition: transform .18s ease, filter .18s ease;
+    }
+    .button:hover, .file-picker:hover { filter: brightness(1.06); transform: translateY(-1px); }
+    .button.secondary { border-color: var(--border); background: var(--card); color: var(--text); }
+    .button.danger { border-color: #59343a; color: #ffb4b4; }
+    .button:disabled { opacity: .48; cursor: not-allowed; transform: none; }
+    .file-input {
+      position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+    .file-input:focus + .file-picker { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .status { min-height: 22px; margin: 8px 0 0; font-size: 13px; }
+    .help { margin: 10px 0 0; font-size: 12px; }
+
+    .filters { margin: 16px 0; }
+    .search-wrap { flex: 1 1 220px; }
+    .filters label { display: flex; flex: 1 1 145px; flex-direction: column; gap: 5px; color: var(--muted); font-size: 12px; }
+    .search, .select {
+      width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--border);
+      border-radius: 10px; background: var(--panel); color: var(--text);
+    }
+    .library-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin: 22px 0 12px; }
+    .library-heading h2 { margin: 0; font-size: 20px; }
+    .track-count { color: var(--muted); font-size: 13px; }
+    .track-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 12px; }
+    .track-card { min-width: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 14px; background: var(--card); transition: transform .18s ease, border-color .18s ease; }
+    .track-card:hover, .track-card.is-current { transform: translateY(-2px); border-color: var(--accent); }
+    .cover { position: relative; display: grid; aspect-ratio: 1; place-items: center; overflow: hidden; background: linear-gradient(135deg, #25334b, #5b3e78); }
+    .cover img { width: 100%; height: 100%; object-fit: cover; }
+    .cover-fallback { font-size: 54px; color: rgba(255,255,255,.82); }
+    .track-details { padding: 11px 11px 8px; }
+    .track-title, .track-artist, .track-album { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .track-title { margin: 0; font-size: 14px; font-weight: 750; }
+    .track-artist, .track-album { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+    .track-meta { display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; color: var(--muted); font-size: 11px; }
+    .track-actions { display: flex; gap: 8px; padding: 0 10px 10px; }
+    .track-actions button { min-height: 40px; flex: 1; border: 1px solid var(--border); border-radius: 9px; background: #202938; color: var(--text); font-weight: 650; cursor: pointer; }
+    .track-actions button:first-child { border-color: #8c691f; background: rgba(255,189,57,.16); color: var(--accent); }
+    .track-actions .remove-track { flex: 0 0 42px; color: #ffb4b4; }
+    .empty { margin: 12px 0; padding: 32px 18px; border: 1px dashed var(--border); border-radius: 14px; color: var(--muted); text-align: center; }
+
+    .player {
+      position: fixed; z-index: 20; right: 0; bottom: 0; left: 0; display: grid;
+      grid-template-columns: minmax(0, 1fr) auto; gap: 10px 16px; align-items: center;
+      padding: 12px max(16px, calc((100vw - 1120px) / 2)) calc(12px + env(safe-area-inset-bottom));
+      border-top: 1px solid var(--border); background: rgba(15, 19, 27, .97);
+      box-shadow: 0 -12px 35px rgba(0,0,0,.32); backdrop-filter: blur(14px);
+    }
+    .now-playing { display: flex; min-width: 0; align-items: center; gap: 10px; }
+    .player-cover, .player-fallback { width: 48px; height: 48px; flex: 0 0 48px; border-radius: 10px; object-fit: cover; }
+    .player-fallback { display: grid; place-items: center; background: linear-gradient(135deg,#32415b,#70478d); font-size: 25px; }
+    .player-title { overflow: hidden; font-size: 13px; font-weight: 750; text-overflow: ellipsis; white-space: nowrap; }
+    .player-subtitle, .player-state { overflow: hidden; margin-top: 3px; color: var(--muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+    .transport, .player-options { display: flex; align-items: center; justify-content: center; gap: 7px; }
+    .icon-button { min-width: 42px; min-height: 42px; border: 1px solid var(--border); border-radius: 50%; background: #202938; color: var(--text); cursor: pointer; }
+    .icon-button.primary { border-color: var(--accent); background: var(--accent); color: #17120a; font-size: 17px; }
+    .icon-button.is-active { color: var(--accent); border-color: var(--accent); }
+    .seek-row { display: flex; grid-column: 1 / -1; align-items: center; gap: 10px; color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+    .seek, .volume { width: 100%; min-width: 0; accent-color: var(--accent); }
+    .player-options { grid-column: 1 / -1; justify-content: space-between; }
+    .volume-wrap { display: flex; width: min(180px, 48%); align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
+    .player-error { grid-column: 1 / -1; margin: 0; color: #ffb4b4; font-size: 12px; }
+
+    @media (min-width: 760px) {
+      body { padding-bottom: 132px; }
+      .player { grid-template-columns: minmax(190px, 1fr) auto minmax(220px, 1fr) auto; }
+      .transport { grid-column: 2; grid-row: 1; }
+      .seek-row { grid-column: 3; grid-row: 1; }
+      .player-options { grid-column: 4; grid-row: 1; }
+      .volume-wrap { width: 120px; }
+      .player-error { grid-column: 1 / -1; }
+    }
+    @media (max-width: 420px) {
+      .page-header, main { width: min(100% - 22px, 1120px); }
+      .panel { padding: 12px; }
+      .track-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+      .track-details { padding: 9px 9px 7px; }
+      .track-actions { padding: 0 8px 8px; }
+      .track-actions button { min-height: 42px; }
+      .player { gap: 8px; padding-right: 11px; padding-left: 11px; }
+      .icon-button { min-width: 40px; min-height: 40px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <a class="back-link" href="tools.html">&larr; Back to Tools</a>
+    <h1>Audio Library</h1>
+    <p class="intro">Choose audio or video files from this device. Videos play here only when the browser supports their audio track. Your files stay in this browser and are never uploaded.</p>
+  </header>
+
+  <main>
+    <section class="panel" aria-label="Add music">
+      <div class="actions">
+        <input id="audioFiles" class="file-input" type="file" accept="audio/*,video/*,.mp3,.m4a,.aac,.wav,.flac,.ogg,.oga,.opus,.weba,.webm,.aiff,.aif,.wma,.amr,.mid,.midi,.3gp,.mka,.ac3,.mp4,.mov,.m4v,.mkv,.avi,.mpeg,.mpg,.wmv" multiple aria-label="Add audio or video files">
+        <label class="file-picker" for="audioFiles">＋ Add Music</label>
+        <button id="clearLibrary" class="button secondary danger" type="button" disabled>Clear library</button>
+      </div>
+      <p class="status" id="libraryStatus" role="status" aria-live="polite">Loading saved music…</p>
+      <p class="help">Choose files from your phone’s file picker. MP3, M4A, and WAV work on the widest range of phones; other formats depend on browser support. Files are stored locally in this browser.</p>
+    </section>
+
+    <section class="filters" aria-label="Search and filter music">
+      <label class="search-wrap">Search
+        <input id="searchTracks" class="search" type="search" placeholder="Title, artist, or album" autocomplete="off">
+      </label>
+      <label>Sort by
+        <select id="sortTracks" class="select">
+          <option value="recent">Recently added</option>
+          <option value="name">Name</option>
+          <option value="duration">Duration</option>
+        </select>
+      </label>
+      <label>File type
+        <select id="typeFilter" class="select">
+          <option value="all">All types</option>
+          <option value="mp3">MP3</option>
+          <option value="m4a">M4A</option>
+          <option value="aac">AAC</option>
+          <option value="wav">WAV</option>
+          <option value="flac">FLAC</option>
+          <option value="ogg">OGG / OGA</option>
+          <option value="opus">OPUS</option>
+          <option value="weba">WEBA / WEBM</option>
+          <option value="aiff">AIFF / AIF</option>
+          <option value="wma">WMA</option>
+          <option value="amr">AMR</option>
+          <option value="mid">MIDI</option>
+          <option value="3gp">3GP</option>
+          <option value="mka">MKA</option>
+          <option value="ac3">AC3</option>
+          <option value="mp4">MP4</option>
+          <option value="other">Other</option>
+        </select>
+      </label>
+    </section>
+
+    <section aria-labelledby="libraryTitle">
+      <div class="library-heading">
+        <h2 id="libraryTitle">Your music</h2>
+        <span class="track-count" id="trackCount">0 tracks</span>
+      </div>
+      <p class="empty" id="emptyMessage">Add music from your device to build your library.</p>
+      <div class="track-grid" id="trackGrid"></div>
+    </section>
+  </main>
+
+  <section class="player" id="player" aria-label="Audio player" hidden>
+    <div class="now-playing">
+      <img class="player-cover" id="playerCover" alt="" hidden>
+      <div class="player-fallback" id="playerFallback" aria-hidden="true">♫</div>
+      <div style="min-width:0">
+        <div class="player-title" id="playerTitle">No track selected</div>
+        <div class="player-subtitle" id="playerArtist"></div>
+        <div class="player-state" id="playerState" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+    <div class="transport">
+      <button class="icon-button" id="previousTrack" type="button" aria-label="Previous track" title="Previous">|&lt;</button>
+      <button class="icon-button primary" id="playPause" type="button" aria-label="Play" title="Play">▶</button>
+      <button class="icon-button" id="nextTrack" type="button" aria-label="Next track" title="Next">&gt;|</button>
+    </div>
+    <div class="seek-row">
+      <span id="currentTime">0:00</span>
+      <input class="seek" id="seekBar" type="range" min="0" max="1000" value="0" aria-label="Seek">
+      <span id="totalTime">0:00</span>
+    </div>
+    <div class="player-options">
+      <button class="icon-button" id="shuffleButton" type="button" aria-label="Shuffle off" title="Shuffle">🔀</button>
+      <button class="icon-button" id="repeatButton" type="button" aria-label="Repeat off" title="Repeat off">↻</button>
+      <label class="volume-wrap" for="volumeControl">Volume
+        <input class="volume" id="volumeControl" type="range" min="0" max="1" step="0.01" value="0.85">
+      </label>
+    </div>
+    <p class="player-error" id="playerError" hidden></p>
+  </section>
+
+  <!-- jsmediatags reads common embedded title, artist, album, and picture tags. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      // Supported files are listed even when a browser cannot decode them.
+      var DB_NAME = 'ali-akbar-audio-library';
+      var STORE_NAME = 'tracks';
+      var SUPPORTED_EXTENSIONS = [
+        'mp3', 'm4a', 'aac', 'wav', 'flac', 'ogg', 'oga', 'opus', 'weba',
+        'webm', 'aiff', 'aif', 'wma', 'amr', 'mid', 'midi', '3gp', 'mka',
+        'ac3', 'mp4'
+      ];
+      var VIDEO_EXTENSIONS = ['mov', 'm4v', 'mkv', 'avi', 'mpeg', 'mpg', 'wmv'];
+      var db = null;
+      var tracks = [];
+      var queue = [];
+      var queueIndex = -1;
+      var currentTrack = null;
+      var shuffle = false;
+      var repeatMode = 'off';
+      var audio = new Audio();
+      audio.preload = 'metadata';
+      audio.volume = 0.85;
+
+      var fileInput = document.getElementById('audioFiles');
+      var statusEl = document.getElementById('libraryStatus');
+      var gridEl = document.getElementById('trackGrid');
+      var emptyEl = document.getElementById('emptyMessage');
+      var countEl = document.getElementById('trackCount');
+      var searchEl = document.getElementById('searchTracks');
+      var sortEl = document.getElementById('sortTracks');
+      var typeEl = document.getElementById('typeFilter');
+      var clearButton = document.getElementById('clearLibrary');
+      var playerEl = document.getElementById('player');
+      var playerCover = document.getElementById('playerCover');
+      var playerFallback = document.getElementById('playerFallback');
+      var playerTitle = document.getElementById('playerTitle');
+      var playerArtist = document.getElementById('playerArtist');
+      var playerState = document.getElementById('playerState');
+      var playerError = document.getElementById('playerError');
+      var playPauseButton = document.getElementById('playPause');
+      var seekBar = document.getElementById('seekBar');
+      var currentTimeEl = document.getElementById('currentTime');
+      var totalTimeEl = document.getElementById('totalTime');
+      var shuffleButton = document.getElementById('shuffleButton');
+      var repeatButton = document.getElementById('repeatButton');
+      var volumeControl = document.getElementById('volumeControl');
+
+      function setStatus(message) {
+        statusEl.textContent = message;
+      }
+
+      function extensionOf(name) {
+        var match = String(name || '').toLowerCase().match(/\.([^.]+)$/);
+        return match ? match[1] : '';
+      }
+
+      function isMediaFile(file) {
+        var extension = extensionOf(file.name);
+          return (file.type && (file.type.indexOf('audio/') === 0 || file.type.indexOf('video/') === 0)) ||
+            SUPPORTED_EXTENSIONS.indexOf(extension) !== -1 || VIDEO_EXTENSIONS.indexOf(extension) !== -1;
+      }
+
+      function titleFromName(name) {
+        return String(name || '').replace(/\.[^.]+$/, '') || 'Untitled audio';
+      }
+
+      function formatTime(seconds) {
+        if (!isFinite(seconds) || seconds < 0) return '--:--';
+        var whole = Math.floor(seconds);
+        var minutes = Math.floor(whole / 60);
+        var remainder = whole % 60;
+        return minutes + ':' + (remainder < 10 ? '0' : '') + remainder;
+      }
+
+      function makeId() {
+        return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
+      }
+
+      function openDatabase() {
+        return new Promise(function (resolve, reject) {
+          if (!window.indexedDB) {
+            reject(new Error('IndexedDB is not available in this browser.'));
+            return;
+          }
+          var request = window.indexedDB.open(DB_NAME, 1);
+          request.onupgradeneeded = function () {
+            var database = request.result;
+            if (!database.objectStoreNames.contains(STORE_NAME)) {
+              database.createObjectStore(STORE_NAME, { keyPath: 'id' });
+            }
+          };
+          request.onsuccess = function () {
+            db = request.result;
+            db.onversionchange = function () { db.close(); };
+            resolve(db);
+          };
+          request.onerror = function () {
+            reject(request.error || new Error('Could not open the local music library.'));
+          };
+          request.onblocked = function () {
+            reject(new Error('The local music database is blocked by another open tab.'));
+          };
+        });
+      }
+
+      function recordFor(track) {
+        return {
+          id: track.id,
+          file: track.file,
+          fileName: track.fileName,
+          extension: track.extension,
+          title: track.title,
+          artist: track.artist,
+          album: track.album,
+          duration: track.duration,
+          cover: track.cover,
+          addedAt: track.addedAt
+        };
+      }
+
+      function saveTrack(track) {
+        return new Promise(function (resolve, reject) {
+          if (!db) {
+            reject(new Error('Persistent local storage is unavailable.'));
+            return;
+          }
+          var transaction = db.transaction(STORE_NAME, 'readwrite');
+          transaction.objectStore(STORE_NAME).put(recordFor(track));
+          transaction.oncomplete = function () { resolve(); };
+          transaction.onerror = function () {
+            reject(transaction.error || new Error('Could not save this audio file.'));
+          };
+          transaction.onabort = function () {
+            reject(transaction.error || new Error('Saving this audio file was interrupted.'));
+          };
+        });
+      }
+
+      function loadTracks() {
+        return new Promise(function (resolve, reject) {
+          var result = [];
+          var request = db.transaction(STORE_NAME, 'readonly').objectStore(STORE_NAME).openCursor();
+          request.onsuccess = function () {
+            var cursor = request.result;
+            if (!cursor) { resolve(result); return; }
+            result.push(cursor.value);
+            cursor.continue();
+          };
+          request.onerror = function () {
+            reject(request.error || new Error('Could not read saved music.'));
+          };
+        });
+      }
+
+      function deleteRecord(id) {
+        return new Promise(function (resolve, reject) {
+          if (!db) { resolve(); return; }
+          var transaction = db.transaction(STORE_NAME, 'readwrite');
+          transaction.objectStore(STORE_NAME).delete(id);
+          transaction.oncomplete = function () { resolve(); };
+          transaction.onerror = function () {
+            reject(transaction.error || new Error('Could not remove this audio file.'));
+          };
+          transaction.onabort = function () {
+            reject(transaction.error || new Error('Removing this audio file was interrupted.'));
+          };
+        });
+      }
+
+      function clearRecords() {
+        return new Promise(function (resolve, reject) {
+          if (!db) { resolve(); return; }
+          var transaction = db.transaction(STORE_NAME, 'readwrite');
+          transaction.objectStore(STORE_NAME).clear();
+          transaction.oncomplete = function () { resolve(); };
+          transaction.onerror = function () {
+            reject(transaction.error || new Error('Could not clear the local music library.'));
+          };
+          transaction.onabort = function () {
+            reject(transaction.error || new Error('Clearing the local music library was interrupted.'));
+          };
+        });
+      }
+
+      function hydrate(record) {
+        var track = {
+          id: record.id,
+          file: record.file,
+          fileName: record.fileName,
+          extension: record.extension,
+          title: record.title || titleFromName(record.fileName),
+          artist: record.artist || 'Unknown artist',
+          album: record.album || 'Unknown album',
+          duration: Number(record.duration) || 0,
+          cover: record.cover || null,
+          addedAt: Number(record.addedAt) || Date.now(),
+          audioUrl: '',
+          coverUrl: ''
+        };
+        track.audioUrl = URL.createObjectURL(track.file);
+        if (track.cover) track.coverUrl = URL.createObjectURL(track.cover);
+        return track;
+      }
+
+      function tagPictureToBlob(picture) {
+        if (!picture || !picture.data || !picture.format) return null;
+        try {
+          return new Blob([new Uint8Array(picture.data)], { type: picture.format });
+        } catch (error) {
+          console.warn('Could not read embedded cover art:', error);
+          return null;
+        }
+      }
+
+      function readTags(file) {
+        return new Promise(function (resolve) {
+          var fallback = {
+            title: titleFromName(file.name),
+            artist: 'Unknown artist',
+            album: 'Unknown album',
+            cover: null
+          };
+          if (!window.jsmediatags || typeof window.jsmediatags.read !== 'function') {
+            console.warn('jsmediatags did not load; using file names instead of embedded tags.');
+            resolve(fallback);
+            return;
+          }
+          try {
+            window.jsmediatags.read(file, {
+              onSuccess: function (result) {
+                var tags = result && result.tags ? result.tags : {};
+                resolve({
+                  title: tags.title || fallback.title,
+                  artist: tags.artist || fallback.artist,
+                  album: tags.album || fallback.album,
+                  cover: tagPictureToBlob(tags.picture)
+                });
+              },
+              onError: function (error) {
+                console.warn('Could not read audio tags for ' + file.name + '; using the file name.', error);
+                resolve(fallback);
+              }
+            });
+          } catch (error) {
+            console.warn('Could not read audio tags for ' + file.name + '; using the file name.', error);
+            resolve(fallback);
+          }
+        });
+      }
+
+      function readDuration(file) {
+        return new Promise(function (resolve) {
+          var url;
+          var probe = new Audio();
+          var complete = false;
+          try {
+            url = URL.createObjectURL(file);
+          } catch (error) {
+            console.warn('Could not create an audio preview URL for ' + file.name + '.', error);
+            resolve(0);
+            return;
+          }
+          function finish(duration) {
+            if (complete) return;
+            complete = true;
+            probe.removeAttribute('src');
+            probe.load();
+            URL.revokeObjectURL(url);
+            resolve(isFinite(duration) && duration > 0 ? duration : 0);
+          }
+          probe.addEventListener('loadedmetadata', function () { finish(probe.duration); }, { once: true });
+          probe.addEventListener('error', function () {
+            console.warn('Duration is unavailable for ' + file.name + '; the browser may not support its format.');
+            finish(0);
+          }, { once: true });
+          probe.preload = 'metadata';
+          probe.src = url;
+          probe.load();
+        });
+      }
+
+      function ensureUrls(track) {
+        if (!track.audioUrl) track.audioUrl = URL.createObjectURL(track.file);
+        if (track.cover && !track.coverUrl) track.coverUrl = URL.createObjectURL(track.cover);
+      }
+
+      function visibleTracks() {
+        var query = searchEl.value.trim().toLowerCase();
+        var type = typeEl.value;
+        var list = tracks.filter(function (track) {
+          var matchesType = type === 'all' ||
+            (type === 'other'
+              ? SUPPORTED_EXTENSIONS.indexOf(track.extension) === -1
+              : (type === 'ogg' ? track.extension === 'ogg' || track.extension === 'oga'
+                : type === 'weba' ? track.extension === 'weba' || track.extension === 'webm'
+                  : type === 'aiff' ? track.extension === 'aiff' || track.extension === 'aif'
+                    : type === 'mid' ? track.extension === 'mid' || track.extension === 'midi'
+                      : track.extension === type));
+          var searchable = (track.title + ' ' + track.artist + ' ' + track.album + ' ' + track.fileName).toLowerCase();
+          return matchesType && (!query || searchable.indexOf(query) !== -1);
+        });
+        var sort = sortEl.value;
+        list.sort(function (a, b) {
+          if (sort === 'name') return a.title.localeCompare(b.title);
+          if (sort === 'duration') return (a.duration || Infinity) - (b.duration || Infinity);
+          return b.addedAt - a.addedAt;
+        });
+        return list;
+      }
+
+      function makeCover(track) {
+        var cover = document.createElement('div');
+        cover.className = 'cover';
+        if (track.coverUrl) {
+          var image = document.createElement('img');
+          image.src = track.coverUrl;
+          image.alt = 'Cover art for ' + track.title;
+          image.onerror = function () {
+            image.remove();
+            var fallback = document.createElement('span');
+            fallback.className = 'cover-fallback';
+            fallback.textContent = '♫';
+            cover.appendChild(fallback);
+          };
+          cover.appendChild(image);
+        } else {
+          var fallback = document.createElement('span');
+          fallback.className = 'cover-fallback';
+          fallback.textContent = '♫';
+          cover.appendChild(fallback);
+        }
+        return cover;
+      }
+
+      function makeTrackCard(track) {
+        ensureUrls(track);
+        var card = document.createElement('article');
+        card.className = 'track-card' + (currentTrack && currentTrack.id === track.id ? ' is-current' : '');
+        card.setAttribute('data-track-id', track.id);
+
+        card.appendChild(makeCover(track));
+        var details = document.createElement('div');
+        details.className = 'track-details';
+        var title = document.createElement('h3');
+        title.className = 'track-title';
+        title.textContent = track.title;
+        title.title = track.title;
+        details.appendChild(title);
+        var artist = document.createElement('p');
+        artist.className = 'track-artist';
+        artist.textContent = track.artist || 'Unknown artist';
+        details.appendChild(artist);
+        var album = document.createElement('p');
+        album.className = 'track-album';
+        album.textContent = track.album || 'Unknown album';
+        details.appendChild(album);
+        var meta = document.createElement('div');
+        meta.className = 'track-meta';
+        var fileType = document.createElement('span');
+        fileType.textContent = track.extension ? track.extension.toUpperCase() : 'AUDIO';
+        var duration = document.createElement('span');
+        duration.textContent = formatTime(track.duration);
+        meta.appendChild(fileType);
+        meta.appendChild(duration);
+        details.appendChild(meta);
+        card.appendChild(details);
+
+        var actions = document.createElement('div');
+        actions.className = 'track-actions';
+        var play = document.createElement('button');
+        play.type = 'button';
+        play.setAttribute('data-play-id', track.id);
+        play.setAttribute('aria-label', (currentTrack && currentTrack.id === track.id && !audio.paused ? 'Pause ' : 'Play ') + track.title);
+        play.textContent = currentTrack && currentTrack.id === track.id && !audio.paused ? 'Pause' : 'Play';
+        actions.appendChild(play);
+        var remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'remove-track';
+        remove.setAttribute('data-remove-id', track.id);
+        remove.setAttribute('aria-label', 'Remove ' + track.title);
+        remove.textContent = '×';
+        actions.appendChild(remove);
+        card.appendChild(actions);
+        return card;
+      }
+
+      function renderLibrary() {
+        var list = visibleTracks();
+        gridEl.textContent = '';
+        list.forEach(function (track) { gridEl.appendChild(makeTrackCard(track)); });
+        countEl.textContent = list.length + (list.length === 1 ? ' track' : ' tracks');
+        emptyEl.hidden = list.length > 0;
+        if (!tracks.length) emptyEl.textContent = 'Add music from your device to build your library.';
+        else if (!list.length) emptyEl.textContent = 'No tracks match the current search or file-type filter.';
+        clearButton.disabled = tracks.length === 0;
+      }
+
+      function serializeTrack(track) {
+        return {
+          id: track.id, file: track.file, fileName: track.fileName, extension: track.extension,
+          title: track.title, artist: track.artist, album: track.album, duration: track.duration,
+          cover: track.cover, addedAt: track.addedAt
+        };
+      }
+
+      function getTrack(id) {
+        for (var i = 0; i < tracks.length; i++) if (tracks[i].id === id) return tracks[i];
+        return null;
+      }
+
+      function setPlayerCover(track) {
+        ensureUrls(track);
+        if (track.coverUrl) {
+          playerCover.src = track.coverUrl;
+          playerCover.alt = 'Cover art for ' + track.title;
+          playerCover.hidden = false;
+          playerFallback.hidden = true;
+        } else {
+          playerCover.removeAttribute('src');
+          playerCover.hidden = true;
+          playerFallback.hidden = false;
+        }
+      }
+
+      function updateMediaSession(track) {
+        if (!('mediaSession' in navigator) || !window.MediaMetadata) return;
+        try {
+          var metadata = {
+            title: track.title,
+            artist: track.artist || 'Unknown artist',
+            album: track.album || 'Unknown album'
+          };
+          if (track.coverUrl) metadata.artwork = [{ src: track.coverUrl, sizes: '512x512', type: track.cover.type || 'image/jpeg' }];
+          navigator.mediaSession.metadata = new MediaMetadata(metadata);
+        } catch (error) {
+          console.warn('Could not update lock-screen audio metadata.', error);
+        }
+      }
+
+      function setPlayerState(message, error) {
+        playerState.textContent = message;
+        playerError.hidden = !error;
+        playerError.textContent = error || '';
+      }
+
+      function isMidi(track) {
+        return track.extension === 'mid' || track.extension === 'midi';
+      }
+
+      function playbackError(error) {
+        if (!currentTrack) return;
+        var message = error && error.name === 'NotAllowedError'
+          ? 'Tap Play again to allow audio playback.'
+          : 'This phone or browser may not support .' + (currentTrack.extension || 'audio') +
+            ' files. Try MP3, M4A, or WAV.';
+        setPlayerState(message, message);
+      }
+
+      function playTrack(track, resetQueue) {
+        if (!track) return;
+        if (currentTrack && currentTrack.id === track.id && !resetQueue) {
+          togglePlayback();
+          return;
+        }
+        ensureUrls(track);
+        currentTrack = track;
+        if (resetQueue !== false) {
+          queue = visibleTracks().map(function (item) { return item.id; });
+          queueIndex = queue.indexOf(track.id);
+        } else {
+          queueIndex = queue.indexOf(track.id);
+        }
+        playerEl.hidden = false;
+        playerTitle.textContent = track.title;
+        playerArtist.textContent = track.artist + (track.album ? ' · ' + track.album : '');
+        playerState.textContent = '';
+        playerError.hidden = true;
+        setPlayerCover(track);
+        updateMediaSession(track);
+        renderLibrary();
+
+        audio.pause();
+        audio.src = track.audioUrl;
+        audio.load();
+        audio.currentTime = 0;
+        seekBar.value = '0';
+        currentTimeEl.textContent = '0:00';
+        totalTimeEl.textContent = formatTime(track.duration);
+
+        if (isMidi(track)) {
+          var midiMessage = 'MIDI is not playable by standard phone browsers. Convert it to MP3 or WAV to listen.';
+          setPlayerState(midiMessage, midiMessage);
+          return;
+        }
+        setPlayerState('Loading audio…', '');
+        try {
+          var playPromise = audio.play();
+          if (playPromise && typeof playPromise.then === 'function') {
+            playPromise.then(function () { setPlayerState('Playing', ''); })
+              .catch(playbackError);
+          }
+        } catch (error) {
+          playbackError(error);
+        }
+      }
+
+      function togglePlayback() {
+        if (!currentTrack) return;
+        if (audio.paused) {
+          if (audio.ended) audio.currentTime = 0;
+          try {
+            var playPromise = audio.play();
+            if (playPromise && typeof playPromise.then === 'function') playPromise.then(function () { setPlayerState('Playing', ''); }).catch(playbackError);
+          } catch (error) {
+            playbackError(error);
+          }
+        } else {
+          audio.pause();
+        }
+      }
+
+      function moveTrack(direction, automatic) {
+        var activeQueue = queue.map(function (id) { return getTrack(id); }).filter(Boolean);
+        if (!activeQueue.length && tracks.length) {
+          activeQueue = visibleTracks();
+          queue = activeQueue.map(function (track) { return track.id; });
+          queueIndex = currentTrack ? queue.indexOf(currentTrack.id) : -1;
+        }
+        if (!activeQueue.length) return;
+        var nextIndex;
+        if (shuffle && direction > 0 && activeQueue.length > 1) {
+          nextIndex = Math.floor(Math.random() * activeQueue.length);
+          if (nextIndex === queueIndex) nextIndex = (nextIndex + 1) % activeQueue.length;
+        } else {
+          nextIndex = queueIndex + direction;
+          if (nextIndex < 0) nextIndex = activeQueue.length - 1;
+          if (nextIndex >= activeQueue.length) {
+            if (automatic && repeatMode === 'off') {
+              setPlayerState('Playback finished', '');
+              return;
+            }
+            nextIndex = 0;
+          }
+        }
+        queueIndex = nextIndex;
+        playTrack(activeQueue[queueIndex], false);
+      }
+
+      function updatePlayButton() {
+        var playing = !audio.paused;
+        playPauseButton.textContent = playing ? 'Ⅱ' : '▶';
+        playPauseButton.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+        playPauseButton.title = playing ? 'Pause' : 'Play';
+      }
+
+      function updateProgress() {
+        if (!currentTrack) return;
+        var duration = audio.duration;
+        currentTimeEl.textContent = formatTime(audio.currentTime);
+        totalTimeEl.textContent = formatTime(isFinite(duration) && duration > 0 ? duration : currentTrack.duration);
+        if (isFinite(duration) && duration > 0 && !seekBar.matches(':active')) {
+          seekBar.value = String(Math.round(audio.currentTime / duration * 1000));
+        }
+      }
+
+      function refreshMediaPosition() {
+        if (!('mediaSession' in navigator) || !navigator.mediaSession.setPositionState ||
+            !isFinite(audio.duration) || audio.duration <= 0) return;
+        try {
+          navigator.mediaSession.setPositionState({
+            duration: audio.duration,
+            playbackRate: audio.playbackRate || 1,
+            position: Math.min(audio.currentTime || 0, audio.duration)
+          });
+        } catch (error) {
+          console.warn('Could not update lock-screen playback position.', error);
+        }
+      }
+
+      function cleanupTrack(track) {
+        if (track.audioUrl) URL.revokeObjectURL(track.audioUrl);
+        if (track.coverUrl) URL.revokeObjectURL(track.coverUrl);
+      }
+
+      function addFile(file) {
+        if (!isMediaFile(file)) return Promise.resolve({ skipped: true });
+        return readTags(file).then(function (tags) {
+          return readDuration(file).then(function (duration) {
+            var track = {
+              id: makeId(),
+              file: file,
+              fileName: file.name,
+              extension: extensionOf(file.name),
+              title: tags.title || titleFromName(file.name),
+              artist: tags.artist || 'Unknown artist',
+              album: tags.album || 'Unknown album',
+              duration: duration,
+              cover: tags.cover || null,
+              addedAt: Date.now(),
+              audioUrl: '',
+              coverUrl: ''
+            };
+            ensureUrls(track);
+            tracks.unshift(track);
+            renderLibrary();
+            return saveTrack(track).then(function () {
+              return { saved: true };
+            }).catch(function (error) {
+              console.error('The audio file was added for this session but could not be saved.', error);
+              return { saved: false, error: error };
+            });
+          });
+        });
+      }
+
+      fileInput.addEventListener('change', function () {
+        var files = Array.prototype.slice.call(fileInput.files || []);
+        if (!files.length) return;
+        if (!window.URL || typeof URL.createObjectURL !== 'function') {
+          setStatus('This browser cannot open local audio files. Please use an up-to-date browser.');
+          fileInput.value = '';
+          return;
+        }
+        setStatus('Reading tags and adding ' + files.length + (files.length === 1 ? ' file…' : ' files…'));
+        Promise.all(files.map(addFile)).then(function (results) {
+          fileInput.value = '';
+          var added = results.filter(function (result) { return !result.skipped; }).length;
+          var unsaved = results.filter(function (result) { return result.saved === false; }).length;
+          var skipped = results.filter(function (result) { return result.skipped; }).length;
+          var message = added + (added === 1 ? ' track added.' : ' tracks added.');
+          if (unsaved) message += ' ' + unsaved + ' could not be saved for next time; check browser storage space.';
+          if (skipped) message += ' ' + skipped + ' unsupported file selection(s) skipped.';
+          setStatus(message + ' Your audio stays on this device.');
+          renderLibrary();
+        }).catch(function (error) {
+          console.error('Could not add the selected audio files.', error);
+          setStatus('Some files could not be added. Check the file format and browser storage, then try again.');
+          fileInput.value = '';
+          renderLibrary();
+        });
+      });
+
+      gridEl.addEventListener('click', function (event) {
+        var playButton = event.target.closest('[data-play-id]');
+        var removeButton = event.target.closest('[data-remove-id]');
+        if (playButton) {
+          var toPlay = getTrack(playButton.getAttribute('data-play-id'));
+          if (toPlay && currentTrack && currentTrack.id === toPlay.id && !audio.paused) audio.pause();
+          else playTrack(toPlay, true);
+          return;
+        }
+        if (removeButton) {
+          var id = removeButton.getAttribute('data-remove-id');
+          var toRemove = getTrack(id);
+          if (!toRemove) return;
+          deleteRecord(id).then(function () {
+            if (currentTrack && currentTrack.id === id) {
+              audio.pause();
+              audio.removeAttribute('src');
+              audio.load();
+              currentTrack = null;
+              playerEl.hidden = true;
+            }
+            cleanupTrack(toRemove);
+            tracks = tracks.filter(function (track) { return track.id !== id; });
+            queue = queue.filter(function (trackId) { return trackId !== id; });
+            renderLibrary();
+            setStatus('Removed ' + toRemove.title + ' from this browser.');
+          }).catch(function (error) {
+            console.error('Could not remove the selected audio file.', error);
+            setStatus('Could not remove this file from browser storage.');
+          });
+        }
+      });
+
+      document.getElementById('clearLibrary').addEventListener('click', function () {
+        if (!tracks.length || !window.confirm('Remove all saved audio from this browser?')) return;
+        clearRecords().then(function () {
+          audio.pause();
+          audio.removeAttribute('src');
+          audio.load();
+          tracks.forEach(cleanupTrack);
+          tracks = [];
+          queue = [];
+          queueIndex = -1;
+          currentTrack = null;
+          playerEl.hidden = true;
+          renderLibrary();
+          setStatus('The local audio library has been cleared.');
+        }).catch(function (error) {
+          console.error('Could not clear the saved audio library.', error);
+          setStatus('Could not clear the library from browser storage.');
+        });
+      });
+
+      searchEl.addEventListener('input', renderLibrary);
+      sortEl.addEventListener('change', renderLibrary);
+      typeEl.addEventListener('change', renderLibrary);
+      document.getElementById('previousTrack').addEventListener('click', function () {
+        if (audio.currentTime > 3) { audio.currentTime = 0; return; }
+        moveTrack(-1, false);
+      });
+      document.getElementById('nextTrack').addEventListener('click', function () { moveTrack(1, false); });
+      playPauseButton.addEventListener('click', togglePlayback);
+      shuffleButton.addEventListener('click', function () {
+        shuffle = !shuffle;
+        shuffleButton.classList.toggle('is-active', shuffle);
+        shuffleButton.setAttribute('aria-label', shuffle ? 'Shuffle on' : 'Shuffle off');
+        setStatus(shuffle ? 'Shuffle is on.' : 'Shuffle is off.');
+      });
+      repeatButton.addEventListener('click', function () {
+        repeatMode = repeatMode === 'off' ? 'all' : repeatMode === 'all' ? 'one' : 'off';
+        repeatButton.classList.toggle('is-active', repeatMode !== 'off');
+        repeatButton.textContent = repeatMode === 'one' ? '↻¹' : '↻';
+        repeatButton.title = 'Repeat ' + repeatMode;
+        repeatButton.setAttribute('aria-label', 'Repeat ' + repeatMode);
+      });
+      volumeControl.addEventListener('input', function () { audio.volume = Number(volumeControl.value); });
+      seekBar.addEventListener('input', function () {
+        if (isFinite(audio.duration) && audio.duration > 0) {
+          audio.currentTime = audio.duration * Number(seekBar.value) / 1000;
+        }
+      });
+
+      audio.addEventListener('loadedmetadata', function () {
+        if (currentTrack && isFinite(audio.duration) && audio.duration > 0) {
+          currentTrack.duration = audio.duration;
+          totalTimeEl.textContent = formatTime(audio.duration);
+          saveTrack(currentTrack).catch(function (error) {
+            console.error('Could not update the saved duration.', error);
+          });
+          renderLibrary();
+        }
+        refreshMediaPosition();
+      });
+      audio.addEventListener('timeupdate', function () {
+        updateProgress();
+        refreshMediaPosition();
+      });
+      audio.addEventListener('play', updatePlayButton);
+      audio.addEventListener('pause', updatePlayButton);
+      audio.addEventListener('ended', function () {
+        updatePlayButton();
+        if (repeatMode === 'one' && currentTrack) {
+          audio.currentTime = 0;
+          togglePlayback();
+        } else {
+          moveTrack(1, true);
+        }
+      });
+      audio.addEventListener('error', function () {
+        if (currentTrack && !isMidi(currentTrack)) {
+          playbackError(new Error('Unsupported or unreadable audio format.'));
+        }
+      });
+
+      // Optional lock-screen/notification controls; unsupported actions are ignored with a console warning.
+      if ('mediaSession' in navigator && navigator.mediaSession.setActionHandler) {
+        var mediaActions = {
+          play: togglePlayback,
+          pause: function () { audio.pause(); },
+          previoustrack: function () { moveTrack(-1, false); },
+          nexttrack: function () { moveTrack(1, false); },
+          seekbackward: function () { if (isFinite(audio.duration)) audio.currentTime = Math.max(0, audio.currentTime - 10); },
+          seekforward: function () { if (isFinite(audio.duration)) audio.currentTime = Math.min(audio.duration, audio.currentTime + 10); },
+          seekto: function (details) { if (details && isFinite(details.seekTime)) audio.currentTime = details.seekTime; }
+        };
+        Object.keys(mediaActions).forEach(function (action) {
+          try {
+            navigator.mediaSession.setActionHandler(action, mediaActions[action]);
+          } catch (error) {
+            console.warn('Media Session action is not supported: ' + action, error);
+          }
+        });
+      }
+
+      // Restore saved blobs and metadata from this browser's IndexedDB database.
+      openDatabase().then(loadTracks).then(function (savedTracks) {
+        savedTracks.forEach(function (record) {
+          try {
+            tracks.push(hydrate(record));
+          } catch (error) {
+            console.error('Could not restore a saved audio file.', error);
+          }
+        });
+        tracks.sort(function (a, b) { return b.addedAt - a.addedAt; });
+        renderLibrary();
+        setStatus(tracks.length
+          ? 'Loaded ' + tracks.length + (tracks.length === 1 ? ' saved track.' : ' saved tracks.') + ' from this browser.'
+          : 'Your library is ready. Add music from this device.');
+      }).catch(function (error) {
+        console.error('Could not load the saved audio library.', error);
+        renderLibrary();
+        setStatus('Saved music is unavailable in this browser. You can still add files for this session.');
+      });
+    })();
+  </script>
+</body>
+</html>

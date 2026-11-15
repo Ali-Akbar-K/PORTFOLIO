@@ -264,7 +264,6 @@
   var chipsBox = $('#igChips');
   var searchEl = $('#igSearch');
   var localAudioInput = $('#igLocalAudioFiles');
-  var localAudioChoose = $('#igChooseLocalAudio');
   var localAudioClear = $('#igClearLocalAudio');
   var localAudioStatus = $('#igLocalAudioStatus');
   var localTracks = [];
@@ -807,7 +806,6 @@
   }
 
   searchEl.addEventListener('input', function () { filterSearch = searchEl.value; renderGrid(); });
-  localAudioChoose.addEventListener('click', function () { localAudioInput.click(); });
   localAudioInput.addEventListener('change', function () {
     var files = Array.prototype.slice.call(localAudioInput.files || []);
     var added = 0;

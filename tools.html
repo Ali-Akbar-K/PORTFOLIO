@@ -156,9 +156,10 @@
         <div class="pane" data-pane="music">
           <div class="ig-music">
             <div class="ig-local-controls">
-              <button class="btn" id="igChooseLocalAudio" type="button">Choose audio files</button>
+              <a class="btn ghost" href="audio-library.html">Open full Audio Library</a>
+              <input id="igLocalAudioFiles" class="ig-local-input" type="file" accept="audio/*,.mp3,.m4a,.aac,.wav,.ogg,.opus,.flac,.aiff,.alac,.wma,.amr,.3gp" multiple aria-label="Choose audio files">
+              <label class="btn ig-local-picker" for="igLocalAudioFiles">Choose audio files</label>
               <button class="btn ghost" id="igClearLocalAudio" type="button" disabled>Clear selected audio</button>
-              <input id="igLocalAudioFiles" type="file" accept="audio/*,.mp3,.m4a,.aac,.wav,.ogg,.opus,.flac,.aiff,.alac,.wma,.amr,.3gp" multiple hidden>
               <p id="igLocalAudioStatus" role="status" aria-live="polite">Choose audio files stored on this device. They are not uploaded.</p>
             </div>
             <div class="ig-toolbar">
