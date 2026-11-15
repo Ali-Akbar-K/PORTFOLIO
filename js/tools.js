@@ -263,6 +263,11 @@
   var radioGrid = $('#igRadio');
   var chipsBox = $('#igChips');
   var searchEl = $('#igSearch');
+  var localAudioInput = $('#igLocalAudioFiles');
+  var localAudioChoose = $('#igChooseLocalAudio');
+  var localAudioClear = $('#igClearLocalAudio');
+  var localAudioStatus = $('#igLocalAudioStatus');
+  var localTracks = [];
   var radioCategoryEl = $('#radioCategory');
   var radioCountryEl = $('#radioCountry');
   var radioSearchEl = $('#radioSearch');
@@ -382,7 +387,7 @@
     }
     streamSourceIndex = 0;
     playerTitle.textContent = c.t;
-    playerSub.textContent = c.live ? 'Connecting to live station...' : c.a + '  \u00b7  30s preview';
+    playerSub.textContent = c.live ? 'Connecting to live station...' : c.local ? 'Ready to play from this device' : c.a + '  \u00b7  30s preview';
     playerArtEl.style.background = gradFor(c.t);
     playerArtEl.textContent = c.t.charAt(0);
     document.body.classList.add('has-player');
@@ -409,7 +414,11 @@
       : mediaErrorCode === 2
       ? 'The station stream was interrupted or blocked by its provider.'
       : 'The station stream is offline or blocked by its provider.';
-    playerSub.textContent = current && current.live
+    playerSub.textContent = current && current.local
+      ? error && error.name === 'NotAllowedError'
+        ? 'Tap Play to allow audio.'
+        : 'This audio format may not be supported on this phone. Try MP3, M4A, or WAV.'
+      : current && current.live
       ? detail + ' You can retry or choose another station.'
       : 'This track could not be played. Please try another track.';
     streamSourceIndex = 0;
@@ -435,7 +444,18 @@
     }
   }
   function startAudioPlayback(requestId) {
-    audio.play().then(upPlayIcons).catch(function (error) { tryNextStream(error, requestId); });
+    var playAttempt;
+    try {
+      playAttempt = audio.play();
+    } catch (error) {
+      tryNextStream(error, requestId);
+      return;
+    }
+    if (playAttempt && typeof playAttempt.then === 'function') {
+      playAttempt.then(upPlayIcons).catch(function (error) { tryNextStream(error, requestId); });
+    } else {
+      upPlayIcons();
+    }
     window.clearTimeout(connectionTimer);
     connectionTimer = window.setTimeout(function () {
       if (current && requestId === playbackAttemptId && !playbackConnected) {
@@ -517,8 +537,11 @@
     playbackConnected = true;
     window.clearTimeout(connectionTimer);
     if (current) {
-      playerSub.textContent = (current.live ? '\u25cf LIVE  ' : 'Preview playing  \u00b7  ') + current.a +
-        (current.live ? '' : '  \u00b7  30s preview');
+      playerSub.textContent = current.live
+        ? '\u25cf LIVE  ' + current.a
+        : current.local
+        ? 'Playing from this device'
+        : 'Preview playing  \u00b7  ' + current.a + '  \u00b7  30s preview';
     }
     upPlayIcons();
   });
@@ -529,11 +552,14 @@
   audio.addEventListener('stalled', function () {
     if (current && current.live) playerSub.textContent = 'Reconnecting to the live stream...';
   });
-  audio.addEventListener('ended', function () { if (current && !current.live) { audio.currentTime = 0; pauseIcon && upPlayIcons(); } });
+  audio.addEventListener('ended', function () {
+    if (current && !current.live && !current.local) audio.currentTime = 0;
+    upPlayIcons();
+  });
   audio.addEventListener('timeupdate', function () {
     if (!current) return;
     if (current.live) return;
-    if (audio.currentTime >= PREVIEW_SECONDS) { audio.pause(); audio.currentTime = 0; upPlayIcons(); return; }
+    if (!current.local && audio.currentTime >= PREVIEW_SECONDS) { audio.pause(); audio.currentTime = 0; upPlayIcons(); return; }
     if (isFinite(audio.duration) && audio.duration > 0) playerTrack.style.width = (audio.currentTime / audio.duration * 100) + '%';
   });
   audio.addEventListener('error', function () {
@@ -555,7 +581,7 @@
   });
 
   function filteredLibrary() {
-    return LIBRARY.filter(function (tr) {
+    return LIBRARY.concat(localTracks).filter(function (tr) {
       var okCat = filterCat === 'all' || tr.cat === filterCat || (filterCat === 'Trending' && tr.tag === 'TRENDING') || (filterCat === 'Featured' && tr.tag === 'FEATURED');
       if (!okCat) return false;
       if (!filterSearch) return true;
@@ -584,22 +610,23 @@
       meta.appendChild(el('span', { class: 'ig-live-tag' }, tr.lastcheckok === 0 ? 'UNVERIFIED' : '\u25cf LIVE'));
       if (tr.bitrate) meta.appendChild(el('span', null, tr.bitrate + ' kbps'));
     } else {
-      meta.appendChild(el('span', null, tr.cat || ''));
-      meta.appendChild(el('span', null, tr.dur || ''));
+      meta.appendChild(el('span', null, tr.local ? 'ON DEVICE' : tr.cat || ''));
+      meta.appendChild(el('span', null, tr.local ? 'LOCAL AUDIO' : tr.dur || ''));
     }
     body.appendChild(meta);
     card.appendChild(body);
     card.addEventListener('click', function () {
       if (current && current.src === tr.src) { toggle(); return; }
       setCurrent({
-        type: isRadio ? 'radio' : 'lib',
+        type: isRadio ? 'radio' : tr.local ? 'local' : 'lib',
         t: tr.t,
         a: tr.a,
         src: tr.src,
         url: tr.url,
         hls: tr.hls,
         homepage: tr.homepage,
-        live: !!isRadio
+        live: !!isRadio,
+        local: !!tr.local
       });
     });
     return card;
@@ -780,6 +807,47 @@
   }
 
   searchEl.addEventListener('input', function () { filterSearch = searchEl.value; renderGrid(); });
+  localAudioChoose.addEventListener('click', function () { localAudioInput.click(); });
+  localAudioInput.addEventListener('change', function () {
+    var files = Array.prototype.slice.call(localAudioInput.files || []);
+    var added = 0;
+    if (files.length && (!window.URL || typeof URL.createObjectURL !== 'function')) {
+      localAudioStatus.textContent = 'This browser cannot open local audio files. Try an up-to-date mobile browser.';
+      localAudioInput.value = '';
+      return;
+    }
+    files.forEach(function (file) {
+      var isAudio = (file.type && file.type.indexOf('audio/') === 0) ||
+        /\.(mp3|wav|m4a|aac|ogg|oga|opus|flac|aiff|alac|wma|amr|3gp)$/i.test(file.name);
+      if (!isAudio) return;
+      var fileKey = [file.name, file.size, file.lastModified].join('|');
+      if (localTracks.some(function (track) { return track.fileKey === fileKey; })) return;
+      var title = file.name.replace(/\.[^.]+$/, '') || file.name;
+      localTracks.push({
+        t: title,
+        a: 'On this device',
+        cat: 'Local',
+        src: URL.createObjectURL(file),
+        local: true,
+        fileKey: fileKey
+      });
+      added++;
+    });
+    localAudioInput.value = '';
+    localAudioClear.disabled = localTracks.length === 0;
+    localAudioStatus.textContent = added
+      ? 'Added ' + added + ' audio file' + (added === 1 ? '' : 's') + '. Files stay on this device until you leave or reload this page.'
+      : 'No new audio files were added. Choose audio files stored on this device.';
+    renderGrid();
+  });
+  localAudioClear.addEventListener('click', function () {
+    if (current && current.local) stop();
+    localTracks.forEach(function (track) { URL.revokeObjectURL(track.src); });
+    localTracks = [];
+    localAudioClear.disabled = true;
+    localAudioStatus.textContent = 'Choose audio files stored on this device. They are not uploaded.';
+    renderGrid();
+  });
   radioCategoryEl.addEventListener('change', function () { loadRadioStations(false); });
   radioCountryEl.addEventListener('change', function () { loadRadioStations(false); });
   radioSearchEl.addEventListener('input', function () {
