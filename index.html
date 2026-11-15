@@ -145,6 +145,7 @@ html:not([data-theme="light"]) #about-section .about-info .title-s,
 html:not([data-theme="light"]) #about-section .about-info li span:first-child,
 html:not([data-theme="light"]) #about-section .skill-mf .title-s{color:#fff !important;font-weight:600;}
 html:not([data-theme="light"]) #about-section .skill-mf .pull-right{color:#ffbd39 !important;}
+#contact-section .ftco-animate{opacity:1 !important;visibility:visible !important;animation:none !important;transform:none !important;}
 html[data-theme="light"] .resume-wrap{background:rgba(0,0,0,.05);}
 html[data-theme="light"] .contact-section .box{border:1px solid #e5e5e5;}
 html[data-theme="light"] .contact-section .box .icon{background:rgba(0,0,0,.05);}
@@ -517,7 +518,7 @@ html[data-theme="light"] #ptf-bg-orbs{opacity:.52;}
   z-index: -1;
   pointer-events: none;
 }
-html[data-theme="light"] #ptf-bg-canvas{opacity:.48;}
+html[data-theme="light"] #ptf-bg-canvas{opacity:.68;}
 
 @media (prefers-reduced-motion: reduce) {
   .hero .text > *,
@@ -1308,7 +1309,7 @@ With over 1 years of comprehensive experience in data science and analytics, I a
   function themeColors(){
     var light = document.documentElement.getAttribute('data-theme') === 'light';
     return light
-      ? { dot: '224,122,95', line: '55,75,110', lineAlpha: 0.46 }
+      ? { dot: '224,122,95', line: '55,75,110', lineAlpha: 0.56 }
       : { dot: '255,189,57', line: '130,165,255', lineAlpha: 0.32 };
   }
 
