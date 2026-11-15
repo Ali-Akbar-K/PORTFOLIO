@@ -288,8 +288,8 @@
 
       function isMediaFile(file) {
         var extension = extensionOf(file.name);
-          return (file.type && (file.type.indexOf('audio/') === 0 || file.type.indexOf('video/') === 0)) ||
-            SUPPORTED_EXTENSIONS.indexOf(extension) !== -1 || VIDEO_EXTENSIONS.indexOf(extension) !== -1;
+        return (file.type && (file.type.indexOf('audio/') === 0 || file.type.indexOf('video/') === 0)) ||
+          SUPPORTED_EXTENSIONS.indexOf(extension) !== -1 || VIDEO_EXTENSIONS.indexOf(extension) !== -1;
       }
 
       function titleFromName(name) {
