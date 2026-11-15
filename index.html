@@ -259,12 +259,34 @@ html[data-theme="light"] .ptf-theme-btn:hover{background:rgba(255,189,57,.12);co
 #section-counter .counter-link:hover .block-18,
 #section-counter .counter-link:focus-visible .block-18{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.25);}
 #section-counter .counter-link:focus-visible{outline:2px solid #ffbd39;outline-offset:4px;}
+#about-section .counter-wrap .text{width:100%;}
+#about-section .about-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;}
+#about-section .about-actions .btn{margin:0;}
 
 /* Mobile optimizations */
 html,body{overflow-x:hidden;}
 .tech-stack img{max-width:100%;}
 @media(max-width:575.98px){
   .ptf-theme-btn{right:105px;}
+  .hero .text .hero-actions{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    max-width:360px;
+    margin:0 auto;
+  }
+  .hero .text .hero-actions .btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    min-width:0;
+    margin:0;
+    padding:12px 8px !important;
+    white-space:nowrap;
+  }
+  #about-section .about-actions{gap:8px;}
+  #about-section .about-actions .btn{padding-left:16px !important;padding-right:16px !important;}
   .tech-stack img{height:22px;}
   .tech-wrap{padding:0 8px;}
   #project-section .blog-entry .text .heading{font-size:14px;}
@@ -617,7 +639,7 @@ html[data-theme="light"] #ptf-bg-canvas{opacity:.68;}
 			            <h2>A Product Developer</h2>
 						<!-- <h2 class="d-flex" style="margin-bottom: 0">With over 5 years of experience</h2> -->
 						<!-- <br> -->
-			            <p><a href="https://www.linkedin.com/in/ali-akbar-k-591725274/" class="btn btn-primary py-3 px-4">linkedin</a> 
+			            <p class="hero-actions"><a href="https://www.linkedin.com/in/ali-akbar-k-591725274/" class="btn btn-primary py-3 px-4">linkedin</a>
 							<a href="https://github.com/Ali-Akbar-K" class="btn btn-white btn-outline-white py-3 px-4">GitHub </a>
 							<a href="https://skillsprofile.skillbuilder.aws/user/aliakbark/cloudquest" class="btn btn-primary py-3 px-4">AWS</a>
 						<a href="tools.html" class="btn btn-white btn-outline-white py-3 px-4">My Tools</a>
@@ -740,7 +762,11 @@ With over 1 years of comprehensive experience in data science and analytics, I a
 									<span class="number" data-number="10">0</span> <span>+</span>
 									<span>&nbsp; Projects completed</span>
 								</p>
-								<p><a href="https://www.linkedin.com/in/ali-akbar-k-591725274/" class="btn btn-primary py-3 px-3">LinkedIn</a></p>
+								<div class="about-actions">
+									<a href="https://www.linkedin.com/in/ali-akbar-k-591725274/" class="btn btn-primary py-3 px-3">LinkedIn</a>
+									<a href="projects.html" class="btn btn-white btn-outline-white py-3 px-3">Projects</a>
+									<a href="https://github.com/Ali-Akbar-K" class="btn btn-primary py-3 px-3">GitHub</a>
+								</div>
 							</div>
 						</div>
 </div>
