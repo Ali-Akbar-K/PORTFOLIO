@@ -5,8 +5,6 @@
   var LS_DRIVE = 'ptf-drive-script-url';
   var LS_NOTE = 'ptf-note-draft';
   var LS_EVENTS = 'ptf-cal-events';
-  var PREVIEW_SECONDS = 30;
-
   var $ = function (sel, root) { return (root || document).querySelector(sel); };
   var $all = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
   function el(tag, attrs, html) {
@@ -221,20 +219,6 @@
     'linear-gradient(135deg,#f97316,#ef4444)',
     'linear-gradient(135deg,#8b5cf6,#ec4899)'
   ];
-  var LIBRARY = [
-    { t: 'Neon Nights', a: 'Synth Wave', cat: 'Party', tag: 'FEATURED', dur: '4:05', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
-    { t: 'Golden Hour', a: 'Lofi Keys', cat: 'Chill', dur: '5:12', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
-    { t: 'Midnight Drive', a: 'Retro FM', cat: 'Chill', tag: 'TRENDING', dur: '5:48', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' },
-    { t: 'Deep Focus', a: 'Study Beats', cat: 'Focus', dur: '4:33', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3' },
-    { t: 'Pulse', a: 'Club Kids', cat: 'Party', dur: '6:02', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3' },
-    { t: 'Flow State', a: 'Study Beats', cat: 'Focus', tag: 'FEATURED', dur: '5:29', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3' },
-    { t: 'Sunset Boulevard', a: 'Retro FM', cat: 'Chill', dur: '5:04', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3' },
-    { t: 'High Voltage', a: 'Club Kids', cat: 'Party', tag: 'TRENDING', dur: '4:57', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3' },
-    { t: 'Cloud Session', a: 'Lofi Keys', cat: 'Chill', dur: '5:36', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3' },
-    { t: 'Launchpad', a: 'Synth Wave', cat: 'Focus', dur: '4:44', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3' },
-    { t: 'Level Up', a: 'Gamin Beats', cat: 'Trending', tag: 'TRENDING', dur: '5:10', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-13.mp3' },
-    { t: 'Dreamscape', a: 'Lofi Keys', cat: 'Chill', tag: 'FEATURED', dur: '4:21', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3' }
-  ];
   var FALLBACK_STATIONS = [
     { t: 'Radio Mirchi Hindi', a: 'Indian FM · Hindi', src: 'https://eu8.fastcast4u.com/proxy/clyedupq/stream' },
     { t: 'BIG 92.7 FM', a: 'Indian FM · Hindi', src: 'https://stream.zeno.fm/dbstwo3dvhhtv' },
@@ -261,7 +245,6 @@
 
   var grid = $('#igGrid');
   var radioGrid = $('#igRadio');
-  var chipsBox = $('#igChips');
   var searchEl = $('#igSearch');
   var localAudioInput = $('#igLocalAudioFiles');
   var localAudioClear = $('#igClearLocalAudio');
@@ -280,7 +263,6 @@
   var playerTrack = $('#igPlayerTrack');
   var playIcon = $('#igPlayIcon');
   var pauseIcon = $('#igPauseIcon');
-  var filterCat = 'all';
   var filterSearch = '';
   var radioRequestId = 0;
   var radioController = null;
@@ -386,7 +368,7 @@
     }
     streamSourceIndex = 0;
     playerTitle.textContent = c.t;
-    playerSub.textContent = c.live ? 'Connecting to live station...' : c.local ? 'Ready to play from this device' : c.a + '  \u00b7  30s preview';
+    playerSub.textContent = c.live ? 'Connecting to live station...' : 'Ready to play from this device';
     playerArtEl.style.background = gradFor(c.t);
     playerArtEl.textContent = c.t.charAt(0);
     document.body.classList.add('has-player');
@@ -394,6 +376,8 @@
     playerTrack.style.width = '0%';
     if (c.live) { playerTrack.style.animation = 'seek-pulse 1.2s ease-in-out infinite'; playerTrack.style.width = '100%'; }
     else { playerTrack.style.animation = 'none'; }
+    updateMediaSessionMetadata();
+    updateMediaSessionPlaybackState();
     markPlaying();
     playCurrent(playbackAttemptId);
   }
@@ -529,7 +513,68 @@
     player.classList.remove('is-open');
     document.body.classList.remove('has-player');
     markPlaying();
+    updateMediaSessionMetadata();
+    updateMediaSessionPlaybackState();
     upPlayIcons();
+  }
+
+  function updateMediaSessionMetadata() {
+    if (!('mediaSession' in navigator)) return;
+    try {
+      navigator.mediaSession.metadata = current && window.MediaMetadata
+        ? new window.MediaMetadata({
+          title: current.t,
+          artist: current.a || 'On this device'
+        })
+        : null;
+    } catch (error) {
+      console.warn('Could not update lock-screen audio metadata.', error);
+    }
+  }
+  function updateMediaSessionPlaybackState() {
+    if (!('mediaSession' in navigator)) return;
+    try {
+      navigator.mediaSession.playbackState = !current ? 'none' : audio.paused ? 'paused' : 'playing';
+    } catch (error) {
+      console.warn('Could not update lock-screen playback state.', error);
+    }
+  }
+  function updateMediaSessionPosition() {
+    if (!('mediaSession' in navigator) || !navigator.mediaSession.setPositionState ||
+        !current || current.live || !isFinite(audio.duration) || audio.duration <= 0) return;
+    try {
+      navigator.mediaSession.setPositionState({
+        duration: audio.duration,
+        playbackRate: audio.playbackRate || 1,
+        position: Math.min(audio.currentTime || 0, audio.duration)
+      });
+    } catch (error) {
+      console.warn('Could not update lock-screen playback position.', error);
+    }
+  }
+  function seekMediaSession(offset) {
+    if (!current || current.live || !isFinite(audio.duration) || audio.duration <= 0) return;
+    audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + offset));
+  }
+  if ('mediaSession' in navigator && navigator.mediaSession.setActionHandler) {
+    var mediaActions = {
+      play: function () { if (current && audio.paused) playCurrent(); },
+      pause: function () { audio.pause(); },
+      seekbackward: function (details) { seekMediaSession(-((details && details.seekOffset) || 10)); },
+      seekforward: function (details) { seekMediaSession((details && details.seekOffset) || 10); },
+      seekto: function (details) {
+        if (current && !current.live && isFinite(audio.duration) && details && isFinite(details.seekTime)) {
+          audio.currentTime = Math.max(0, Math.min(audio.duration, details.seekTime));
+        }
+      }
+    };
+    Object.keys(mediaActions).forEach(function (action) {
+      try {
+        navigator.mediaSession.setActionHandler(action, mediaActions[action]);
+      } catch (error) {
+        console.warn('Media Session action is not supported: ' + action, error);
+      }
+    });
   }
 
   audio.addEventListener('playing', function () {
@@ -538,13 +583,15 @@
     if (current) {
       playerSub.textContent = current.live
         ? '\u25cf LIVE  ' + current.a
-        : current.local
-        ? 'Playing from this device'
-        : 'Preview playing  \u00b7  ' + current.a + '  \u00b7  30s preview';
+        : 'Playing from this device';
     }
+    updateMediaSessionPlaybackState();
     upPlayIcons();
   });
-  audio.addEventListener('pause', upPlayIcons);
+  audio.addEventListener('pause', function () {
+    updateMediaSessionPlaybackState();
+    upPlayIcons();
+  });
   audio.addEventListener('waiting', function () {
     if (current && current.live && playbackConnected) playerSub.textContent = 'Buffering live stream...';
   });
@@ -553,12 +600,13 @@
   });
   audio.addEventListener('ended', function () {
     if (current && !current.live && !current.local) audio.currentTime = 0;
+    updateMediaSessionPlaybackState();
     upPlayIcons();
   });
   audio.addEventListener('timeupdate', function () {
     if (!current) return;
+    updateMediaSessionPosition();
     if (current.live) return;
-    if (!current.local && audio.currentTime >= PREVIEW_SECONDS) { audio.pause(); audio.currentTime = 0; upPlayIcons(); return; }
     if (isFinite(audio.duration) && audio.duration > 0) playerTrack.style.width = (audio.currentTime / audio.duration * 100) + '%';
   });
   audio.addEventListener('error', function () {
@@ -567,22 +615,8 @@
     }
   });
 
-  /* render chips */
-  var CATS = ['all', 'Featured', 'Chill', 'Focus', 'Party', 'Trending'];
-  CATS.forEach(function (c) {
-    var b = el('button', { type: 'button', class: 'chip' + (c === 'all' ? ' is-active' : ''), 'data-cat': c }, c === 'all' ? 'All' : c);
-    b.addEventListener('click', function () {
-      filterCat = c;
-      $all('.chip', chipsBox).forEach(function (x) { x.classList.toggle('is-active', x === b); });
-      renderGrid();
-    });
-    chipsBox.appendChild(b);
-  });
-
   function filteredLibrary() {
-    return LIBRARY.concat(localTracks).filter(function (tr) {
-      var okCat = filterCat === 'all' || tr.cat === filterCat || (filterCat === 'Trending' && tr.tag === 'TRENDING') || (filterCat === 'Featured' && tr.tag === 'FEATURED');
-      if (!okCat) return false;
+    return localTracks.filter(function (tr) {
       if (!filterSearch) return true;
       var q = filterSearch.toLowerCase();
       return (tr.t + ' ' + tr.a).toLowerCase().indexOf(q) > -1;
@@ -634,7 +668,7 @@
   function renderGrid() {
     grid.innerHTML = '';
     filteredLibrary().forEach(function (tr) { grid.appendChild(cardFor(tr, false)); });
-    if (!grid.children.length) grid.appendChild(el('div', { style: 'grid-column:1/-1;color:var(--muted);text-align:center;padding:30px 0' }, 'No tracks match that search.'));
+    if (!grid.children.length) grid.appendChild(el('div', { style: 'grid-column:1/-1;color:var(--muted);text-align:center;padding:30px 0' }, 'Choose audio files from this device to get started.'));
   }
   function renderRadio() {
     radioGrid.innerHTML = '';
