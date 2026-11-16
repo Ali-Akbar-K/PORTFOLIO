@@ -4,6 +4,7 @@
   var API_BASE = 'https://api.quran.com/api/v4';
   var AUDIO_BASE = 'https://verses.quran.com/';
   var TRANSLATION_ID = 20;
+  var TAFSIR_ID = 169;
   var RECITER_ID = 7;
   var surahSelect = document.getElementById('quranSurah');
   var playButton = document.getElementById('quranPlay');
@@ -24,6 +25,7 @@
 
   var chapters = [];
   var verses = [];
+  var tafsirCache = Object.create(null);
   var chapterId = 0;
   var verseIndex = -1;
   var loadToken = 0;
@@ -223,6 +225,86 @@
       .trim();
   }
 
+  function truncateWords(value, maxWords) {
+    var words = cleanTranslation(value)
+      .replace(/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .split(' ')
+      .filter(Boolean);
+    return words.slice(0, maxWords).join(' ');
+  }
+
+  function extractTafsirContext(html) {
+    var parsed = new DOMParser().parseFromString(html, 'text/html');
+    var headings = parsed.querySelectorAll('h2, h1');
+    for (var index = 0; index < headings.length; index++) {
+      var heading = truncateWords(headings[index].textContent, 24);
+      if (heading.length >= 30 && !/^introduction\b/i.test(heading) &&
+          !/^which was revealed\b/i.test(heading)) {
+        return heading;
+      }
+    }
+
+    var paragraphs = parsed.querySelectorAll('p');
+    for (var paragraphIndex = 0; paragraphIndex < paragraphs.length; paragraphIndex++) {
+      var paragraph = truncateWords(paragraphs[paragraphIndex].textContent, 24);
+      if (paragraph.length >= 40 && !/^\(/.test(paragraph)) return paragraph;
+    }
+    return '';
+  }
+
+  function fetchTafsirContext(verse) {
+    if (tafsirCache[verse.verse_key]) return Promise.resolve(tafsirCache[verse.verse_key]);
+    var url = API_BASE + '/tafsirs/' + TAFSIR_ID + '/by_ayah/' + encodeURIComponent(verse.verse_key);
+    return fetchJson(url).then(function (data) {
+      var tafsir = data && data.tafsir;
+      if (!tafsir || !tafsir.text) throw new Error('Ibn Kathir context was not returned for this ayah.');
+      var summary = extractTafsirContext(tafsir.text);
+      if (!summary) throw new Error('No concise English context was found in the selected tafsir.');
+      var result = {
+        summary: summary,
+        source: tafsir.resource_name || 'Ibn Kathir (Abridged)'
+      };
+      tafsirCache[verse.verse_key] = result;
+      return result;
+    });
+  }
+
+  function buildVideoPrompt(verse, translation, tafsirSummary) {
+    var sourceText = (translation + ' ' + tafsirSummary).toLowerCase();
+    var describesHereafter = /\b(hereafter|resurrection|judgment|recompense|paradise|hell)\b/.test(sourceText);
+    var isDuAOrLaw = /\b(our lord|guide us|grant us|forgive us|i seek refuge|o you who believe|lawful|forbidden|command|do not|prayer|worship|charity|fast)\b/.test(sourceText);
+    var isNarrative = /\b(story|account|when|then|cave|entered|retreated|awakened|said|replied|came|went|fled|sent|took|built|crossed|found|returned|prophet|messenger|companion)\b/.test(sourceText);
+    var sceneCue;
+    var mood = 'reverent';
+
+    if (describesHereafter) {
+      sceneCue = 'abstract cosmic light';
+      mood = 'solemn';
+    } else if (isDuAOrLaw || !isNarrative) {
+      sceneCue = 'symbolic nature, sky, light, calligraphy';
+    } else {
+      if (/\bdog\b/.test(sourceText) && /\basleep|sleeping\b/.test(sourceText) && /\bforelegs\b/.test(sourceText)) {
+        sceneCue = 'sleepers turn from side to side; dog stretches forelegs at entrance';
+      } else {
+        sceneCue = truncateWords(translation, 10) || 'the stated events from this ayah';
+      }
+      if (/\b(warn|warning|punish|fear|battle|fire)\b/.test(sourceText)) mood = 'tense';
+    }
+
+    var prompt = 'Soft painterly 2D animation, warm earthy palette, golden-hour lighting, consistent art style. ' +
+      'Scene for Surah ' + verse.verse_key + ': ' + sceneCue + '. ' +
+      'Follow the ayah and Tafsir Ibn Kathir only; invent nothing. ' +
+      'Never depict Allah; no Prophet, angel, Companion faces/bodies; use light or back silhouettes. ' +
+      'Slow pan; ' + mood + ' mood; 5–6 seconds; 16:9; subtitles on.';
+    var wordCount = prompt.trim().split(/\s+/).length;
+    if (wordCount < 40 || wordCount > 60) {
+      throw new Error('The generated video prompt did not meet the 40–60 word limit.');
+    }
+    return { text: prompt, wordCount: wordCount };
+  }
+
   function createStoryVisual(variant, scene) {
     var visual = document.createElement('div');
     visual.className = 'quran-story-visual quran-story-visual--' + variant;
@@ -370,6 +452,104 @@
       source.textContent = story.source;
       panel.appendChild(source);
     }
+
+    var promptSection = document.createElement('section');
+    promptSection.className = 'quran-video-prompt';
+    promptSection.setAttribute('aria-label', 'AI video prompt generator');
+    var generateButton = document.createElement('button');
+    generateButton.className = 'btn ghost quran-video-prompt-generate';
+    generateButton.type = 'button';
+    generateButton.textContent = 'Generate AI video prompt';
+    promptSection.appendChild(generateButton);
+
+    var promptStatus = document.createElement('p');
+    promptStatus.className = 'quran-video-prompt-status';
+    promptStatus.setAttribute('role', 'status');
+    promptStatus.setAttribute('aria-live', 'polite');
+    promptSection.appendChild(promptStatus);
+
+    var promptResult = document.createElement('div');
+    promptResult.className = 'quran-video-prompt-result';
+    promptResult.hidden = true;
+    var promptLabel = document.createElement('label');
+    var promptId = 'quran-video-prompt-' + verse.id;
+    promptLabel.htmlFor = promptId;
+    promptResult.appendChild(promptLabel);
+
+    var promptOutput = document.createElement('textarea');
+    promptOutput.className = 'quran-video-prompt-output';
+    promptOutput.id = promptId;
+    promptOutput.rows = 7;
+    promptOutput.spellcheck = false;
+    promptResult.appendChild(promptOutput);
+
+    var sourceDetails = document.createElement('details');
+    sourceDetails.className = 'quran-video-prompt-sources';
+    var sourceSummary = document.createElement('summary');
+    sourceSummary.textContent = 'Ayah and Tafsir Ibn Kathir source details';
+    sourceDetails.appendChild(sourceSummary);
+    var sourceReference = document.createElement('p');
+    sourceDetails.appendChild(sourceReference);
+    var sourceArabic = document.createElement('p');
+    sourceArabic.lang = 'ar';
+    sourceArabic.dir = 'rtl';
+    sourceDetails.appendChild(sourceArabic);
+    var sourceTranslation = document.createElement('p');
+    sourceDetails.appendChild(sourceTranslation);
+    var sourceTafsir = document.createElement('p');
+    sourceDetails.appendChild(sourceTafsir);
+    promptResult.appendChild(sourceDetails);
+
+    var copyButton = document.createElement('button');
+    copyButton.className = 'btn ghost quran-video-prompt-copy';
+    copyButton.type = 'button';
+    copyButton.textContent = 'Copy video prompt';
+    promptResult.appendChild(copyButton);
+    promptSection.appendChild(promptResult);
+    panel.appendChild(promptSection);
+
+    generateButton.addEventListener('click', function () {
+      generateButton.disabled = true;
+      promptStatus.textContent = 'Loading Ibn Kathir (Abridged) context…';
+      fetchTafsirContext(verse).then(function (tafsir) {
+        var translation = cleanTranslation(verse.translations && verse.translations[0] && verse.translations[0].text) ||
+          'English translation unavailable.';
+        var generated = buildVideoPrompt(verse, translation, tafsir.summary);
+        promptOutput.value = generated.text;
+        promptLabel.textContent = 'Video prompt · ' + generated.wordCount + ' words';
+        sourceReference.textContent = 'Surah ' + (chapterById(chapterId) || {}).name_simple + ' · Ayah ' + verse.verse_key;
+        sourceArabic.textContent = (verse.words || []).filter(function (word) {
+          return word.char_type_name === 'word';
+        }).map(function (word) {
+          return word.text_uthmani || word.text || '';
+        }).join(' ');
+        sourceTranslation.textContent = 'Saheeh International: ' + translation;
+        sourceTafsir.textContent = tafsir.source + ' context: ' + tafsir.summary;
+        promptResult.hidden = false;
+        promptStatus.textContent = 'Prompt ready. Review the source details and copy the prompt to your video generator.';
+      }).catch(function (error) {
+        promptStatus.textContent = 'Could not load the Ibn Kathir context or build a prompt. Check your connection and try again.';
+        console.error('Could not generate the video prompt for ' + verse.verse_key + '.', error);
+      }).then(function () {
+        generateButton.disabled = false;
+      });
+    });
+
+    copyButton.addEventListener('click', function () {
+      if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') {
+        promptStatus.textContent = 'Clipboard access is unavailable. Select the prompt above and copy it manually.';
+        return;
+      }
+      copyButton.disabled = true;
+      navigator.clipboard.writeText(promptOutput.value).then(function () {
+        promptStatus.textContent = 'Video prompt copied.';
+      }).catch(function (error) {
+        promptStatus.textContent = 'Could not copy the prompt. Select it above and copy manually.';
+        console.error('Could not copy the video prompt for ' + verse.verse_key + '.', error);
+      }).then(function () {
+        copyButton.disabled = false;
+      });
+    });
     return panel;
   }
 
