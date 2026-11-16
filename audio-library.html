@@ -219,7 +219,7 @@
     </div>
     <div class="player-options">
       <button class="icon-button" id="shuffleButton" type="button" aria-label="Shuffle off" title="Shuffle">🔀</button>
-      <button class="icon-button" id="repeatButton" type="button" aria-label="Repeat off" title="Repeat off">↻</button>
+      <button class="icon-button is-active" id="repeatButton" type="button" aria-label="Repeat all" title="Repeat all">↻</button>
       <label class="volume-wrap" for="volumeControl">Volume
         <input class="volume" id="volumeControl" type="range" min="0" max="1" step="0.01" value="0.85">
       </label>
@@ -248,7 +248,7 @@
       var queueIndex = -1;
       var currentTrack = null;
       var shuffle = false;
-      var repeatMode = 'off';
+      var repeatMode = 'all';
       var audio = new Audio();
       audio.preload = 'metadata';
       audio.volume = 0.85;
