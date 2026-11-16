@@ -1,4 +1,4 @@
-/* ===== My Tools page (Calculator · Audio · Radio · TV · Notes · Calendar) ===== */
+/* ===== My Tools page (Calculator · Audio · Quran · Radio · TV · Notes · Calendar) ===== */
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   color-scheme:light;
@@ -174,6 +174,7 @@ body.has-player{padding-bottom:100px;}
 .service-tv{background:linear-gradient(135deg,#ef5364,#b63575);}
 .service-notes{background:linear-gradient(135deg,#e477ef,#c34ddc);}
 .service-calendar{background:linear-gradient(135deg,#24c6b4,#1799b8);}
+.service-quran{background:linear-gradient(135deg,#138b70,#34ad83);}
 .service-icon{position:absolute;left:16px;top:14px;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.95);color:#4d4ab8;}
 .service-icon svg{width:22px;height:22px;}
 .service-copy{display:grid;gap:2px;min-width:0;padding-right:14px;}
@@ -270,6 +271,159 @@ body.has-player{padding-bottom:100px;}
   content:"";position:absolute;inset:0;background:rgba(0,0,0,.28);
 }
 .ig-tip{font-size:12px;color:var(--muted);line-height:1.55;margin-top:-14px;}
+.quran-reader{max-width:860px;margin:0 auto;}
+.quran-controls{position:sticky;top:68px;z-index:12;display:flex;flex-wrap:wrap;align-items:end;gap:10px;margin:0 0 12px;padding:10px;border:1px solid var(--border);border-radius:14px;background:var(--panel);box-shadow:0 8px 24px rgba(0,0,0,.16);}
+.quran-controls label{display:grid;flex:1 1 260px;gap:5px;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;}
+.quran-controls .input{height:43px;font-size:13px;}
+.quran-controls select.input option{background:var(--panel);color:var(--text);}
+.quran-playback{display:flex;flex-wrap:wrap;gap:8px;}
+.quran-playback .btn{min-height:43px;white-space:nowrap;}
+.quran-story-stage{flex:1 0 100%;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr);align-items:center;gap:10px;padding:10px;border:1px solid var(--border);border-radius:12px;background:var(--active-bg);}
+.quran-story-stage[hidden]{display:none;}
+.quran-story-stage-copy h3{color:var(--text);font-size:13px;}
+.quran-story-stage-copy p{display:-webkit-box;overflow:hidden;margin-top:4px;color:var(--muted);font-size:11px;line-height:1.45;-webkit-box-orient:vertical;-webkit-line-clamp:3;}
+.quran-story-stage[data-mode="verse"]{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);padding:7px;}
+.quran-story-stage-animation{min-height:78px!important;height:78px;aspect-ratio:16/9;}
+.quran-story-stage[data-mode="cave"]{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);padding:7px;}
+.quran-story-stage[data-mode="cave"] .quran-cave-art{min-height:100px;height:100px;border-radius:8px;}
+.quran-cave-playback-caption h3{color:var(--blue);font-size:11px;line-height:1.35;}
+.quran-cave-playback-caption p{display:-webkit-box;overflow:hidden;margin-top:5px;color:var(--text);font-size:11px;line-height:1.4;-webkit-box-orient:vertical;-webkit-line-clamp:3;}
+.quran-story-stage[data-mode="cave"][data-scene="faith"] .quran-cave-art{background:linear-gradient(180deg,#876b68 0%,#3e4655 55%,#182432 100%);}
+.quran-story-stage[data-mode="cave"][data-scene="awakening"] .quran-cave-art{background:linear-gradient(180deg,#f6d69a 0%,#d98d61 53%,#354253 100%);}
+.quran-story-stage[data-mode="cave"][data-scene="lesson"] .quran-cave-art{background:linear-gradient(180deg,#f1d8a9 0%,#c58c70 52%,#3c4652 100%);}
+.quran-story-stage[data-mode="cave"][data-scene="faith"] .quran-cave-sky-glow{opacity:.38;}
+.quran-story-stage[data-mode="cave"][data-scene="awakening"] .quran-cave-sun{left:78%;top:12%;}
+.quran-story-stage[data-mode="cave"][data-scene="lesson"] .quran-cave-sky-glow{opacity:.85;}
+.quran-story-stage[data-mode="cave"][data-scene="lesson"] .quran-cave-pattern{opacity:.2;}
+.quran-verses{display:grid;gap:12px;margin:14px 0 26px;}
+.quran-verse{padding:16px;border:1px solid var(--border);border-radius:14px;background:var(--panel);scroll-margin:20px;}
+.quran-verse.is-active{border-color:var(--blue);background:var(--active-bg);}
+.quran-arabic{margin:0;color:var(--text);font-family:"Noto Naskh Arabic","Amiri",serif;font-size:clamp(24px,5vw,36px);line-height:2;text-align:right;}
+.quran-word{display:inline-block;padding:0 .08em;border-radius:5px;}
+.quran-word.is-active{background:var(--blue);color:var(--accent-text);}
+.quran-ayah-number{display:inline-block;margin-inline-start:.3em;padding:0 .45em;border:1px solid var(--border);border-radius:50%;color:var(--blue);font-family:inherit;font-size:13px;vertical-align:middle;}
+.quran-sajdah-marker{display:inline-block;margin-inline-start:.3em;padding:0;border:0;background:transparent;color:var(--blue);font-family:"Noto Naskh Arabic","Amiri",serif;font-size:1.15em;line-height:1;vertical-align:middle;cursor:pointer;}
+.quran-sajdah-marker:hover{color:var(--text);}
+.quran-sajdah-marker:focus-visible{border-radius:4px;outline:2px solid var(--blue);outline-offset:3px;}
+.quran-verse-animation-trigger{min-height:36px;margin-top:10px;padding:7px 12px;font-size:12px;}
+.quran-verse-animation-panel{margin-top:14px;padding:14px;border:1px solid var(--border);border-inline-start:4px solid var(--blue);border-radius:14px;background:var(--panel);animation:quran-story-enter .28s ease both;}
+.quran-story-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;}
+.quran-story-header h3{color:var(--text);font-size:15px;}
+.quran-story-close{min-height:36px;padding:7px 12px;font-size:12px;}
+.quran-story-frame{position:relative;overflow:hidden;aspect-ratio:16/9;min-height:150px;border:1px solid var(--border);border-radius:12px;background:#26344a;}
+.quran-story-frame::before,.quran-story-frame::after{position:absolute;z-index:3;right:8px;left:8px;height:7px;background:repeating-linear-gradient(45deg,transparent 0 5px,rgba(255,235,195,.55) 5px 6px,transparent 6px 11px),repeating-linear-gradient(-45deg,transparent 0 5px,rgba(255,235,195,.45) 5px 6px,transparent 6px 11px);content:"";opacity:.7;pointer-events:none;}
+.quran-story-frame::before{top:5px;}
+.quran-story-frame::after{bottom:5px;}
+.quran-story-visual{position:relative;min-height:108px;overflow:hidden;border-radius:9px;background:linear-gradient(145deg,#172748,#365c82);isolation:isolate;}
+.quran-story-frame>.quran-story-visual{position:absolute;inset:0;width:100%;height:100%;min-height:0;border-radius:inherit;}
+.quran-story-subtitle{margin:10px 0 0;padding:9px 11px;border-inline-start:3px solid var(--blue);border-radius:0 7px 7px 0;background:var(--active-bg);color:var(--text);font-size:13px;line-height:1.6;}
+.quran-story-note,.quran-story-source{margin:8px 0 0;color:var(--muted);font-size:12px;line-height:1.55;}
+.quran-story-visual[data-scene="creation"]{background:linear-gradient(160deg,#9ac9d3 0%,#698f9e 48%,#25475c 100%);}
+.quran-story-visual[data-scene="recitation"]{background:linear-gradient(145deg,#202441,#714d7e 65%,#c38c83);}
+.quran-story-visual[data-scene="throne"]{background:linear-gradient(145deg,#142c40,#316477 65%,#b1aa7d);}
+.quran-story-visual[data-scene="repentance"]{background:linear-gradient(145deg,#203753,#537e84 65%,#d7ad78);}
+.quran-story-visual[data-scene="worship"],
+.quran-story-visual[data-scene="remembrance"]{background:linear-gradient(145deg,#1d3740,#426d65 65%,#c4a873);}
+.quran-story-visual[data-scene="nearness"]{background:linear-gradient(145deg,#263253,#6c7194 65%,#d4b8a2);}
+.quran-story-visual[data-scene="cave"]{background:linear-gradient(180deg,#92796c 0%,#4a4b55 56%,#19232f 100%);}
+.quran-story-visual[data-scene="fire"]{background:linear-gradient(180deg,#27253a 0%,#783f45 58%,#241d28 100%);}
+.quran-story-visual[data-scene="garden"]{background:linear-gradient(180deg,#f3d9a1 0%,#89a779 52%,#35564a 100%);}
+.quran-story-visual[data-scene="water"]{background:linear-gradient(180deg,#c7d8d0 0%,#7ba6a7 54%,#244b62 100%);}
+.quran-story-visual[data-scene="journey"]{background:linear-gradient(180deg,#eacb91 0%,#ba815f 53%,#40404a 100%);}
+.quran-story-visual[data-scene="guidance"]{background:linear-gradient(180deg,#263650 0%,#67798a 56%,#c29c6d 100%);}
+.quran-story-visual[data-scene="afterlife"]{background:linear-gradient(180deg,#101b30 0%,#35445c 60%,#766c72 100%);}
+.quran-story-visual[data-scene="warning"]{background:linear-gradient(180deg,#303143 0%,#805d5b 60%,#302c35 100%);}
+.quran-story-visual[data-scene="mercy"]{background:linear-gradient(180deg,#f3d9a1 0%,#d19b71 54%,#526257 100%);}
+.quran-story-visual[data-scene="refuge"]{background:linear-gradient(180deg,#f1d8a4 0%,#c58a68 55%,#41404a 100%);}
+.quran-story-visual[data-scene="humanity"]{background:linear-gradient(180deg,#202a42 0%,#4c5268 58%,#253b47 100%);}
+.quran-story-orbit{position:absolute;top:10px;left:calc(50% - 37px);width:74px;height:74px;border:1px solid rgba(255,255,255,.55);border-radius:50%;animation:quran-story-orbit 9s linear infinite;}
+.quran-story-sun{position:absolute;z-index:1;top:32px;left:calc(50% - 11px);width:22px;height:22px;border-radius:50%;background:#fff0bd;box-shadow:0 0 25px rgba(255,231,173,.85);animation:quran-story-glow 3.2s ease-in-out infinite alternate;}
+.quran-story-horizon{position:absolute;right:-10%;bottom:-27px;left:-10%;height:64px;border-radius:50% 50% 0 0;background:rgba(8,21,35,.52);transform:rotate(-3deg);}
+.quran-story-arch{position:absolute;bottom:15px;left:calc(50% - 23px);width:46px;height:43px;border:1px solid rgba(255,255,255,.65);border-bottom:0;border-radius:24px 24px 0 0;opacity:.72;}
+.quran-story-book{display:none;position:absolute;bottom:16px;left:calc(50% - 22px);width:44px;height:20px;border:1px solid rgba(255,255,255,.78);border-radius:3px 3px 7px 7px;background:linear-gradient(90deg,rgba(255,255,255,.36) 48%,rgba(255,255,255,.78) 49%,rgba(255,255,255,.3) 53%);transform:perspective(40px) rotateX(7deg);}
+.quran-story-mountains{display:none;position:absolute;right:-8%;bottom:10%;left:-8%;height:58%;background:linear-gradient(145deg,#6a6570,#293b4b 72%);clip-path:polygon(0 100%,0 60%,18% 44%,32% 61%,52% 8%,67% 49%,81% 27%,100% 58%,100% 100%);}
+.quran-story-cave{display:none;position:absolute;z-index:2;bottom:10%;left:44%;width:17%;height:32%;border:4px solid rgba(28,31,37,.55);border-bottom:0;border-radius:50% 50% 0 0;background:linear-gradient(180deg,#1a202b,#090e15);box-shadow:inset 0 8px 16px rgba(10,12,16,.55);}
+.quran-story-water{display:none;position:absolute;right:-5%;bottom:0;left:-5%;height:36%;border-radius:48% 52% 0 0;background:linear-gradient(180deg,rgba(155,205,202,.72),rgba(31,83,105,.9));animation:quran-story-water 5s ease-in-out infinite alternate;}
+.quran-story-path{display:none;position:absolute;bottom:0;left:41%;width:18%;height:58%;background:linear-gradient(180deg,rgba(255,239,190,.05),rgba(255,228,165,.65));clip-path:polygon(45% 0,55% 0,100% 100%,0 100%);animation:quran-story-glow 4s ease-in-out infinite alternate;}
+.quran-story-rain{display:none;position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 22px,rgba(231,247,247,.38) 23px 24px,transparent 25px 42px);animation:quran-story-rain 1.8s linear infinite;}
+.quran-story-stars{display:none;position:absolute;inset:0;background-image:radial-gradient(circle at 18% 22%,#fff0bd 0 1px,transparent 2px),radial-gradient(circle at 73% 18%,#fff0bd 0 1px,transparent 2px),radial-gradient(circle at 54% 36%,#fff0bd 0 1px,transparent 2px),radial-gradient(circle at 86% 45%,#fff0bd 0 1px,transparent 2px);animation:quran-story-glow 3s ease-in-out infinite alternate;}
+.quran-story-flame{display:none;position:absolute;bottom:0;left:calc(50% - 21px);width:42px;height:55%;border-radius:50% 50% 30% 30%;background:radial-gradient(ellipse at 50% 80%,#fff1bd 0 10%,#ffb35e 28%,#e56746 56%,transparent 72%);filter:drop-shadow(0 0 16px rgba(244,135,82,.6));animation:quran-story-flame 1.4s ease-in-out infinite alternate;}
+.quran-story-garden{display:none;position:absolute;right:-8%;bottom:0;left:-8%;height:43%;border-radius:50% 50% 0 0;background:linear-gradient(180deg,#9db67a,#385c4c);}
+.quran-story-visual--illustrated .quran-story-orbit{display:none;}
+.quran-story-visual--illustrated .quran-story-sun{top:18px;left:calc(70% - 11px);width:18px;height:18px;}
+.quran-story-visual--illustrated[data-scene="recitation"] .quran-story-book,
+.quran-story-visual--illustrated[data-scene="nearness"] .quran-story-book,
+.quran-story-visual--illustrated[data-scene="worship"] .quran-story-book{display:block;}
+.quran-story-visual[data-scene="creation"] .quran-story-mountains,
+.quran-story-visual[data-scene="cave"] .quran-story-mountains,
+.quran-story-visual[data-scene="journey"] .quran-story-mountains{display:block;}
+.quran-story-visual[data-scene="cave"] .quran-story-cave{display:block;}
+.quran-story-visual[data-scene="journey"] .quran-story-path,
+.quran-story-visual[data-scene="guidance"] .quran-story-path,
+.quran-story-visual[data-scene="repentance"] .quran-story-path,
+.quran-story-visual[data-scene="mercy"] .quran-story-path{display:block;}
+.quran-story-visual[data-scene="water"] .quran-story-water{display:block;}
+.quran-story-visual[data-scene="water"] .quran-story-rain{display:block;}
+.quran-story-visual[data-scene="garden"] .quran-story-garden{display:block;}
+.quran-story-visual[data-scene="fire"] .quran-story-flame{display:block;}
+.quran-story-visual[data-scene="night"] .quran-story-stars,
+.quran-story-visual[data-scene="afterlife"] .quran-story-stars,
+.quran-story-visual[data-scene="humanity"] .quran-story-stars{display:block;}
+.quran-story-visual[data-scene="humanity"] .quran-story-arch,
+.quran-story-visual[data-scene="humanity"] .quran-story-book{display:none;}
+.quran-story-visual[data-scene="refuge"] .quran-story-path{display:block;}
+.quran-story-note{margin-top:12px!important;}
+.quran-story-source{font-size:11px;}
+@keyframes quran-story-orbit{to{transform:rotate(360deg);}}
+@keyframes quran-story-glow{from{opacity:.68;transform:scale(.88);}to{opacity:1;transform:scale(1.12);}}
+@keyframes quran-story-water{from{transform:translateX(-2%);}to{transform:translateX(2%);}}
+@keyframes quran-story-rain{to{background-position:0 42px;}}
+@keyframes quran-story-flame{from{transform:scale(.92,.9);opacity:.82;}to{transform:scale(1.06,1.03);opacity:1;}}
+@keyframes quran-story-enter{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.quran-cave-story{margin:0 0 18px;padding:14px;border:1px solid var(--border);border-radius:16px;background:var(--panel);}
+.quran-cave-story-header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:12px;}
+.quran-cave-story-header h3{color:var(--text);font-size:16px;}
+.quran-cave-story-header p{margin-top:4px;color:var(--muted);font-size:12px;line-height:1.5;}
+.quran-cave-story-controls{display:flex;flex:0 0 auto;gap:8px;}
+.quran-cave-story-controls .btn{min-height:40px;padding:8px 13px;font-size:12px;}
+.quran-cave-scene{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);overflow:hidden;border:1px solid var(--border);border-radius:12px;background:var(--card-bg,var(--panel));}
+.quran-cave-art{position:relative;min-height:230px;overflow:hidden;background:linear-gradient(180deg,#efc98b 0%,#b86f58 54%,#263344 100%);isolation:isolate;}
+.quran-cave-sky-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 70% 28%,rgba(255,235,180,.72),transparent 40%);transition:opacity .8s ease,background .8s ease;}
+.quran-cave-sun{position:absolute;top:21%;left:68%;width:34px;height:34px;border-radius:50%;background:#ffe5a6;box-shadow:0 0 40px 18px rgba(255,223,157,.38);animation:quran-cave-sun-drift 14s ease-in-out infinite alternate;}
+.quran-cave-ridge{position:absolute;right:-8%;bottom:-1px;left:-8%;display:block;}
+.quran-cave-ridge-back{height:82%;background:linear-gradient(145deg,#665367,#344357 66%);clip-path:polygon(0 100%,0 60%,17% 43%,29% 56%,51% 9%,67% 51%,83% 30%,100% 59%,100% 100%);}
+.quran-cave-ridge-front{height:59%;background:linear-gradient(160deg,#37404a,#17202d 72%);clip-path:polygon(0 100%,0 65%,21% 43%,38% 60%,58% 17%,72% 45%,90% 32%,100% 48%,100% 100%);}
+.quran-cave-opening{position:absolute;z-index:2;bottom:0;left:42%;width:26%;height:44%;border:5px solid rgba(31,35,42,.35);border-bottom:0;border-radius:50% 50% 0 0;background:linear-gradient(180deg,#171e29,#080d14 78%);box-shadow:inset 0 10px 24px rgba(10,12,16,.55);}
+.quran-cave-inner-glow{position:absolute;z-index:3;bottom:3%;left:49%;width:12%;height:23%;border-radius:50% 50% 0 0;background:radial-gradient(ellipse at bottom,rgba(255,218,145,.88),rgba(213,150,95,.24) 48%,transparent 72%);filter:blur(3px);animation:quran-cave-breathe 4s ease-in-out infinite alternate;}
+.quran-cave-ground{position:absolute;z-index:4;right:0;bottom:0;left:0;height:12%;background:linear-gradient(180deg,#3b3331,#211f22);}
+.quran-cave-pattern{position:absolute;z-index:5;inset:0;opacity:.11;background-image:repeating-linear-gradient(45deg,transparent 0 22px,rgba(255,236,195,.4) 23px 24px,transparent 25px 46px),repeating-linear-gradient(-45deg,transparent 0 22px,rgba(255,236,195,.35) 23px 24px,transparent 25px 46px);mask-image:linear-gradient(90deg,transparent 55%,#000);}
+.quran-cave-caption{display:flex;flex-direction:column;justify-content:center;gap:9px;padding:18px;}
+.quran-cave-scene-label{color:var(--blue);font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;}
+.quran-cave-scene-summary{color:var(--text);font-size:13px;line-height:1.6;}
+.quran-cave-arabic{color:var(--text);font-family:"Noto Naskh Arabic","Amiri",serif;font-size:clamp(20px,3vw,26px);line-height:1.9;text-align:right;}
+.quran-cave-translation{padding-top:8px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;line-height:1.55;}
+.quran-cave-progress{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:10px 0 0;padding:0;list-style:none;}
+.quran-cave-progress li{padding:7px 5px;border-top:2px solid var(--border);color:var(--faint);font-size:10px;text-align:center;}
+.quran-cave-progress li.is-active{border-color:var(--blue);color:var(--text);}
+.quran-cave-status{margin:8px 0 0;color:var(--muted);font-size:11px;}
+.quran-cave-scene[data-scene="faith"] .quran-cave-art{background:linear-gradient(180deg,#876b68 0%,#3e4655 55%,#182432 100%);}
+.quran-cave-scene[data-scene="faith"] .quran-cave-sky-glow{opacity:.38;}
+.quran-cave-scene[data-scene="faith"] .quran-cave-inner-glow{opacity:.75;}
+.quran-cave-scene[data-scene="awakening"] .quran-cave-art{background:linear-gradient(180deg,#f6d69a 0%,#d98d61 53%,#354253 100%);}
+.quran-cave-scene[data-scene="awakening"] .quran-cave-sun{left:78%;top:12%;}
+.quran-cave-scene[data-scene="lesson"] .quran-cave-art{background:linear-gradient(180deg,#f1d8a9 0%,#c58c70 52%,#3c4652 100%);}
+.quran-cave-scene[data-scene="lesson"] .quran-cave-sky-glow{opacity:.85;}
+.quran-cave-scene[data-scene="lesson"] .quran-cave-pattern{opacity:.2;}
+@keyframes quran-cave-breathe{from{opacity:.45;transform:scale(.9);}to{opacity:1;transform:scale(1.08);}}
+@keyframes quran-cave-sun-drift{from{transform:translateX(-10px);}to{transform:translateX(16px);}}
+@media (max-width:640px){.quran-story-header{align-items:flex-start;}}
+@media (max-width:640px){.quran-cave-story-header{align-items:flex-start;flex-direction:column;}.quran-cave-scene{grid-template-columns:1fr;}.quran-cave-art{min-height:190px;}.quran-cave-caption{padding:12px;}}
+@media (max-width:640px){.quran-story-stage[data-mode="verse"]{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);}.quran-story-stage-animation{min-height:70px!important;height:70px;}.quran-story-frame{min-height:130px;}}
+@media (max-width:640px){.quran-story-stage[data-mode="cave"]{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);}.quran-story-stage[data-mode="cave"] .quran-cave-art{min-height:82px;height:82px;}.quran-cave-playback-caption h3,.quran-cave-playback-caption p{font-size:10px;}}
+@media (prefers-reduced-motion:reduce){.quran-verse-animation-panel,.quran-story-visual *,.quran-cave-art *{animation:none!important;scroll-behavior:auto!important;}}
+.quran-translation{margin:10px 0 0;padding-top:10px;border-top:1px solid var(--border);color:var(--muted);direction:ltr;font-size:14px;line-height:1.65;text-align:left;}
+.quran-verse.is-active .quran-translation{color:var(--text);}
+.quran-reader .quran-credit{margin-top:0;}
 .fm-intro{display:flex;align-items:center;gap:14px;margin:0 0 22px;padding:18px 20px;border:1px solid var(--border);border-radius:14px;background:var(--panel);}
 .fm-intro h2{font-size:18px;font-weight:700;color:var(--text);}
 .fm-intro p{font-size:12.5px;color:var(--muted);margin-top:3px;}

@@ -25,7 +25,7 @@
         <a href="index.html#contact-section">Contact</a>
       </nav>
       <div class="nav-right">
-        <div class="count-pill"><b>6</b> tools</div>
+        <div class="count-pill"><b>7</b> tools</div>
         <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Switch to light mode" aria-label="Switch to light mode" aria-pressed="false">
           <svg id="iconMoon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>
           <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>
@@ -46,6 +46,10 @@
           <button class="tool-nav-button" type="button" data-tab="music" aria-label="Audio library" aria-pressed="false">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
             <span>Audio</span>
+          </button>
+          <button class="tool-nav-button" type="button" data-tab="quran" aria-label="Complete Quran" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5z"/><path d="M4 17.5A2.5 2.5 0 0 1 6.5 15H20M8 7h8M8 10h8"/></svg>
+            <span>Quran</span>
           </button>
           <button class="tool-nav-button" type="button" data-tab="radio" aria-label="Worldwide live radio" aria-pressed="false">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="m5 7 14-5M7 12h.01M11 12h.01M15 12h.01M7 16h10"/></svg>
@@ -85,6 +89,13 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
               </span>
               <span class="service-copy"><strong>Audio Library</strong><small>Music for every mood</small></span>
+              <span class="service-arrow" aria-hidden="true">&rarr;</span>
+            </button>
+            <button class="service-card service-quran" type="button" data-tab="quran" aria-pressed="false">
+              <span class="service-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5z"/><path d="M4 17.5A2.5 2.5 0 0 1 6.5 15H20M8 7h8M8 10h8"/></svg>
+              </span>
+              <span class="service-copy"><strong>Complete Quran</strong><small>Read and listen with word highlights</small></span>
               <span class="service-arrow" aria-hidden="true">&rarr;</span>
             </button>
             <button class="service-card service-radio" type="button" data-tab="radio" aria-label="Worldwide live FM and radio" aria-pressed="false">
@@ -172,6 +183,71 @@
 
             <p class="ig-tip">Audio selected from this device plays in full and is not uploaded. MP3, M4A, and WAV are widely supported; playback depends on your phone and browser. Open Worldwide Live FM &amp; Radio to browse stations by country.</p>
           </div>
+        </div>
+
+        <!-- ================= COMPLETE QURAN ================= -->
+        <div class="pane" data-pane="quran">
+          <section class="quran-reader" aria-labelledby="quranTitle" translate="no">
+            <div class="fm-intro">
+              <div>
+                <h2 id="quranTitle">Complete Quran</h2>
+                <p>Read the Arabic text with English translation. Play the recitation to follow word-by-word highlights; playback continues through the remaining surahs.</p>
+              </div>
+            </div>
+            <div class="quran-controls">
+              <label for="quranSurah">
+                <span>Surah</span>
+                <select class="input" id="quranSurah" disabled>
+                  <option>Loading surahs…</option>
+                </select>
+              </label>
+              <div class="quran-playback">
+                <button class="btn" id="quranPlay" type="button" aria-label="Play Quran recitation" disabled>Play Quran</button>
+                <button class="btn ghost" id="quranPause" type="button" aria-label="Pause Quran recitation" disabled>Pause</button>
+              </div>
+              <div class="quran-story-stage" id="quranStoryStage" hidden aria-hidden="true"></div>
+            </div>
+            <p class="radio-status" id="quranStatus" role="status" aria-live="polite">Choose Quran to load the reader.</p>
+            <section class="quran-cave-story" id="quranCaveStory" aria-labelledby="quranCaveStoryTitle" hidden>
+              <div class="quran-cave-story-header">
+                <div>
+                  <h3 id="quranCaveStoryTitle">The Companions of the Cave</h3>
+                  <p>Four-scene animation based on Surah Al-Kahf 18:9–26. Quran recitation plays in the background.</p>
+                </div>
+                <div class="quran-cave-story-controls">
+                  <button class="btn" id="quranCaveStoryPlay" type="button" disabled>Play story</button>
+                  <button class="btn ghost" id="quranCaveStoryPause" type="button" disabled>Pause story</button>
+                </div>
+              </div>
+              <div class="quran-cave-scene" id="quranCaveScene" data-scene="refuge">
+                <div class="quran-cave-art" aria-hidden="true">
+                  <span class="quran-cave-sky-glow"></span>
+                  <span class="quran-cave-sun"></span>
+                  <span class="quran-cave-ridge quran-cave-ridge-back"></span>
+                  <span class="quran-cave-ridge quran-cave-ridge-front"></span>
+                  <span class="quran-cave-opening"></span>
+                  <span class="quran-cave-inner-glow"></span>
+                  <span class="quran-cave-ground"></span>
+                  <span class="quran-cave-pattern"></span>
+                </div>
+                <div class="quran-cave-caption">
+                  <p class="quran-cave-scene-label" id="quranCaveSceneLabel">Scene 1 · Seeking refuge</p>
+                  <p class="quran-cave-scene-summary" id="quranCaveSceneSummary">The young people retreat to the cave and ask their Lord for mercy and guidance.</p>
+                  <p class="quran-cave-arabic" id="quranCaveArabic" lang="ar" dir="rtl"></p>
+                  <p class="quran-cave-translation" id="quranCaveTranslation" lang="en">Play the story to hear the recitation and follow the ayah captions.</p>
+                </div>
+              </div>
+              <ol class="quran-cave-progress" aria-label="Story scenes">
+                <li class="is-active" data-cave-scene="refuge">Seeking refuge</li>
+                <li data-cave-scene="faith">Steadfast faith</li>
+                <li data-cave-scene="awakening">Sleep and awakening</li>
+                <li data-cave-scene="lesson">The lesson</li>
+              </ol>
+              <p class="quran-cave-status" id="quranCaveStoryStatus" role="status" aria-live="polite">Ready to play Al-Kahf 18:9–26.</p>
+            </section>
+            <div class="quran-verses" id="quranVerses" lang="ar" dir="rtl"></div>
+            <p class="ig-tip quran-credit">Arabic text and Saheeh International English translation from Quran.com. Recitation by Mishary Rashid al-`Afasy.</p>
+          </section>
         </div>
 
         <!-- ================= WORLDWIDE LIVE FM ================= -->
@@ -351,5 +427,6 @@
   </footer>
 
   <script src="js/tools.js"></script>
+  <script src="js/quran-reader.js"></script>
 </body>
 </html>
